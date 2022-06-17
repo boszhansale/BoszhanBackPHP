@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 
 /**
@@ -38,5 +39,13 @@ class Role extends Model
     function users (): HasManyThrough
     {
         return  $this->hasManyThrough(User::class,UserRole::class,'role_id','id','','user_id');
+    }
+    function permissions (): HasManyThrough
+    {
+        return  $this->hasManyThrough(Permission::class,RolePermission::class,'role_id','id','','permission_id');
+    }
+    function rolePermissions (): HasMany
+    {
+        return  $this->hasMany(RolePermission::class);
     }
 }
