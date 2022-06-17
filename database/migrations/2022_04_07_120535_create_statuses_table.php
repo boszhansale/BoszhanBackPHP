@@ -1,0 +1,63 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
+    public function up()
+    {
+        Schema::create('statuses', function (Blueprint $table) {
+            $table->id();
+            $table->string('name');
+            $table->string('description');
+            $table->softDeletes();
+            $table->timestamps();
+        });
+
+      \App\Models\Status::insert([
+          [
+              'name' => 'ready_for_delivery',
+              'description'=> 'Готово к отправке'
+          ],
+          [
+              'name' => 'on_delivery',
+              'description'=> 'Доставляется'
+          ],
+          [
+              'name' => 'delivered',
+              'description'=> 'Доставлено'
+          ],
+          [
+              'name' => 'reject',
+              'description'=> 'Неизвестно || Отказ'
+          ],
+          [
+              'name' => 'confirmation',
+              'description'=> 'На подтверждение'
+          ],
+          [
+              'name' => 'confirmed',
+              'description'=> 'Подтвержден'
+          ],
+      ]);
+
+    }
+
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
+    {
+        Schema::dropIfExists('statuses');
+    }
+};
