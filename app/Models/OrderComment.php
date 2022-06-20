@@ -30,4 +30,6 @@ use Illuminate\Database\Eloquent\Model;
 class OrderComment extends Model
 {
     use HasFactory;
+
+    protected $fillable = ['user_id','order_id','description'];
 }

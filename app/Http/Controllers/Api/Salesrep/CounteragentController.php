@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\OrderStoreRequest;
 use App\Http\Requests\Api\StoreStoreRequest;
 use App\Http\Requests\Api\StoreUpdateRequest;
+use App\Http\Resources\CounteragentResource;
 use App\Models\Counteragent;
 use App\Models\Store;
 use Illuminate\Http\Request;
@@ -16,7 +17,8 @@ class CounteragentController extends Controller
 {
     function index()
     {
-        return response()->json(Auth::user()->counteragents()->with('priceType')->get());
+        $counteragents  = Auth::user()->counteragents()->with(['priceType','paymentType'])->get();
+        return response()->json(CounteragentResource::collection($counteragents));
     }
 
 }

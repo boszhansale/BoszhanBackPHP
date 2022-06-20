@@ -6,6 +6,7 @@ use App\Actions\ProductGetPriceAction;
 use App\Http\Controllers\Controller;
 use App\Models\Basket;
 use App\Models\Counteragent;
+use App\Models\CounteragentUser;
 use App\Models\DriverSalesrep;
 use App\Models\Order;
 use App\Models\PriceType;
@@ -92,45 +93,45 @@ class StoreController extends Controller
 
     function show(Store $store)
     {
-        $orders = Order::limit(400)->offset(1600)->get();
-        foreach ($orders as $order) {
-            $store = $order->store;
-            $counteragent = $store->counteragent;
-            $priceType = $counteragent ? $counteragent->priceType: PriceType::find(1);
-
-            $discount = $counteragent ? $counteragent->discount: 0;
-            $discount = $discount == 0 ? $store->discount : $discount;
-
-            foreach ($order->baskets as $value) {
-                $product = Product::find($value['product_id']);
-
-                if (!$product) continue;
-                $productPriceType = $product->prices()->where('price_type_id',$priceType->id)->first();
-                $discount = $discount == 0 ?  $product->discount : $discount;
-
-                if (!$productPriceType) continue;
-                if ($value['type'] == 1){
-                    $basket = Basket::join('orders','orders.id','baskets.order_id')
-                        ->where('orders.salesrep_id',$order->salesrep_id)
-                        ->where('baskets.type',0)
-                        ->where('orders.store_id',$order->store_id)
-                        ->where('baskets.product_id',$product->id)
-                        ->latest('baskets.id')
-                        ->first();
-                    if ($basket){
-                        $value['price'] = $basket->price;
-                    }else {
-                        $value['price'] = $this->discount($productPriceType->price,$discount);
-                    }
-                }else{
-                    $discount = $discount == 0 ?  $product->discount : $discount;
-                    $value['price'] = $this->discount($productPriceType->price,$discount);
-                }
-                $value['all_price'] = $value['count'] * $value['price'];
-
-                $value->save();
-            }
-        }
+//        $orders = Order::limit(400)->offset(1600)->get();
+//        foreach ($orders as $order) {
+//            $store = $order->store;
+//            $counteragent = $store->counteragent;
+//            $priceType = $counteragent ? $counteragent->priceType: PriceType::find(1);
+//
+//            $discount = $counteragent ? $counteragent->discount: 0;
+//            $discount = $discount == 0 ? $store->discount : $discount;
+//
+//            foreach ($order->baskets as $value) {
+//                $product = Product::find($value['product_id']);
+//
+//                if (!$product) continue;
+//                $productPriceType = $product->prices()->where('price_type_id',$priceType->id)->first();
+//                $discount = $discount == 0 ?  $product->discount : $discount;
+//
+//                if (!$productPriceType) continue;
+//                if ($value['type'] == 1){
+//                    $basket = Basket::join('orders','orders.id','baskets.order_id')
+//                        ->where('orders.salesrep_id',$order->salesrep_id)
+//                        ->where('baskets.type',0)
+//                        ->where('orders.store_id',$order->store_id)
+//                        ->where('baskets.product_id',$product->id)
+//                        ->latest('baskets.id')
+//                        ->first();
+//                    if ($basket){
+//                        $value['price'] = $basket->price;
+//                    }else {
+//                        $value['price'] = $this->discount($productPriceType->price,$discount);
+//                    }
+//                }else{
+//                    $discount = $discount == 0 ?  $product->discount : $discount;
+//                    $value['price'] = $this->discount($productPriceType->price,$discount);
+//                }
+//                $value['all_price'] = $value['count'] * $value['price'];
+//
+//                $value->save();
+//            }
+//        }
 
 
         return view('admin.store.show',compact('store'));
@@ -151,6 +152,10 @@ class StoreController extends Controller
     function moving(Request $request):RedirectResponse
     {
         Store::whereSalesrepId($request->get('from_salesrep_id'))->update(['salesrep_id' => $request->get('to_salesrep_id')]);
+
+        CounteragentUser::where('user_id',$request->get('from_salesrep_id'))
+            ->update(['user_id' => $request->get('to_salesrep_id')]);
+
 
         return to_route('admin.user.show',$request->get('to_salesrep_id'));
     }

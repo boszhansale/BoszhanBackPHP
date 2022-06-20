@@ -39,9 +39,24 @@
     <div class="card">
         <div class="card-header">
             <div class="row justify-content-between">
-                <div class="col">Кол. заявок: <b>{{$order_count}}</b></div>
-                <div class="col">Сумма заявок: <b class="price">{{(int)$order_purchase_price}}</b> тг</div>
-                <div class="col">Возврат заявок: <b class="price">{{(int)$order_return_price}}</b> тг</div>
+                <div class="col">
+                    <div class="btn btn-info">Кол. заявок: <b>{{$order_count}}</b></div>
+                </div>
+                <div class="col">
+                    <div class="btn btn-info">
+                        Сумма заявок: <b class="price">{{(int)$order_purchase_price}}</b> тг
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="btn btn-warning">
+                        Кол. возврат: <b>{{(int)$order_return_count}}</b>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="btn btn-warning">
+                        Сумма возврат : <b class="price">{{(int)$order_return_price}}</b> тг
+                    </div>
+                </div>
             </div>
         </div>
         <div class="card-body">

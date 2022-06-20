@@ -26,11 +26,11 @@
                     {{$planGroup->name}}
                 </th>
 
-                <th>
+                <th class="price">
                     {{$planGroup->plan}}
                 </th>
 
-                <th>
+                <th class="price">
                     {{$planGroup->completed}}
                 </th>
                 <th>

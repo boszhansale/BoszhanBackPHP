@@ -5,8 +5,10 @@ use App\Http\Controllers\Admin\BrandController;
 use App\Http\Controllers\Admin\MainController;
 use App\Http\Controllers\Admin\MobileAppController;
 use App\Http\Controllers\Admin\OrderController;
+use App\Http\Controllers\Admin\PermissionController;
 use App\Http\Controllers\Admin\PlanGroupController;
 use App\Http\Controllers\Admin\ProductController;
+use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\CounteragentController;
@@ -99,6 +101,25 @@ Route::middleware(['auth','admin'])->group(function () {
         Route::get('edit/{category}',[CategoryController::class,'edit'])->name('edit');
         Route::put('update/{category}',[CategoryController::class,'update'])->name('update');
         Route::get('delete/{category}',[CategoryController::class,'delete'])->name('delete');
+    });
+
+
+    Route::prefix('role')->name('role.')->group(function (){
+        Route::get('/',[RoleController::class,'index'])->name('index');
+        Route::get('create/',[RoleController::class,'create'])->name('create');
+        Route::post('store',[RoleController::class,'store'])->name('store');
+        Route::get('edit/{role}',[RoleController::class,'edit'])->name('edit');
+        Route::put('update/{role}',[RoleController::class,'update'])->name('update');
+        Route::get('delete/{role}',[RoleController::class,'delete'])->name('delete');
+    });
+
+    Route::prefix('permission')->name('permission.')->group(function (){
+        Route::get('/{role}',[PermissionController::class,'index'])->name('index');
+        Route::get('create/{role}',[PermissionController::class,'create'])->name('create');
+        Route::post('store/{role}',[PermissionController::class,'store'])->name('store');
+        Route::get('edit/{permission}',[PermissionController::class,'edit'])->name('edit');
+        Route::put('update/{permission}',[PermissionController::class,'update'])->name('update');
+        Route::get('delete/{permission}',[PermissionController::class,'delete'])->name('delete');
     });
 
     Route::prefix('order')->name('order.')->group(function (){

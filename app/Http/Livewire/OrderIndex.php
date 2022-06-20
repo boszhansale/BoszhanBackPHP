@@ -34,7 +34,6 @@ class OrderIndex extends Component
                 ->get('users.*'),
             'statuses' => Status::all(),
 
-
             'orders' => Order::with(['store', 'salesrep', 'driver'])
                 ->where('orders.id', 'LIKE', $this->search . '%')
                 ->when($this->status_id != 'all', function ($query) {
@@ -54,7 +53,6 @@ class OrderIndex extends Component
                 })
                 ->latest()
                 ->paginate(50),
-
 
             'order_count' => Order::when($this->salesrep_id != 'all', function ($q) {
                     return $q->where('salesrep_id', $this->salesrep_id);
@@ -110,6 +108,26 @@ class OrderIndex extends Component
                 ->when($this->end_date, function ($query) {
                     return $query->whereDate('orders.delivery_date', '<=', $this->end_date);
                 })->sum('return_price'),
+
+            'order_return_count' => Order::when($this->salesrep_id != 'all', function ($q) {
+                return $q->where('salesrep_id', $this->salesrep_id);
+            })->when($this->status_id != 'all', function ($query) {
+                return $query->where('orders.status_id', $this->status_id);
+            })
+                ->when($this->driver_id != 'all', function ($query) {
+                    return $query->where('orders.driver_id', $this->driver_id);
+                })
+                ->when($this->salesrep_id != 'all', function ($query) {
+                    return $query->where('orders.salesrep_id', $this->salesrep_id);
+                })
+                ->when($this->start_date, function ($query) {
+                    return $query->whereDate('orders.delivery_date', '>=', $this->start_date);
+                })
+                ->when($this->end_date, function ($query) {
+                    return $query->whereDate('orders.delivery_date', '<=', $this->end_date);
+                })
+                ->where('orders.return_price','>',0)
+                ->count(),
 
 
         ]);
