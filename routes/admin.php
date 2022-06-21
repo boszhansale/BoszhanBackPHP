@@ -113,14 +113,7 @@ Route::middleware(['auth','admin'])->group(function () {
         Route::get('delete/{role}',[RoleController::class,'delete'])->name('delete');
     });
 
-    Route::prefix('permission')->name('permission.')->group(function (){
-        Route::get('/{role}',[PermissionController::class,'index'])->name('index');
-        Route::get('create/{role}',[PermissionController::class,'create'])->name('create');
-        Route::post('store/{role}',[PermissionController::class,'store'])->name('store');
-        Route::get('edit/{permission}',[PermissionController::class,'edit'])->name('edit');
-        Route::put('update/{permission}',[PermissionController::class,'update'])->name('update');
-        Route::get('delete/{permission}',[PermissionController::class,'delete'])->name('delete');
-    });
+
 
     Route::prefix('order')->name('order.')->group(function (){
         Route::get('/',[OrderController::class,'index'])->name('index');

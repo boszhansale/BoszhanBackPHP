@@ -14,6 +14,7 @@
                     <th>#</th>
                     <th>роль</th>
                     <th>описание</th>
+                    <th>кол. пользователей</th>
                     <th></th>
                 </tr>
                 </thead>
@@ -28,15 +29,18 @@
                         <th>
                             {{$role->description}}
                         </th>
+                        <th>
+                            {{$role->users()->count()}}
+                        </th>
 
                         <td class="project-actions text-right">
                             <a class="btn btn-info btn-sm" href="{{route('admin.role.edit',$role->id)}}">
                                 <i class="fas fa-pencil-alt">
                                 </i>
                             </a>
-                            <a  class="btn btn-danger btn-sm" href="{{route('admin.role.delete',$role->id)}}" onclick="return confirm('Удалить?')">
-                                <i class="fas fa-trash"></i>
-                            </a>
+{{--                            <a  class="btn btn-danger btn-sm" href="{{route('admin.role.delete',$role->id)}}" onclick="return confirm('Удалить?')">--}}
+{{--                                <i class="fas fa-trash"></i>--}}
+{{--                            </a>--}}
                         </td>
                     </tr>
                 @endforeach

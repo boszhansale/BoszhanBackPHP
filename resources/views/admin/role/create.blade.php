@@ -10,13 +10,13 @@
                 </div>
                 <div class="form-group">
                     <label for="">Описание RU</label>
-                    <input type="text" class="form-control" name="name" required>
+                    <input type="text" class="form-control" name="description" required>
                 </div>
 
                 @foreach($permissions as $permission)
 
                     <div class="form-check">
-                        <input type="checkbox" class="form-check-input"  name="enabled" id="per_{{$permission->id}}"  value="1" >
+                        <input type="checkbox" class="form-check-input"  name="permissions[]" id="per_{{$permission->id}}"   value="{{$permission->id}}" >
                         <label class="form-check-label" for="per_{{$permission->id}}">{{$permission->description ?? $permission->name}}</label>
                     </div>
                 @endforeach

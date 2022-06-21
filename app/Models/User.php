@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\Relations\HasOneThrough;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Auth;
 use Laravel\Sanctum\HasApiTokens;
 
 /**
@@ -185,5 +186,14 @@ class User extends Authenticatable
     function counteragentExist($counteragentId)
     {
         return CounteragentUser::where('counteragent')->exists();
+    }
+
+    function permissionExists($permission) : bool
+    {
+       return Permission::join('role_permissions','role_permissions.permission_id','permissions.id')
+            ->join('user_roles','user_roles.role_id','role_permissions.role_id')
+            ->where('user_roles.user_id',Auth::id())
+           ->where('permissions.name',$permission)
+            ->exists();
     }
 }

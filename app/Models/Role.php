@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * App\Models\Role
@@ -31,10 +32,11 @@ use Illuminate\Database\Eloquent\Relations\HasManyThrough;
  */
 class Role extends Model
 {
-    use HasFactory;
+    use HasFactory,SoftDeletes;
 
     protected $hidden = ['created_at','deleted_at','updated_at','laravel_through_key'];
 
+    protected $fillable = ['name','description'];
 
     function users (): HasManyThrough
     {

@@ -38,7 +38,7 @@
                 @foreach($users as $user)
                     <tr>
                         <th>{{$user->id}}</th>
-                        <td class="project-actions text-right">
+                        <td class="">
                             <a class="btn btn-primary btn-sm" href="{{route('admin.user.show',$user->id)}}">
                                 <i class="fas fa-folder">
                                 </i>

@@ -26,6 +26,14 @@ class RoleController extends Controller
     public function store(Request $request)
     {
         $role = Role::create($request->only('name','description'));
+
+        if ($request->has('permissions'))
+        {
+            foreach ($request->get('permissions') as $p) {
+                $role->rolePermissions()->create(['permission_id' => $p]);
+            }
+        }
+
         return redirect()->route('admin.role.index');
     }
 
@@ -37,7 +45,17 @@ class RoleController extends Controller
 
     public function update(Request $request, Role $role)
     {
+
         $role->update($request->only('name','description'));
+
+        $role->rolePermissions()->delete();
+        if ($request->has('permissions'))
+        {
+            foreach ($request->get('permissions') as $p) {
+                $role->rolePermissions()->create(['permission_id' => $p]);
+            }
+        }
+
         return redirect()->route('admin.role.index');
     }
 
