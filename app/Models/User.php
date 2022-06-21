@@ -196,4 +196,9 @@ class User extends Authenticatable
            ->where('permissions.name',$permission)
             ->exists();
     }
+
+    function userPositions():HasMany
+    {
+        return  $this->hasMany(UserPosition::class);
+    }
 }
