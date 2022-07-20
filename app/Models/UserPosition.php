@@ -10,4 +10,10 @@ class UserPosition extends Model
     use HasFactory;
 
     protected $fillable = ['user_id','lat','lng'];
+
+
+    protected $casts = [
+        'lat' => 'float',
+        'lng' => 'float',
+    ];
 }

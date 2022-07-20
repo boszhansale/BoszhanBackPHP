@@ -13,22 +13,7 @@
                         @endforeach
                     </select>
                 </div>
-                <div class="col-md-2">
-                    <select  wire:model="salesrep_id"  class="form-control">
-                        <option value="all">все торговые</option>
-                        @foreach($salesreps as $salesrep)
-                            <option value="{{$salesrep->id}}">{{$salesrep->name}}</option>
-                        @endforeach
-                    </select>
-                </div>
-                <div class="col-md-2">
-                    <select  wire:model="driver_id"  class="form-control">
-                        <option value="all">все водители</option>
-                        @foreach($drivers as $driver)
-                            <option value="{{$driver->id}}">{{$driver->name}}</option>
-                        @endforeach
-                    </select>
-                </div>
+
                 <div class="col-md-2">
                     <input wire:model="start_date"  type="date" class="form-control">
                     <input wire:model="end_date"  type="date" class="form-control">
@@ -80,7 +65,7 @@
                 </thead>
                 <tbody>
                 @foreach($orders as $order)
-                    <tr class="{{$order->deleted_at != null ?'bg-red':''}}">
+                    <tr>
                         <td>{{$order->id}}</td>
                         <td  class="project-actions text-right">
                             <a class="btn btn-primary btn-sm" href="{{route('admin.order.show',$order->id)}}">
@@ -93,20 +78,10 @@
                                 </i>
 
                             </a>
-                            @if($order->deleted_at != null )
-                                <a  class="btn btn-warning btn-sm" href="{{route('admin.order.recover',$order->id)}}" onclick="return confirm('уверен?')">
-                                    <i class="fas fa-eraser"></i>
-                                </a>
-                            @else
-                                <a  class="btn btn-danger btn-sm" href="{{route('admin.order.delete',$order->id)}}" onclick="return confirm('Удалить?')">
-                                    <i class="fas fa-trash"></i>
-                                </a>
-                            @endif
-                            <a class="btn btn-info btn-sm" href="{{route('admin.order.export-excel',$order->id)}}">
-                                <i class="fas fa-download">
-                                </i>
-                            </a>
+                            <a  class="btn btn-danger btn-sm" href="{{route('admin.order.delete',$order->id)}}" onclick="return confirm('Удалить?')">
+                                <i class="fas fa-trash"></i>
 
+                            </a>
                         </td>
                         <td>
                             @if($order->store->counteragent)

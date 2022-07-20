@@ -3,11 +3,13 @@
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\ListController;
 use App\Http\Controllers\Api\ProductController;
+use App\Http\Controllers\Api\Salesrep\BonusGameController;
 use App\Http\Controllers\Api\Salesrep\CounteragentController;
 use App\Http\Controllers\Api\Salesrep\PlanController;
 use App\Http\Controllers\Api\Salesrep\StoreController;
 use App\Http\Controllers\Api\Salesrep\OrderController;
 use App\Http\Controllers\Api\Driver\OrderController as DriverOrderController;
+use App\Http\Controllers\Api\Driver\BasketController as DriverBasketController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -34,12 +36,14 @@ Route::middleware('auth:sanctum')->group(function (){
     Route::post('logout',[AuthController::class,'logout']);
     Route::get('profile',[AuthController::class,'profile']);
     Route::post('position',[AuthController::class,'position']);
+    Route::post('device-token',[AuthController::class,'deviceToken']);
 
     //Salesrep
 
     Route::get('counteragent',[ListController::class,'counteragent']);//delete method
 
     Route::get('plan',[OrderController::class,'plan']);//delete method
+
     Route::prefix('store')->group(function (){
         Route::get('/',[StoreController::class,'index']);
         Route::post('/',[StoreController::class,'store']);
@@ -61,6 +65,7 @@ Route::middleware('auth:sanctum')->group(function (){
         Route::get('counteragent',[CounteragentController::class,'index']);
 
 
+
         Route::prefix('store')->group(function (){
             Route::get('/',[StoreController::class,'index']);
             Route::post('/',[StoreController::class,'store']);
@@ -77,8 +82,13 @@ Route::middleware('auth:sanctum')->group(function (){
             Route::delete('/{order}',[OrderController::class,'delete']);
 
             Route::get('info',[OrderController::class,'info']);
-
         });
+
+        Route::prefix('bonus-game')->group(function (){
+            Route::get('/',[BonusGameController::class,'index']);
+            Route::post('/',[BonusGameController::class,'store']);
+        });
+
     });
 
 
@@ -92,7 +102,22 @@ Route::middleware('auth:sanctum')->group(function (){
             Route::get('delivered',[DriverOrderController::class,'delivered']);
             Route::get('show/{order}',[DriverOrderController::class,'show']);
             Route::post('update/{order}',[DriverOrderController::class,'update']);
+            Route::get('info',[DriverOrderController::class,'info']);
         });
+
+        Route::prefix('basket')->group(function (){
+            Route::get('{order}',[DriverBasketController::class,'index']);
+            Route::post('update/{basket}',[DriverBasketController::class,'update']);
+            Route::delete('{basket}',[DriverBasketController::class,'delete']);
+        });
+
+        Route::withoutMiddleware('auth:sanctum')->prefix('print')->group(function () {
+            Route::get('{order}/rnk', [DriverOrderController::class, 'rnk']);
+            Route::get('{order}/before/rnk', [DriverOrderController::class, 'beforeRnk']);
+            Route::get('{order}/vozvrat', [DriverOrderController::class, 'vozvrat']);
+            Route::get('{order}/pko', [DriverOrderController::class, 'pko']);
+        });
+
     });
 
 });

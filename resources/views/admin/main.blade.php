@@ -5,7 +5,7 @@
 
 @section('content')
     <div class="row">
-        <div class="col-lg-3 col-6">
+        <div class="col-lg-2 col-6">
             <!-- small box -->
             <div class="small-box bg-info">
                 <div class="inner">
@@ -20,7 +20,22 @@
             </div>
         </div>
         <!-- ./col -->
-        <div class="col-lg-3 col-6">
+        <div class="col-lg-2 col-6">
+            <!-- small box -->
+            <div class="small-box bg-orange">
+                <div class="inner">
+                    <h3>{{$counteragentCount}}</h3>
+
+                    <p>Контрагенты</p>
+                </div>
+                <div class="icon">
+                    <i class="ion ion-stats-bars"></i>
+                </div>
+                <a href="{{route('admin.counteragent.index')}}" class="small-box-footer">инфо <i class="fas fa-arrow-circle-right"></i></a>
+            </div>
+        </div>
+
+        <div class="col-lg-2 col-6">
             <!-- small box -->
             <div class="small-box bg-success">
                 <div class="inner">
@@ -35,7 +50,7 @@
             </div>
         </div>
         <!-- ./col -->
-        <div class="col-lg-3 col-6">
+        <div class="col-lg-2 col-6">
             <!-- small box -->
             <div class="small-box bg-warning">
                 <div class="inner">
@@ -50,7 +65,7 @@
             </div>
         </div>
         <!-- ./col -->
-        <div class="col-lg-3 col-6">
+        <div class="col-lg-2 col-6">
             <!-- small box -->
             <div class="small-box bg-danger">
                 <div class="inner">
@@ -63,17 +78,60 @@
                 <a href="{{route('admin.user.index')}}" class="small-box-footer">инфо <i class="fas fa-arrow-circle-right"></i></a>
             </div>
         </div>
+        <div class="col-lg-2 col-6">
+            <!-- small box -->
+            <div class="small-box bg-indigo">
+                <div class="inner">
+                    <h3>{{$productCount}}</h3>
+                    <p>Продукты</p>
+                </div>
+                <div class="icon">
+                    <i class="ion ion-person-add"></i>
+                </div>
+                <a href="{{route('admin.product.index')}}" class="small-box-footer">инфо <i class="fas fa-arrow-circle-right"></i></a>
+            </div>
+        </div>
         <!-- ./col -->
     </div>
 
 
     <div class="row">
-        <div class="col-lg-4">
-            <div class="card">
+        <div class="col-lg-12">
+            <div class="card card-success">
                 <div class="card-header">
-                    Топ 10 торговые
+                    <h3 class="card-title">Статистика за последний 6 месяц</h3>
+
+                    <div class="card-tools">
+                        <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                            <i class="fas fa-minus"></i>
+                        </button>
+                        <button type="button" class="btn btn-tool" data-card-widget="remove">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
                 </div>
                 <div class="card-body">
+                    <div class="chart">
+                        <canvas id="stackedBarChart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
+                    </div>
+                </div>
+                <!-- /.card-body -->
+            </div>
+        </div>
+        <div class="col-lg-12">
+            <div class="card card-primary collapsed-card">
+                <div class="card-header" data-card-widget="collapse">
+                    <h3 class="card-title">Топ 10 торговые за {{$monthName}}</h3>
+
+                    <div class="card-tools">
+                        <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                            <i class="fas fa-minus"></i>
+                        </button>
+                    </div>
+                    <!-- /.card-tools -->
+                </div>
+                <!-- /.card-header -->
+                <div class="card-body" style="display: none">
                     <table class="table table-bordered">
                         <thead>
                         <tr>
@@ -95,12 +153,21 @@
                         </tbody>
                     </table>
                 </div>
+                <!-- /.card-body -->
             </div>
+            <!-- /.card -->
         </div>
-        <div class="col-lg-8">
-            <div class="card">
-                <div class="card-header">
-                    Топ 10 продукт
+
+
+        <div class="col-lg-12">
+            <div class="card card-primary collapsed-card">
+                <div class="card-header" data-card-widget="collapse">
+                    Топ 10 продукт за {{$monthName}}
+                    <div class="card-tools">
+                        <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                            <i class="fas fa-minus"></i>
+                        </button>
+                    </div>
                 </div>
                 <div class="card-body">
                     <table class="table table-bordered">
@@ -133,4 +200,67 @@
             </div>
         </div>
     </div>
+
+
+
+
+@endsection
+
+
+@section('js')
+
+    <script>
+
+            let labels = JSON.parse('{!! json_encode($months) !!}');
+
+            var areaChartData = {
+                labels  : labels,
+                datasets: [
+                    {
+                        label               : 'Продажа',
+                        backgroundColor     : 'rgba(60,141,188,0.9)',
+                        borderColor         : 'rgba(60,141,188,0.8)',
+                        pointRadius          : true,
+                        pointColor          : '#3b8bba',
+                        pointStrokeColor    : 'rgba(60,141,188,1)',
+                        pointHighlightFill  : '#fff',
+                        pointHighlightStroke: 'rgba(60,141,188,1)',
+                        data                : JSON.parse(' {!! json_encode($purchasePrices) !!} ')
+                    },
+                    {
+                        label               : 'Возврат',
+                        backgroundColor     : 'rgba(210, 214, 222, 1)',
+                        borderColor         : 'rgba(210, 214, 222, 1)',
+                        pointRadius         : false,
+                        pointColor          : 'rgba(210, 214, 222, 1)',
+                        pointStrokeColor    : '#c1c7d1',
+                        pointHighlightFill  : '#fff',
+                        pointHighlightStroke: 'rgba(220,220,220,1)',
+                        data                : JSON.parse(' {!! json_encode($returnPrices) !!} ')
+                    },
+                ]
+            }
+
+            var stackedBarChartCanvas = $('#stackedBarChart').get(0).getContext('2d')
+
+            var stackedBarChartOptions = {
+                responsive              : true,
+                maintainAspectRatio     : false,
+                scales: {
+                    xAxes: [{
+                        stacked: true,
+                    }],
+                    yAxes: [{
+                        stacked: true
+                    }]
+                }
+            }
+
+            new Chart(stackedBarChartCanvas, {
+                type: 'bar',
+                data: areaChartData,
+                options: stackedBarChartOptions
+            })
+
+    </script>
 @endsection

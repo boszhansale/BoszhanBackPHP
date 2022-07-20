@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Exports\Excel\OrderExcelExport;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\OrderUpdateRequest;
 use App\Models\DriverSalesrep;
@@ -13,6 +14,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;
+use Maatwebsite\Excel\Facades\Excel;
 
 class OrderController extends Controller
 {
@@ -116,7 +118,6 @@ class OrderController extends Controller
     }
     function show(Order $order)
     {
-
         return view('admin.order.show',compact('order'));
     }
     function update(OrderUpdateRequest $request,Order $order)
@@ -131,6 +132,17 @@ class OrderController extends Controller
     {
         $order->delete();
         return redirect()->back();
+    }
+    function recover(Order $order)
+    {
+        $order->deleted_at = null;
+        $order->save();
+        return redirect()->back();
+    }
+
+    function exportExcel(Order $order)
+    {
+        return Excel::download(new OrderExcelExport($order), "order_$order->id.xlsx");
     }
 
 }

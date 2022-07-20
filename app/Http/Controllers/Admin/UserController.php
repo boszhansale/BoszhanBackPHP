@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\ProductStoreRequest;
 use App\Models\Brand;
 use App\Models\Category;
+use App\Models\Counteragent;
+use App\Models\CounteragentUser;
 use App\Models\DriverSalesrep;
 use App\Models\Order;
 use App\Models\PlanGroup;
@@ -36,7 +38,26 @@ class UserController extends Controller
     {
         $driverOrders = $user->driverOrders()->paginate(20);
         $salesrepOrders = $user->salesrepOrders()->paginate(20);
+
+
         return view('admin.user.show',compact('user','driverOrders','salesrepOrders'));
+    }
+    function position(Request $request,User $user):View
+    {
+        $positions = $user->userPositions()
+            ->when($request->has('date'),function ($q){
+                return $q->whereDate('created_at',\request('date'));
+            },function ($q){
+                return $q->whereDate('created_at',now());
+            })
+            ->selectRaw('user_positions.*, TIME(created_at) as time')
+            ->get();
+        return view('admin.user.position',compact('user','positions'));
+    }
+    function order(Request $request,User $user,$role)
+    {
+
+        return view('admin.user.order',compact('user','role'));
     }
     function create($roleId)
     {
@@ -95,6 +116,14 @@ class UserController extends Controller
                 );
             }
         }
+        if ($request->has('counteragents')){
+            foreach ($request->get('counteragents') as $counteragentId) {
+                CounteragentUser::create([
+                    'user_id' => $user->id,
+                    'counteragent_id' => $counteragentId
+                ]);
+            }
+        }
         if ($request->has('roles')){
             foreach ($request->get('roles') as $role_id) {
                 UserRole::updateOrCreate(
@@ -138,13 +167,16 @@ class UserController extends Controller
         $salesreps = User::join('user_roles','user_roles.user_id','users.id')
             ->where('user_roles.role_id',1)
             ->select('users.*')
+            ->orderBy('users.name')
             ->get();
         $drivers = User::join('user_roles','user_roles.user_id','users.id')
             ->where('user_roles.role_id',2)
             ->select('users.*')
+            ->orderBy('users.name')
             ->get();
+        $counteragents = Counteragent::orderBy('name')->get();
         $planGroups = PlanGroup::all();
-        return view('admin.user.edit',compact('user','roles','salesreps','drivers','planGroups'));
+        return view('admin.user.edit',compact('user','roles','salesreps','drivers','planGroups','counteragents'));
     }
     function update(Request $request,User $user)
     {
@@ -162,13 +194,12 @@ class UserController extends Controller
         $user->save();
 
 
+
         if ($request->has('drivers')){
+            DriverSalesrep::where('salesrep_id',$user->id)->delete();
+
             foreach ($request->get('drivers') as $driver) {
-                DriverSalesrep::updateOrCreate(
-                    [
-                        'driver_id' => $driver,
-                        'salesrep_id' => $user->id
-                    ],
+                DriverSalesrep::create(
                     [
                         'driver_id' => $driver,
                         'salesrep_id' => $user->id
@@ -177,17 +208,24 @@ class UserController extends Controller
             }
         }
         if ($request->has('salesreps')){
+            DriverSalesrep::where('driver_id',$user->id)->delete();
             foreach ($request->get('salesreps') as $salesrep) {
-                DriverSalesrep::updateOrCreate(
-                    [
-                        'driver_id' => $user->id,
-                        'salesrep_id' => $salesrep
-                    ],
+                DriverSalesrep::create(
                     [
                         'driver_id' => $user->id,
                         'salesrep_id' => $salesrep
                     ]
                 );
+            }
+        }
+        if ($request->has('counteragents')){
+           CounteragentUser::whereUserId($user->id)->delete();
+
+            foreach ($request->get('counteragents') as $counteragentId) {
+               CounteragentUser::create([
+                  'user_id' => $user->id,
+                  'counteragent_id' => $counteragentId
+               ]);
             }
         }
         if ($request->has('roles')){

@@ -25,7 +25,10 @@ class BrandController extends Controller
 {
     function index()
     {
-        $brands = Brand::all();
+        $brands = Brand::leftJoin('categories','categories.brand_id','brands.id')
+            ->selectRaw('brands.*,COUNT(categories.id) as category_count')
+            ->groupBy('brands.id')
+            ->get();
         return view('admin.brand.index',compact('brands'));
     }
     function create()

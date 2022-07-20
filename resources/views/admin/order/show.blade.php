@@ -4,6 +4,26 @@
 
 @section('content')
     <div class="row">
+        <div class="col">
+            <a class="btn btn-info btn-sm" href="{{route('admin.order.export-excel',$order->id)}}">
+                <i class="fas fa-download">
+                </i>
+                скачать excel
+            </a>
+            <a class="btn btn-info btn-sm" href="{{route('admin.order.edit',$order->id)}}">
+                <i class="fas fa-pencil-alt">
+                </i>
+                изменить
+            </a>
+            <a  class="btn btn-danger btn-sm" href="{{route('admin.order.delete',$order->id)}}" onclick="return confirm('Удалить?')">
+                <i class="fas fa-trash"></i>
+                удалить
+            </a>
+        </div>
+    </div>
+
+    <br>
+    <div class="row">
         <div class="col-md-4">
             <div class="card">
                 <div class="card-header">Обшая информация</div>

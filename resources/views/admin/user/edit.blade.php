@@ -88,6 +88,17 @@
                         @endforeach
                     </div>
                 </div>
+                <div class="col-md-3">
+                    <h6 class="">ТТ</h6>
+                    <div>
+                        @foreach($counteragents as $counteragent)
+                            <div class="form-check">
+                                <input type="checkbox" class="form-check-input"  {{$user->counteragents()->where('counteragent_id',$counteragent->id)->exists() ? 'checked' : ''}} name="counteragents[]" value="{{$counteragent->id}}" id="counteragent_{{$counteragent->id}}">
+                                <label class="form-check-label" for="counteragent_{{$counteragent->id}}">{{$counteragent->name}}</label>
+                            </div>
+                        @endforeach
+                    </div>
+                </div>
             @endif
             @if($user->roles()->where('roles.id',2)->exists())
                 <div class="col-md-3">

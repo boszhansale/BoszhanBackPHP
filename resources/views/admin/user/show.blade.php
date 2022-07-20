@@ -1,8 +1,31 @@
 @extends('admin.layouts.index')
 
-@section('content-header-title',$user->name)
+@section('content-header-title')
+    <a href="{{route('admin.user.show',$user->id)}}">{{$user->name}}</a>
+@endsection
 
 @section('content')
+    <div class="row">
+        <div class="col-12">
+
+            <a href="{{route('admin.user.edit',$user->id)}}" class="btn btn-warning">изменить</a>
+
+            <a  class="btn btn-danger" href="{{route('admin.user.delete',$user->id)}}" onclick="return confirm('Удалить?')">
+              удалит
+            </a>
+           @if($user->isSalesrep())
+                <a href="{{route('admin.user.order',[$user->id,1])}}" class="btn btn-primary">заявки торгового</a>
+           @endif
+
+            @if($user->isDriver())
+                   <a href="{{route('admin.user.order',[$user->id,2])}}" class="btn btn-primary">заявки водителя</a>
+            @endif
+
+
+        </div>
+    </div>
+    <hr>
+    <br>
     <div class="row">
         <div class="col-md-4">
             <div class="card">
@@ -30,6 +53,18 @@
                                 @foreach($user->roles as $role)
                                     {{$role->description}}
                                 @endforeach
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>последний GPS</th>
+                            <td>
+                                @if($user->userPositions()->exists())
+                                    <a href="{{route('admin.user.position',$user->id)}}">
+                                        {{$user->userPositions()->latest()->first()->created_at}}
+                                    </a>
+                                @else
+                                    нету данных
+                                @endif
                             </td>
                         </tr>
                     </table>
@@ -129,73 +164,6 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-12">
-                <div class="card">
-                    <div class="card-body">
-                        <table class="table table-hover text-nowrap table-responsive">
-                            <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th></th>
-                                <th>Контрагент</th>
-                                <th>ТТ</th>
-                                <th>Статус</th>
-                                <th>Торговый</th>
-                                <th>Водитель</th>
-                                <th>сумма</th>
-                                <th>возврат</th>
-                                <th>Дата создание</th>
-                                <th>Дата доставки</th>
-                                <th>тип оплаты</th>
-                                <th>статус оплаты</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            @foreach($salesrepOrders as $order)
-                                <tr>
-                                    <td>{{$order->id}}</td>
-                                    <td  class="project-actions text-right">
-                                        <a class="btn btn-primary btn-sm" href="{{route('admin.order.show',$order->id)}}">
-                                            <i class="fas fa-folder">
-                                            </i>
-
-                                        </a>
-                                        <a class="btn btn-info btn-sm" href="{{route('admin.order.edit',$order->id)}}">
-                                            <i class="fas fa-pencil-alt">
-                                            </i>
-
-                                        </a>
-                                        <a  class="btn btn-danger btn-sm" href="{{route('admin.order.delete',$order->id)}}" onclick="return confirm('Удалить?')">
-                                            <i class="fas fa-trash"></i>
-
-                                        </a>
-                                    </td>
-                                    <td>
-                                        @if($order->store->counteragent)
-                                            <a href="{{route('admin.counteragent.show',$order->store->counteragent_id)}}">{{$order->store->counteragent->name}}</a>
-                                        @endif
-                                    </td>
-                                    <td><a href="{{route('admin.store.show',$order->store_id)}}">{{$order->store->name}}</a></td>
-                                    <td>{{$order->status->description}}</td>
-                                    <td><a href="{{route('admin.user.show',$order->salesrep_id)}}">{{$order->salesrep->name}}</a></td>
-                                    <td><a href="{{route('admin.user.show',$order->driver_id)}}">{{$order->driver->name}}</a></td>
-                                    <td class="price">{{$order->purchase_price}}</td>
-                                    <td class="price">{{$order->return_price}}</td>
-                                    <td>{{$order->created_at}}</td>
-                                    <td>{{$order->delivery_date}}</td>
-                                    <td>{{$order->paymentType->name}}</td>
-                                    <td>{{$order->paymentStatus->name}}</td>
-
-                                </tr>
-                            @endforeach
-                            </tbody>
-                        </table>
-                    </div>
-                    <div class="card-footer">
-                        {{$salesrepOrders->links()}}
-                    </div>
-                </div>
-            </div>
         @endif
         @if($user->roles()->where('roles.id', 2)->exists())
             <div class="col-md-4">
@@ -244,73 +212,8 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-12">
-                <div class="card">
-                    <div class="card-body">
-                        <table class="table table-hover text-nowrap table-responsive">
-                            <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th></th>
-                                <th>Контрагент</th>
-                                <th>ТТ</th>
-                                <th>Статус</th>
-                                <th>Торговый</th>
-                                <th>Водитель</th>
-                                <th>сумма</th>
-                                <th>возврат</th>
-                                <th>Дата создание</th>
-                                <th>Дата доставки</th>
-                                <th>тип оплаты</th>
-                                <th>статус оплаты</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            @foreach($driverOrders as $order)
-                                <tr>
-                                    <td>{{$order->id}}</td>
-                                    <td  class="project-actions text-right">
-                                        <a class="btn btn-primary btn-sm" href="{{route('admin.order.show',$order->id)}}">
-                                            <i class="fas fa-folder">
-                                            </i>
-
-                                        </a>
-                                        <a class="btn btn-info btn-sm" href="{{route('admin.order.edit',$order->id)}}">
-                                            <i class="fas fa-pencil-alt">
-                                            </i>
-
-                                        </a>
-                                        <a  class="btn btn-danger btn-sm" href="{{route('admin.order.delete',$order->id)}}" onclick="return confirm('Удалить?')">
-                                            <i class="fas fa-trash"></i>
-
-                                        </a>
-                                    </td>
-                                    <td>
-                                        @if($order->store->counteragent)
-                                            <a href="{{route('admin.counteragent.show',$order->store->counteragent_id)}}">{{$order->store->counteragent->name}}</a>
-                                        @endif
-                                    </td>
-                                    <td><a href="{{route('admin.store.show',$order->store_id)}}">{{$order->store->name}}</a></td>
-                                    <td>{{$order->status->description}}</td>
-                                    <td><a href="{{route('admin.user.show',$order->salesrep_id)}}">{{$order->salesrep->name}}</a></td>
-                                    <td><a href="{{route('admin.user.show',$order->driver_id)}}">{{$order->driver->name}}</a></td>
-                                    <td class="price">{{$order->purchase_price}}</td>
-                                    <td class="price">{{$order->return_price}}</td>
-                                    <td>{{$order->created_at}}</td>
-                                    <td>{{$order->delivery_date}}</td>
-                                    <td>{{$order->paymentType->name}}</td>
-                                    <td>{{$order->paymentStatus->name}}</td>
-
-                                </tr>
-                            @endforeach
-                            </tbody>
-                        </table>
-                    </div>
-                    <div class="card-footer">
-                        {{$driverOrders->links()}}
-                    </div>
-                </div>
-            </div>
         @endif
     </div>
 @endsection
+
+

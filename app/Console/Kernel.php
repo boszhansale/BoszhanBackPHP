@@ -16,13 +16,14 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
 //         $schedule->command('inspire')->hourly();
-        $schedule->command('export:order')->dailyAt('21:00');
-        $schedule->command('import:all')->dailyAt('23:00');
+        $schedule->command('export:order')->dailyAt('17:00');
+//        $schedule->command('import:all')->dailyAt('23:00');
         $schedule->command('generate:report')->dailyAt('23:10');
         $schedule->command('plan:init')->dailyAt('23:15');
-        $schedule->command('plan:calk')->dailyAt('23:20');
-
+        $schedule->command('plan:calk')->everyTenMinutes();
         $schedule->command('telescope:clear')->dailyAt('03:00');
+
+
     }
 
     /**

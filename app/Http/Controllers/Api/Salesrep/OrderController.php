@@ -36,7 +36,15 @@ class OrderController extends Controller
             ->when($request->has('counteragent_id'),function ($q){
                 $q->where('stores.counteragent_id',\request('counteragent_id'));
             })
-            ->whereDate('orders.created_at','>=',Carbon::yesterday())
+            ->when($request->has('start_date'),function ($q){
+                return $q->whereDate('orders.created_at','>=',\request('start_date'));
+            })
+            ->when($request->has('end_date'),function ($q){
+                return $q->whereDate('orders.created_at','<=',\request('end_date'));
+            })
+            ->when(!$request->has('start_date') and  !$request->has('end_date'),function ($q){
+                return $q->whereDate('orders.created_at','>=',Carbon::yesterday());
+            })
             ->select('orders.*')
             ->with(['baskets' => function($q){
                 $q->with('product');
@@ -66,7 +74,7 @@ class OrderController extends Controller
     function update(OrderUpdateRequest $request,Order $order,OrderUpdateAction $action):JsonResponse
     {
         $order = $action->execute($request->validated(),$order);
-        $order->baskets()->delete();
+//        $order->baskets()->delete();
         return response()->json( $order);
     }
 
@@ -135,7 +143,7 @@ class OrderController extends Controller
         $data['individual_orders'] = count($orders);
         $data['individual_purchase'] = 0;
         $data['individual_return'] = 0;
-        $data['individual_return_count'] = 0;
+        $data['individual_return_count'] =  $user->salesrepOrders()->individual()->today()->where('return_price','>',0)->count();
         $data['individual_games'] = 0;
         $data['individual_games_wins'] = 0;
         foreach ($orders  as $order) {
@@ -143,7 +151,6 @@ class OrderController extends Controller
             $data['individual_games_wins'] += $order->bonusGames()->sum('win');
             $data['individual_purchase'] += $order->purchase_price;
             $data['individual_return'] += $order->return_price;
-            $data['individual_return_count'] += $order->return_price ;
         }
         //30011
 
@@ -151,6 +158,7 @@ class OrderController extends Controller
         $data['legal_entity_orders'] = count($orders);
         $data['legal_entity_purchase'] = 0;
         $data['legal_entity_return'] = 0;
+        $data['legal_entity_count_return'] = $user->salesrepOrders()->legalEntity()->today()->where('return_price','>',0)->count();
         $data['legal_entity_games'] = 0;
         $data['legal_entity_games_wins'] = 0;
         foreach ($orders  as $order) {

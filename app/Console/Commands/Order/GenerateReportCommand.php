@@ -22,24 +22,7 @@ class GenerateReportCommand extends Command
      */
     protected $description = 'Generate order, waybill and returns report by orders to xml';
 
-    /**
-     * Create a new command instance.
-     *
-     * @return void
-     */
-    private $orderReport;
 
-    public function __construct()
-    {
-        parent::__construct();
-        $this->orderReport = new OrderReport();
-    }
-
-    /**
-     * Execute the console command.
-     *
-     * @return int
-     */
     public function handle()
     {
         $orderType = (int)$this->argument('type');
@@ -60,10 +43,7 @@ class GenerateReportCommand extends Command
             });
             $query->where('status', Order::STATUS_DELIVERED);
         }
-        //$orders = [Order::find(5201)];
         $orders = $query->get();
-        //$orders = Order::where('id', '>', '3927')->get();
-        //Order::where('user_id','16')->where('id', '>', '3927')->get();
 
         if (!$orders) {
             $this->info('There is no orders to generate report for');

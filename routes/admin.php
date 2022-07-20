@@ -56,6 +56,8 @@ Route::middleware(['auth','admin'])->group(function () {
         Route::get('show/{user}',[UserController::class,'show'])->name('show');
         Route::put('update/{user}',[UserController::class,'update'])->name('update');
         Route::get('delete/{user}',[UserController::class,'delete'])->name('delete');
+        Route::get('position/{user}',[UserController::class,'position'])->name('position');
+        Route::get('order/{user}/{role}',[UserController::class,'order'])->name('order');
     });
     Route::prefix('store')->name('store.')->group(function (){
         Route::get('/',[StoreController::class,'index'])->name('index');
@@ -123,6 +125,8 @@ Route::middleware(['auth','admin'])->group(function () {
         Route::get('show/{order}',[OrderController::class,'show'])->name('show');
         Route::put('update/{order}',[OrderController::class,'update'])->name('update');
         Route::get('delete/{order}',[OrderController::class,'delete'])->name('delete');
+        Route::get('recover/{order}',[OrderController::class,'recover'])->name('recover');
+        Route::get('export-excel/{order}',[OrderController::class,'exportExcel'])->name('export-excel');
     });
     Route::prefix('basket')->name('basket.')->group(function (){
         Route::get('create/{order}/{type}',[BasketController::class,'create'])->name('create');

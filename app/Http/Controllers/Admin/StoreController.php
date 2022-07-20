@@ -91,7 +91,7 @@ class StoreController extends Controller
 
     }
 
-    function show(Store $store)
+    function show(Request $request,Store $store)
     {
 //        $orders = Order::limit(400)->offset(1600)->get();
 //        foreach ($orders as $order) {
@@ -133,8 +133,16 @@ class StoreController extends Controller
 //            }
 //        }
 
-
-        return view('admin.store.show',compact('store'));
+        $orders = $store->orders()->with(['salesrep', 'driver'])
+            ->when($request->has('start_date'), function ($query) {
+                return $query->whereDate('orders.delivery_date', '>=', $this->start_date);
+            })
+            ->when($request->has('end_date'), function ($query) {
+                return $query->whereDate('orders.delivery_date', '<=', $this->end_date);
+            })
+            ->latest()
+            ->paginate(50);
+        return view('admin.store.show',compact('store','orders'));
     }
 
     function delete(Store $store)

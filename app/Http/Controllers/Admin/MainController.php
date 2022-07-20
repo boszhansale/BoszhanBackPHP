@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Brand;
+use App\Models\Counteragent;
 use App\Models\Order;
 use App\Models\Product;
 use App\Models\Store;
@@ -26,12 +27,14 @@ class MainController extends Controller
 
         $orderCount = Order::count();
         $storeCount = Store::count();
-
+        $counteragentCount = Counteragent::count();
+        $productCount = Product::count();
+        $monthName = Carbon::now()->monthName;
 
         $topSalesrepsByOrder = User::join('orders','orders.salesrep_id','users.id')
             ->join('user_roles','user_roles.user_id','users.id')
             ->where('user_roles.role_id',1)
-//            ->whereDate('orders.created_at','>=',Carbon::now()->subMonth())
+            ->whereDate('orders.created_at','>=',Carbon::now()->startOfMonth())
             ->limit(10)
             ->groupBy('users.id')
             ->selectRaw('users.*,COUNT(orders.id) as order_count,SUM(orders.purchase_price) as order_price')
@@ -47,15 +50,30 @@ class MainController extends Controller
             ->join('brands','brands.id','categories.brand_id')
             ->selectRaw('products.*,COUNT(baskets.id) as basket_count,SUM(baskets.count) as count,SUM(baskets.all_price) as all_price,brands.name as brand_name,categories.name as category_name')
             ->where('baskets.type',0)
+            ->whereDate('baskets.created_at','>=',Carbon::now()->startOfMonth())
             ->orderBy('all_price','desc')
             ->orderBy('count','desc')
             ->groupBy('products.id')
             ->limit(10)
             ->get();
 
+        $months = [];
+        $returnPrices = [];
+        $purchasePrices = [];
+
+        for ($i = 6;$i >= 0;$i--){
+            $months[]= Carbon::now()->subMonths($i)->monthName .' '. Carbon::now()->subMonths($i)->year ;
+            $p = (int) Order::whereDate('created_at','>=',Carbon::now()->subMonths($i)->startOfMonth())
+                ->whereDate('created_at','<=',Carbon::now()->subMonths($i)->endOfMonth())
+                ->sum('purchase_price');
 
 
+            $purchasePrices[] = $p;
+            $returnPrices[] = (int)Order::whereDate('created_at','>=',Carbon::now()->subMonths($i)->startOfMonth())
+                ->whereDate('created_at','<=',Carbon::now()->subMonths($i)->endOfMonth())
+                ->sum('return_price');
+        }
 
-        return view('admin.main',compact('driverCount','topProducts','salesrepCount','orderCount','storeCount','topSalesrepsByOrder'));
+        return view('admin.main',compact('monthName','returnPrices','purchasePrices','productCount','months','driverCount','productCount','counteragentCount','topProducts','salesrepCount','orderCount','storeCount','topSalesrepsByOrder'));
     }
 }

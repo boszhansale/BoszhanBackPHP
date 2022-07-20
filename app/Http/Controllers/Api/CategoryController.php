@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Api;
 
 use App\Filters\Category\BrandNameFilter;
-use App\Models\Category;
 use App\Http\Controllers\Controller;
+use App\Models\Category;
 use App\Scopes\EnabledScope;
 use Doctrine\DBAL\Query\QueryBuilder;
 use Illuminate\Http\Request;
@@ -15,12 +15,15 @@ class CategoryController extends Controller
 
     public function allCategory()
     {
+        
         $categories = Category::withoutGlobalScope(EnabledScope::class)->get();
-        return view('admin.categories.index',compact('categories'));
+        return view('admin.categories.index', compact('categories'));
     }
+
 
     public function index()
     {
+
         $categories = QueryBuilder::for(Category::class)
             ->allowedFilters(
                 AllowedFilter::partial('name'),
@@ -36,7 +39,7 @@ class CategoryController extends Controller
     public function create()
     {
         $categories = Category::all();
-        return view('admin.categories.create2',compact('categories'));
+        return view('admin.categories.create2', compact('categories'));
     }
 
     /**
@@ -46,15 +49,16 @@ class CategoryController extends Controller
     public function store(Request $request, Category $category)
     {
         $category->name = $request->name;
-	$category->name_1c = $request->name;
+        $category->name_1c = $request->name;
         $category->save();
 
         return redirect('admin/category/all');
 
     }
+
     public function edit(Category $category)
     {
-        return view('admin.categories.edit',[
+        return view('admin.categories.edit', [
             'category' => $category
         ]);
     }
@@ -63,9 +67,9 @@ class CategoryController extends Controller
     {
 
         $category->name = $request->input('name');
-	$category->name_1c = $request->input('name');
-	$category->brand_id = $request->input('brand_id');
-	$category->enabled = $request->input('enabled');
+        $category->name_1c = $request->input('name');
+        $category->brand_id = $request->input('brand_id');
+        $category->enabled = $request->input('enabled');
         $category->save();
 
         return redirect()->back()->withSuccess('Категория успешно изменено');

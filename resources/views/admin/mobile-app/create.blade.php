@@ -8,7 +8,7 @@
                     <label for="">Приложения</label>
                     <select name="type" class="form-control">
                         <option value="1">Торговый</option>
-                        <option value="1">Водительский</option>
+                        <option value="2">Водительский</option>
                     </select>
                 </div>
                 <div class="form-group">

@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers\Api\Driver;
 
+use App\Actions\BasketCreateAction;
+use App\Actions\BasketUpdateAction;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\OrderUpdateRequest;
+use App\Http\Resources\OrderResource;
 use App\Models\Order;
 use App\Models\OrderComment;
 use Barryvdh\DomPDF\Facade\Pdf;
@@ -18,10 +21,11 @@ class OrderController extends Controller
     {
         $orders = Auth::user()->driverOrders()
             ->whereDate('orders.delivery_date',now())
-            ->where('orders.status_id',2)
+//            ->where('orders.status_id',2)
+            ->with(['store','baskets','baskets.product'])
             ->get();
 
-        return response()->json($orders);
+        return response()->json(OrderResource::collection($orders));
     }
 
     function delivered(Request $request):JsonResponse
@@ -29,6 +33,8 @@ class OrderController extends Controller
         $orders = Auth::user()
             ->driverOrders()
 //            ->whereIn('orders.status_id', [3, 4, 5, 6])
+            ->whereDate('created_at','>=',Carbon::now()->subDays(3))
+            ->with(['store','baskets','baskets.product'])
             ->get();
 
 //        $orders = Order::join('driver_store_representatives', 'driver_store_representatives.store_representative_id', 'orders.user_id')
@@ -40,7 +46,7 @@ class OrderController extends Controller
 //            ->groupBy('orders.id')
 //            ->get();
 
-        return  response()->json($orders);
+        return response()->json(OrderResource::collection($orders));
     }
 
     function update(OrderUpdateRequest $request,Order $order)
@@ -70,9 +76,9 @@ class OrderController extends Controller
                     $order->status_id = Order::STATUS_DELIVERED;
                     $order->payment_full = $request->get('payment_full');
 
-                    if ($request->has('kaspi_phone')) {
-//                        $order->kaspi_phone = $request->get('kaspi_phone');
-                    }
+//                    if ($request->has('kaspi_phone')) {
+////                        $order->kaspi_phone = $request->get('kaspi_phone');
+//                    }
                     if ($request->has('payment_partial')) {
                         $order->payment_partial = $request->get('payment_partial');
                     }
@@ -98,9 +104,7 @@ class OrderController extends Controller
         {
             $order->winning_phone = $request->get('winning_phone');
         }
-
         $order->save();
-
         if ($request->has('comment'))
         {
             $order->comments()->create([
@@ -109,9 +113,14 @@ class OrderController extends Controller
             ]);
         }
 
+        if ($request->has('baskets'))
+        {
+            $basketUpdateAction = new BasketUpdateAction();
+            $basketUpdateAction->execute($request->get('baskets'),$order);
+        }
+
 
     }
-
 
     function info()
     {
@@ -137,89 +146,47 @@ class OrderController extends Controller
         return response()->json($data);
     }
 
-    public function rnk(Order $order)
+    function rnk(Order $order)
     {
 
-        $price = 0;
-        $all_price = 0;
-        $return_price = 0;
-        $count = 0;
-        $driverName = '';
-        $qr_price = 0;
+        $price = $order->baskets()->where('type',0)->sum('price');
+        $all_price = $order->purchase_price;
+        $return_price = $order->return_price;
+        $count = $order->baskets()->where('type',0)->count();
 
-        $user = $order->user;
-        if ($user) {
-            $driver = $user->driver;
-            if ($driver) {
-                $driverName = $driver->full_name;
-            }
+        $counteragent = $order->store->counteragent;
+        if ($counteragent) {
+            $recipient[] = $counteragent->name;
         }
-        $countragent = $order->counteragent;
-        if ($countragent) {
-            $recipient[] = $countragent->name_1c;
+        if ($order->store->name) {
+            $recipient[] = $order->store->name;
         }
-        $store = $order->store;
-        if ($store) {
-            $storeName = $store->name;
-            $storeAddress = $store->address;
-            $storePhone = $store->phone;
-            if ($storeName) {
-                $recipient[] = $storeName;
-            }
-            if ($storeAddress) {
-                $recipient[] = $storeAddress;
-            }
-            if ($storePhone) {
-                $recipient[] = $storePhone;
-            }
+        if ( $order->store->address) {
+            $recipient[] =  $order->store->address;
         }
-
-        foreach ($order->basket as $basket) {
-            if ($basket['type'] == 0) {
-                $price += $basket['price'];
-                $all_price += $basket['all_price'];
-                $count += $basket['count'];
-            }else{
-                $return_price += $basket['all_price'];
-            }
+        if ($order->store->phone) {
+            $recipient[] = $order->store->phone;
         }
-
 
         $qr_price = $all_price-$return_price;
-//        return view('pdf.rnk',compact('order','price','all_price','count','recipient'));
+//        return view('pdf.rnk',compact('order','price','all_price','count','recipient','qr_price'));
         PDF::setOptions(['dpi' => 210, 'defaultFont' => 'sans-serif']);
 
-        $pdf = PDF::loadView('pdf.rnk', compact('order', 'price','qr_price', 'all_price', 'count', 'recipient', 'driverName'));
+        $pdf = PDF::loadView('pdf.rnk', compact('order', 'price','qr_price', 'all_price', 'count', 'recipient'));
 
         return $pdf->download('rnk.pdf');
     }
 
-    public function beforeRnk(Order $order)
+    function beforeRnk(Order $order)
     {
 
-        $price = 0;
-        $all_price = 0;
-        $count = 0;
+        $price = $order->baskets()->where('type',0)->sum('price');
+        $all_price = $order->purchase_price;
+        $count =  $order->baskets()->where('type',0)->count();;
 
-        $return_price = 0;
-        $return_all_price = 0;
-        $return_count = 0;
-
-
-
-        foreach ($order->basket as $basket) {
-            if ($basket['type'] == 0) {
-                $price += $basket['price'];
-                $all_price += $basket['all_price'];
-                $count += $basket['count'];
-            }else{
-                $return_price += $basket['price'];
-                $return_all_price += $basket['all_price'];
-                $return_count += $basket['count'];
-            }
-        }
-
-
+        $return_price = $order->baskets()->where('type',1)->sum('price');
+        $return_all_price =  $order->return_price0;
+        $return_count = $order->baskets()->where('type',1)->count();
 //        return view('pdf.before_rnk',compact('order','price','all_price','count'));
         PDF::setOptions(['dpi' => 210, 'defaultFont' => 'sans-serif']);
 
@@ -228,104 +195,68 @@ class OrderController extends Controller
         return $pdf->download('before_rnk.pdf');
     }
 
-    public function pko(Order $order)
+    function pko(Order $order)
     {
 
-        $all_price = 0;
-        $driverName = '';
-        $countragent = $order->counteragent;
-        $user = $order->user;
+        $all_price = $order->purchase_price;
+        $counteragent = $order->store->counteragent;
 
-        if ($user) {
-            $driver = $user->driver;
-            if ($driver) {
-                $driverName = $driver->full_name;
-            }
-        }
-        if ($countragent) {
-            $recipient[] = $countragent->name_1c;
+        if ($counteragent) {
+            $recipient[] = $counteragent->name;
         }
         $store = $order->store;
-        if ($store) {
-            $storeName = $store->name;
-            $storeAddress = $store->address;
-            $storePhone = $store->phone;
-            if ($storeName) {
-                $recipient[] = $storeName;
-            }
-            if ($storeAddress) {
-                $recipient[] = $storeAddress;
-            }
-            if ($storePhone) {
-                $recipient[] = $storePhone;
-            }
+        if ($store->name) {
+            $recipient[] = $store->name;
         }
-
-
-        foreach ($order->basket as $basket) {
-            if ($basket['type'] == 0) {
-                $all_price += $basket['all_price'];
-            }
+        if ($store->address) {
+            $recipient[] = $store->address;
+        }
+        if ( $store->phone) {
+            $recipient[] =  $store->phone;
         }
 
 //        return view('pdf.pko',compact('order','all_price','recipient','driverName'));
 
         PDF::setOptions(['dpi' => 210, 'defaultFont' => 'sans-serif']);
 
-        $pdf = PDF::loadView('pdf.pko', compact('order', 'all_price', 'recipient', 'driverName'));
+        $pdf = PDF::loadView('pdf.pko', compact('order', 'all_price', 'recipient'));
 
         return $pdf->download('pko.pdf');
     }
 
-    public function vozvrat(Order $order)
+    function vozvrat(Order $order)
     {
 
-        $price = 0;
-        $all_price = 0;
-        $count = 0;
-        $driverName = '';
+        $price = $order->baskets()->where('type',0)->sum('price');
+        $all_price = $order->purchase_price;
+        $count = $order->baskets()->where('type',0)->count();
 
-        $user = $order->user;
-        if ($user) {
-            $driver = $user->driver;
-            if ($driver) {
-                $driverName = $driver->full_name;
-            }
-        }
 
-        $countragent = $order->counteragent;
-        if ($countragent) {
-            $recipient[] = $countragent->name_1c;
+
+        if ($order->store->counteragent) {
+            $recipient[] = $order->store->counteragent;
         }
         $store = $order->store;
-        if ($store) {
-            $storeName = $store->name;
-            $storeAddress = $store->address;
-            $storePhone = $store->phone;
-            if ($storeName) {
-                $recipient[] = $storeName;
-            }
-            if ($storeAddress) {
-                $recipient[] = $storeAddress;
-            }
-            if ($storePhone) {
-                $recipient[] = $storePhone;
-            }
+        if ($store->name) {
+            $recipient[] = $store->name;
         }
-        foreach ($order->basket as $basket) {
-            if ($basket['type'] == 1) {
-                $price += $basket['price'];
-                $all_price += $basket['all_price'];
-                $count += $basket['count'];
-            }
+        if ($store->address) {
+            $recipient[] = $store->address;
         }
+        if ( $store->phone) {
+            $recipient[] =  $store->phone;
+        }
+
 //        return view('pdf.vozvrat',compact('order','price','all_price','count','recipient'));
 
         PDF::setOptions(['dpi' => 210, 'defaultFont' => 'sans-serif']);
 
-        $pdf = PDF::loadView('pdf.vozvrat', compact('order', 'price', 'all_price', 'count', 'recipient', 'driverName'));
+        $pdf = PDF::loadView('pdf.vozvrat', compact('order', 'price', 'all_price', 'count', 'recipient'));
 
         return $pdf->download('vozvrat.pdf');
     }
 
 }
+
+
+

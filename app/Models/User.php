@@ -124,6 +124,14 @@ class User extends Authenticatable
     {
         return $this->roles()->where('roles.id',3)->exists();
     }
+    public function isDriver()
+    {
+        return $this->roles()->where('roles.id',2)->exists();
+    }
+    public function isSalesrep()
+    {
+        return $this->roles()->where('roles.id',1)->exists();
+    }
 
     public function counterparty()
     {

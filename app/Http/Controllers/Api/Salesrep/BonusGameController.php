@@ -3,48 +3,39 @@
 namespace App\Http\Controllers\Api\Salesrep;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Api\BonusGameStoreRequest;
 use App\Models\BonusGame;
 use App\Models\Order;
 use Exception;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class BonusGameController extends Controller
 {
-    public function index()
+    function index(Request $request):JsonResponse
     {
-        $bonusGames = QueryBuilder::for(BonusGame::class)
-            ->allowedFilters('sum_win', 'store_id')
-            ->paginate(request('per_page' ?? 10));
+       $bonusGames = BonusGame::where('store_id',$request->get('store_id'))->get();
 
-        return $this->cresponse('All bonus games', $bonusGames);
+       return response()->json($bonusGames);
     }
 
-    public function store(StoreBonusGameRequest $request)
+    function store(BonusGameStoreRequest $request): JsonResponse
     {
 
-        try {
+        $order = Order::where('mobile_id', $request['mobile_id'])
+            ->with('store')
+            ->latest()
+            ->first();
 
-            $order = Order::where('mobile_id', $request['mobile_id'])
-                ->with('store')
-                ->latest()
-                ->first();
-
+        return response()->json(
             BonusGame::query()->create([
                 'mobile_id' => $request['mobile_id'],
-                'sum_win' => $request['sum_win'],
+                'win' => $request['win'],
                 'game_id' => $request['game_id'],
-                'store_id' => $order ? ( $order->store ? $order->store->id : null) : null
-            ]);
-            //event(new StoreBonusGameEvent($request->mobile_id, $request->sum_win, $request->game_id));
-        } catch (Exception $e) {
-            return $this->cresponse($e->getMessage(), null, Response::HTTP_EXPECTATION_FAILED);
-        }
-        return $this->cresponse('Bonus game stored', ['mobile_id' => $request->mobile_id], 201);
+                'store_id' => $order->store_id
+            ])
+        );
     }
 
-    public function download(Request $request)
-    {
-        return response()->download($request->path);
-    }
 }

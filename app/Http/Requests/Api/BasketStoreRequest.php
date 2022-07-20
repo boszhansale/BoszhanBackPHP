@@ -5,7 +5,7 @@ namespace App\Http\Requests\Api;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 
-class OrderUpdateRequest extends FormRequest
+class BasketStoreRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -28,22 +28,9 @@ class OrderUpdateRequest extends FormRequest
     public function rules()
     {
         return [
-            'status_id' => 'exists:statuses,id',
-            'payment_type_id' => 'exists:payment_types,id',
-            'payment_status_id' => 'exists:payment_statuses,id',
-            'payment_full' => '',
-            'payment_partial' => '',
-            'winning_name' => '',
-            'winning_phone' => '',
-            'winning_status' => '',
-            'delivery_date' => '',
-            'delivered_date' => '',
-
-            'baskets'=>'required|array|min:1',
-            'baskets.*.id' => 'required',
-            'baskets.*.type' => 'required|in:0,1',
-            'baskets.*.product_id' => 'required|exists:products,id',
-            'baskets.*.count' => 'required',
+            'type' => 'required|in:0,1',
+            'product_id' => 'required|exists:products,id',
+            'count' => 'required',
         ];
     }
 

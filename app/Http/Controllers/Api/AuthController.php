@@ -73,6 +73,20 @@ class AuthController extends Controller
             'lng' => $request->get('lng'),
         ]);
 
+        Auth::user()->userPositions()->create([
+            'lat' => $request->get('lat'),
+            'lng' => $request->get('lng'),
+        ]);
+
+        return response()->json(Auth::user());
+    }
+    public function deviceToken(Request $request)
+    {
+        Auth::user()->update([
+            'device_token' => $request->get('device_token'),
+        ]);
+
+
         return response()->json(Auth::user());
     }
 }
