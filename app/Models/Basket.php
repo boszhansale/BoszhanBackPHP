@@ -49,7 +49,7 @@ class Basket extends Model  implements Auditable
     use SoftDeletes;
     use HasFactory;
 
-    protected $fillable = ['product_id','type','price','count','all_price'];
+    protected $fillable = ['product_id','type','price','count','all_price','reason_refund_id','comment'];
 
     protected $hidden = ['created_at','updated_at','deleted_at'];
 
@@ -61,5 +61,9 @@ class Basket extends Model  implements Auditable
     function order():BelongsTo
     {
         return  $this->belongsTo(Order::class);
+    }
+    function reasonRefund():BelongsTo
+    {
+        return  $this->belongsTo(ReasonRefund::class);
     }
 }

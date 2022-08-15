@@ -9,6 +9,7 @@ use App\Models\Brand;
 use App\Models\MobileApp;
 use App\Models\PaymentStatus;
 use App\Models\PaymentType;
+use App\Models\ReasonRefund;
 use App\Models\Status;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
@@ -59,5 +60,10 @@ class ListController extends Controller
            'Content-Disposition'=> 'attachment; filename="android.apk"',
        ]);
 //       return response()->download(Storage::download($app->path),'app.apk');
+    }
+
+    function reasonRefund():JsonResponse
+    {
+        return response()->json(ReasonRefund::all());
     }
 }
