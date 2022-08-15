@@ -127,6 +127,7 @@ Route::middleware(['auth','admin'])->group(function () {
         Route::get('delete/{order}',[OrderController::class,'delete'])->name('delete');
         Route::get('recover/{order}',[OrderController::class,'recover'])->name('recover');
         Route::get('export-excel/{order}',[OrderController::class,'exportExcel'])->name('export-excel');
+        Route::get('waybill/{order}',[OrderController::class,'waybill'])->name('waybill');
     });
     Route::prefix('basket')->name('basket.')->group(function (){
         Route::get('create/{order}/{type}',[BasketController::class,'create'])->name('create');

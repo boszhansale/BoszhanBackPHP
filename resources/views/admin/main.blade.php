@@ -99,6 +99,28 @@
         <div class="col-lg-12">
             <div class="card card-success">
                 <div class="card-header">
+                    <h3 class="card-title">Статистика по дням</h3>
+
+                    <div class="card-tools">
+                        <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                            <i class="fas fa-minus"></i>
+                        </button>
+                        <button type="button" class="btn btn-tool" data-card-widget="remove">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="chart">
+                        <canvas id="stackedBarWeek" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
+                    </div>
+                </div>
+                <!-- /.card-body -->
+            </div>
+        </div>
+        <div class="col-lg-12">
+            <div class="card card-success">
+                <div class="card-header">
                     <h3 class="card-title">Статистика за последний 6 месяц</h3>
 
                     <div class="card-tools">
@@ -211,10 +233,12 @@
 
     <script>
 
-            let labels = JSON.parse('{!! json_encode($months) !!}');
 
+
+
+            ///Month
             var areaChartData = {
-                labels  : labels,
+                labels  : JSON.parse('{!! json_encode($months) !!}'),
                 datasets: [
                     {
                         label               : 'Продажа',
@@ -225,7 +249,7 @@
                         pointStrokeColor    : 'rgba(60,141,188,1)',
                         pointHighlightFill  : '#fff',
                         pointHighlightStroke: 'rgba(60,141,188,1)',
-                        data                : JSON.parse(' {!! json_encode($purchasePrices) !!} ')
+                        data                : JSON.parse(' {!! json_encode($monthPurchasePrices) !!} ')
                     },
                     {
                         label               : 'Возврат',
@@ -236,7 +260,7 @@
                         pointStrokeColor    : '#c1c7d1',
                         pointHighlightFill  : '#fff',
                         pointHighlightStroke: 'rgba(220,220,220,1)',
-                        data                : JSON.parse(' {!! json_encode($returnPrices) !!} ')
+                        data                : JSON.parse(' {!! json_encode($monthReturnPrices) !!} ')
                     },
                 ]
             }
@@ -261,6 +285,59 @@
                 data: areaChartData,
                 options: stackedBarChartOptions
             })
+
+
+
+
+            var areaChartData = {
+                labels  : JSON.parse('{!! json_encode($weeks) !!}'),
+                datasets: [
+                    {
+                        label               : 'Продажа',
+                        backgroundColor     : 'rgba(60,141,188,0.9)',
+                        borderColor         : 'rgba(60,141,188,0.8)',
+                        pointRadius          : true,
+                        pointColor          : '#3b8bba',
+                        pointStrokeColor    : 'rgba(60,141,188,1)',
+                        pointHighlightFill  : '#fff',
+                        pointHighlightStroke: 'rgba(60,141,188,1)',
+                        data                : JSON.parse(' {!! json_encode($weekPurchasePrices) !!} ')
+                    },
+                    {
+                        label               : 'Возврат',
+                        backgroundColor     : 'rgba(210, 214, 222, 1)',
+                        borderColor         : 'rgba(210, 214, 222, 1)',
+                        pointRadius         : false,
+                        pointColor          : 'rgba(210, 214, 222, 1)',
+                        pointStrokeColor    : '#c1c7d1',
+                        pointHighlightFill  : '#fff',
+                        pointHighlightStroke: 'rgba(220,220,220,1)',
+                        data                : JSON.parse(' {!! json_encode($weekReturnPrices) !!} ')
+                    },
+                ]
+            }
+
+            var stackedBarChartCanvas = $('#stackedBarWeek').get(0).getContext('2d')
+
+            var stackedBarChartOptions = {
+                responsive              : true,
+                maintainAspectRatio     : false,
+                scales: {
+                    xAxes: [{
+                        stacked: true,
+                    }],
+                    yAxes: [{
+                        stacked: true
+                    }]
+                }
+            }
+
+            new Chart(stackedBarChartCanvas, {
+                type: 'bar',
+                data: areaChartData,
+                options: stackedBarChartOptions
+            })
+
 
     </script>
 @endsection

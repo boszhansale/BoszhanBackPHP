@@ -42,7 +42,9 @@
                 <div class="form-group">
                     <label for="">Контрагент</label>
                     <select name="counteragent_id" class="form-control">
-                        @foreach($counteragents as $counteragent)
+                        <option value="">---</option>
+
+                    @foreach($counteragents as $counteragent)
                             <option {{$store->counteragent_id == $counteragent->id ? 'selected':""}} value="{{$counteragent->id}}">{{$counteragent->name}}</option>
                         @endforeach
                     </select>
@@ -52,6 +54,15 @@
                     <select name="salesrep_id" class="form-control">
                         @foreach($salesreps as $salesrep)
                             <option {{$store->salesrep_id == $salesrep->id ? 'selected':""}} value="{{$salesrep->id}}">{{$salesrep->name}}</option>
+                        @endforeach
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="">Водитель</label>
+                    <select name="driver_id" class="form-control">
+                        <option value="">----</option>
+                        @foreach($drivers as $driver)
+                            <option {{$store->driver_id == $driver->id ? 'selected':""}} value="{{$driver->id}}">{{$driver->name}}</option>
                         @endforeach
                     </select>
                 </div>

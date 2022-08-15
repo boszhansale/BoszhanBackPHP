@@ -13,7 +13,12 @@
                 </div>
                 <div class="form-group">
                     <label for="">Версия</label>
-                    <input type="number" class="form-control" name="version" value="{{$version}}" required>
+                    <input type="number" class="form-control" name="version" value="{{$version}}" step="0.1" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="">комментарии</label>
+                    <textarea name="comment" class="form-control"></textarea>
                 </div>
 
                 <div class="form-group">

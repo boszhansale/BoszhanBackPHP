@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\Driver;
 
 use App\Actions\BasketCreateAction;
 use App\Actions\BasketUpdateAction;
+use App\Actions\OrderPriceAction;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\BasketStoreRequest;
 use App\Http\Requests\Api\BasketUpdateRequest;
@@ -23,11 +24,22 @@ class BasketController extends Controller
 {
     function index(Order $order):JsonResponse
     {
-        return response()->json($order->baskets()->with('product')->get());
+        return response()->json($order->baskets()
+            ->with('product')
+            ->join('products','products.id','baskets.product_id')
+            ->orderBy('products.measure','desc')
+            ->select('baskets.*')
+            ->get()
+        );
     }
     function update(BasketUpdateRequest $request,Basket $basket)
     {
-        $basket->update($request->validated());
+
+        $basket->count = $request->get('count');
+        $basket->all_price = $basket->count * $basket->price;
+        $basket->save();
+
+        OrderPriceAction::execute($basket->order);
 
         return response()->json($basket);
     }

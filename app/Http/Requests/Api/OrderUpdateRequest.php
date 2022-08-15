@@ -39,7 +39,7 @@ class OrderUpdateRequest extends FormRequest
             'delivery_date' => '',
             'delivered_date' => '',
 
-            'baskets'=>'required|array|min:1',
+            'baskets'=>'array|min:1',
             'baskets.*.id' => 'required',
             'baskets.*.type' => 'required|in:0,1',
             'baskets.*.product_id' => 'required|exists:products,id',

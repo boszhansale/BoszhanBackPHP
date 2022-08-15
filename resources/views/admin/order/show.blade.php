@@ -10,6 +10,11 @@
                 </i>
                 скачать excel
             </a>
+            <a class="btn btn-info btn-sm" href="{{route('admin.order.waybill',$order->id)}}">
+                <i class="fas fa-download">
+                </i>
+                скачать waybill
+            </a>
             <a class="btn btn-info btn-sm" href="{{route('admin.order.edit',$order->id)}}">
                 <i class="fas fa-pencil-alt">
                 </i>

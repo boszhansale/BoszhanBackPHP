@@ -14,6 +14,10 @@ class MobileAppController extends Controller
 {
     function index()
     {
+
+
+
+
         $mobile_apps = MobileApp::latest()->get();
         return view('admin.mobile-app.index',compact('mobile_apps'));
     }
@@ -27,6 +31,7 @@ class MobileAppController extends Controller
         $mobileApp = new MobileApp();
         $mobileApp->type = $request->get('type');
         $mobileApp->version = $request->get('version');
+        $mobileApp->comment = $request->get('comment');
         $mobileApp->path = Storage::disk('public')
             ->putFileAs('mobile-apps',$request->file('app'),$request->get('version').'/'.$request->file('app')->getClientOriginalName());
         $mobileApp->save();

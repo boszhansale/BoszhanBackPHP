@@ -35,7 +35,12 @@ class OrderResource extends JsonResource
             'purchase_price' => $this->purchase_price,
             'return_price' => $this->return_price,
             'bonus_game_sum' => $this->bonusGames()->exists() ? $this->bonusGames()->sum('win'):0,
-            'baskets' => $this->baskets,
+            'baskets' => $this->baskets()
+                ->with('product')
+                ->join('products','products.id','baskets.product_id')
+                ->orderBy('products.measure','desc')
+                ->select('baskets.*')
+                ->get(),
         ];
     }
 }

@@ -21,7 +21,7 @@ class OrderController extends Controller
     {
         $orders = Auth::user()->driverOrders()
             ->whereDate('orders.delivery_date',now())
-//            ->where('orders.status_id',2)
+            ->where('orders.status_id',2)
             ->with(['store','baskets','baskets.product'])
             ->get();
 
@@ -32,8 +32,9 @@ class OrderController extends Controller
     {
         $orders = Auth::user()
             ->driverOrders()
-//            ->whereIn('orders.status_id', [3, 4, 5, 6])
-            ->whereDate('created_at','>=',Carbon::now()->subDays(3))
+            ->whereIn('orders.status_id', [3, 4, 5, 6])
+//            ->whereDate('created_at','>=',Carbon::now()->subDays(3))
+            ->whereDate('orders.delivery_date',now())
             ->with(['store','baskets','baskets.product'])
             ->get();
 
@@ -51,10 +52,10 @@ class OrderController extends Controller
 
     function update(OrderUpdateRequest $request,Order $order)
     {
-        if ($order->has('status_id'))
+        if ($request->has('status_id'))
         {
             $order->status_id = $request->get('status_id');
-            if ($order->status == Order::STATUS_DELIVERED) {
+            if ($order->status_id == Order::STATUS_DELIVERED) {
                 $order->delivered_date = now();
             }
         }
@@ -120,6 +121,9 @@ class OrderController extends Controller
         }
 
 
+        return response()->json(['message' => 'Успешно']);
+
+
     }
 
     function info()
@@ -169,7 +173,7 @@ class OrderController extends Controller
         }
 
         $qr_price = $all_price-$return_price;
-//        return view('pdf.rnk',compact('order','price','all_price','count','recipient','qr_price'));
+        return view('pdf.rnk',compact('order', 'price','qr_price', 'all_price', 'count', 'recipient'));
         PDF::setOptions(['dpi' => 210, 'defaultFont' => 'sans-serif']);
 
         $pdf = PDF::loadView('pdf.rnk', compact('order', 'price','qr_price', 'all_price', 'count', 'recipient'));
@@ -187,7 +191,7 @@ class OrderController extends Controller
         $return_price = $order->baskets()->where('type',1)->sum('price');
         $return_all_price =  $order->return_price0;
         $return_count = $order->baskets()->where('type',1)->count();
-//        return view('pdf.before_rnk',compact('order','price','all_price','count'));
+        return view('pdf.before_rnk',compact('order', 'price', 'all_price', 'count','return_price','return_count','return_all_price'));
         PDF::setOptions(['dpi' => 210, 'defaultFont' => 'sans-serif']);
 
         $pdf = PDF::loadView('pdf.before_rnk', compact('order', 'price', 'all_price', 'count','return_price','return_count','return_all_price'));
@@ -215,7 +219,7 @@ class OrderController extends Controller
             $recipient[] =  $store->phone;
         }
 
-//        return view('pdf.pko',compact('order','all_price','recipient','driverName'));
+        return view('pdf.pko',compact('order', 'all_price', 'recipient'));
 
         PDF::setOptions(['dpi' => 210, 'defaultFont' => 'sans-serif']);
 
@@ -227,9 +231,9 @@ class OrderController extends Controller
     function vozvrat(Order $order)
     {
 
-        $price = $order->baskets()->where('type',0)->sum('price');
-        $all_price = $order->purchase_price;
-        $count = $order->baskets()->where('type',0)->count();
+        $price = $order->baskets()->where('type',1)->sum('price');
+        $all_price = $order->return_price;
+        $count = $order->baskets()->where('type',1)->count();
 
 
 
@@ -247,7 +251,7 @@ class OrderController extends Controller
             $recipient[] =  $store->phone;
         }
 
-//        return view('pdf.vozvrat',compact('order','price','all_price','count','recipient'));
+        return view('pdf.vozvrat',compact('order', 'price', 'all_price', 'count', 'recipient'));
 
         PDF::setOptions(['dpi' => 210, 'defaultFont' => 'sans-serif']);
 

@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use OwenIt\Auditing\Contracts\Auditable;
 /**
  * App\Models\Basket
@@ -45,6 +46,7 @@ use OwenIt\Auditing\Contracts\Auditable;
 class Basket extends Model  implements Auditable
 {
     use \OwenIt\Auditing\Auditable;
+    use SoftDeletes;
     use HasFactory;
 
     protected $fillable = ['product_id','type','price','count','all_price'];

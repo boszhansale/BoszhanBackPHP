@@ -110,6 +110,24 @@ return [
             // 'trust_server_certificate' => env('DB_TRUST_SERVER_CERTIFICATE', 'true'),
         ],
 
+
+        'mssql' => [
+            'driver' => 'sqlsrv',
+            'url' => env('DATABASE_URL'),
+            'host' => env('MSSQL_DB_HOST', 'localhost'),
+            'port' => env('MSSQL_DB_PORT', '1433'),
+            'database' => env('MSSQL_DB_DATABASE', 'forge'),
+            'username' => env('MSSQL_DB_USERNAME', 'forge'),
+            'password' => env('MSSQL_DB_PASSWORD', ''),
+            'charset' => 'utf8',
+            'prefix' => '',
+            'prefix_indexes' => true,
+            'encrypt' => env('MSSQL_ENCRYPT', 'yes'),
+            'trust_server_certificate' => env('MSSQL_TRUST_SERVER_CERTIFICATE', 'true'),
+        ],
+
+
+
     ],
 
     /*

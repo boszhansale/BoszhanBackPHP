@@ -58,7 +58,7 @@
                     <td>{{$basket->product->measureDescription()}}</td>
                     <td>{{$basket->count}}</td>
                     <td>{{$basket->price}}</td>
-                    <td>{{$basket->all_price}}</td>
+                    <td>{{$basket->all_price}}</td>1
                 </tr>
             @endforeach
             <tr>

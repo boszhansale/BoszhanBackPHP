@@ -13,6 +13,7 @@
             <th>Тип</th>
             <th>Версия</th>
             <th>Дата</th>
+            <th>Коммент</th>
             <th>Скачать</th>
             <th></th>
         </tr>
@@ -29,6 +30,9 @@
                 </th>
                 <th>
                     {{\Carbon\Carbon::parse($mobileApp->created_at)->format('d.m.Y')}}
+                </th>
+                <th>
+                    {{$mobileApp->comment}}
                 </th>
                 <th>
                     <a target="_blank" href="{{route('admin.mobile-app.download',$mobileApp->id)}}">Скачать</a>

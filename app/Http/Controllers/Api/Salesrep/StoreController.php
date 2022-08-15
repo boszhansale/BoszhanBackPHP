@@ -14,12 +14,13 @@ class StoreController extends Controller
 {
     function index(Request $request)
     {
-        $stores = Auth::user()->stores()->when($request->has('counteragent'),function ($query){
-            if (\request('counteragent') == 1){
-                return $query->whereNotNull("counteragent_id");
-            }else{
-                return $query->whereNull("counteragent_id");
-            }
+        $stores = Auth::user()->stores()
+            ->when($request->has('counteragent'),function ($query){
+                if (\request('counteragent') == 1){
+                    return $query->whereNotNull("counteragent_id");
+                }else{
+                    return $query->whereNull("counteragent_id");
+                }
         })->with(['salesrep','counteragent'])->get();
         return response()->json($stores);
     }

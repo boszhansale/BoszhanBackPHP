@@ -22,14 +22,29 @@ class UserIndex extends Component
     public function render()
     {
         return view('livewire.user-index',[
-            'users' => User::where('users.name','LIKE',$this->search.'%')
+            'users' => User::select('users.*')
+                ->when($this->search,function ($q){
+                    return $q->where(function ($qq){
+                        return $qq->where('users.name','LIKE','%'.$this->search.'%')
+                            ->orWhere('users.login','LIKE','%'.$this->search.'%')
+                            ->orWhere('users.id','LIKE','%'.$this->search.'%');
+                    });
+                })
                 ->join('user_roles','user_roles.user_id','users.id')
                 ->when($this->roleId,function ($q){
                     return $q->where('user_roles.role_id',$this->roleId);
                 })
+                ->groupBy('users.id')
                 ->orderBy($this->sort,$this->sortBy)
-                ->select('users.*')
+
                 ->get()
+        ]);
+    }
+
+    function statusChange($userId,$status)
+    {
+        User::whereId($userId)->update([
+            'status' => $status
         ]);
     }
 }

@@ -30,6 +30,8 @@
                     <th></th>
                     <th>ФИО</th>
                     <th>Логин</th>
+                    <th>Статус</th>
+                    <th>кол. ТТ</th>
                     <th>Роль</th>
                     <th>Личный план</th>
                 </tr>
@@ -56,6 +58,19 @@
                         </th>
                         <th>
                             {{$user->login}}
+                        </th>
+                        <th>
+                            @if($user->status == 1)
+                                <button wire:click="statusChange({{$user->id}},2)" class="btn btn-primary">работает</button>
+                            @else
+                                <button wire:click="statusChange({{$user->id}},1)" class="btn btn-danger">не работает</button>
+
+                            @endif
+                        </th>
+                        <th>
+                            @if($user->isSalesrep())
+                                {{$user->stores->count()}}
+                            @endif
                         </th>
                         <th>
                             @foreach($user->roles as $role)

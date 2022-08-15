@@ -124,11 +124,11 @@ class User extends Authenticatable
     {
         return $this->roles()->where('roles.id',3)->exists();
     }
-    public function isDriver()
+    public function isDriver():bool
     {
         return $this->roles()->where('roles.id',2)->exists();
     }
-    public function isSalesrep()
+    public function isSalesrep():bool
     {
         return $this->roles()->where('roles.id',1)->exists();
     }
@@ -208,5 +208,11 @@ class User extends Authenticatable
     function userPositions():HasMany
     {
         return  $this->hasMany(UserPosition::class);
+    }
+    function statusDescription(){
+        switch ($this->status){
+            case 1: return 'работает';
+            case 2: return 'не работает';
+        }
     }
 }

@@ -47,7 +47,9 @@ class BasketCreateAction
                 }else {
                     $value['price'] = $this->discount($productPriceType->price,$discount);
                 }
-            }else{
+            }
+
+            else{
                 $discount = $discount == 0 ?  $product->discount : $discount;
                 $value['price'] = $this->discount($productPriceType->price,$discount);
             }

@@ -65,10 +65,12 @@ class UserController extends Controller
         $salesreps = User::join('user_roles','user_roles.user_id','users.id')
             ->where('user_roles.role_id',1)
             ->select('users.*')
+            ->orderBy('users.name')
             ->get();
         $drivers = User::join('user_roles','user_roles.user_id','users.id')
             ->where('user_roles.role_id',2)
             ->select('users.*')
+            ->orderBy('users.name')
             ->get();
         $planGroups = PlanGroup::all();
         $brands = Brand::all();
@@ -291,6 +293,11 @@ class UserController extends Controller
 
         return redirect()->back();
 
+    }
+    function statusChange(User $user,$status)
+    {
+        $user->status = $status;
+        $user->save();
     }
     function delete(User $user)
     {

@@ -16,6 +16,7 @@ return new class extends Migration
         Schema::create('stores', function (Blueprint $table) {
             $table->id();
             $table->foreignId('salesrep_id')->constrained('users')->cascadeOnDelete();
+            $table->foreignId('driver_id')->nullable()->constrained('users')->cascadeOnDelete();
             $table->foreignId('counteragent_id')->nullable()->constrained('counteragents')->cascadeOnDelete();
 
             $table->string('name');

@@ -34,10 +34,18 @@ class StoreController extends Controller
         $salesreps = User::join('user_roles','user_roles.user_id','users.id')
             ->where('user_roles.role_id',1)
             ->select('users.*')
+            ->orderBy('name')
+
+            ->get();
+        $drivers = User::join('user_roles','user_roles.user_id','users.id')
+            ->where('user_roles.role_id',2)
+            ->select('users.*')
+            ->orderBy('name')
+
             ->get();
         $counteragents = Counteragent::all();
 
-        return view('admin.store.create',compact('salesreps','counteragents'));
+        return view('admin.store.create',compact('salesreps','drivers','counteragents'));
     }
     function store(Request $request)
     {
@@ -47,6 +55,7 @@ class StoreController extends Controller
         $store->phone = $request->get('phone');
         $store->bin = $request->get('bin');
         $store->salesrep_id = $request->get('salesrep_id');
+        $store->driver_id = $request->get('driver_id');
         $store->counteragent_id = $request->get('counteragent_id');
         $store->district_id = $request->get('district_id');
         $store->address = $request->get('address');
@@ -66,10 +75,16 @@ class StoreController extends Controller
         $salesreps = User::join('user_roles','user_roles.user_id','users.id')
             ->where('user_roles.role_id',1)
             ->select('users.*')
+            ->orderBy('name')
+            ->get();
+        $drivers = User::join('user_roles','user_roles.user_id','users.id')
+            ->where('user_roles.role_id',2)
+            ->select('users.*')
+            ->orderBy('name')
             ->get();
         $counteragents = Counteragent::all();
 
-        return view('admin.store.edit',compact('salesreps','store','counteragents'));
+        return view('admin.store.edit',compact('salesreps','drivers','store','counteragents'));
     }
     function update(Request $request,Store $store)
     {
@@ -78,6 +93,9 @@ class StoreController extends Controller
         $store->phone = $request->get('phone');
         $store->bin = $request->get('bin');
         $store->salesrep_id = $request->get('salesrep_id');
+
+        $store->driver_id = $request->get('driver_id');
+
         $store->counteragent_id = $request->get('counteragent_id');
         $store->district_id = $request->get('district_id');
         $store->address = $request->get('address');

@@ -58,22 +58,35 @@ class MainController extends Controller
             ->get();
 
         $months = [];
-        $returnPrices = [];
-        $purchasePrices = [];
+        $monthReturnPrices = [];
+        $monthPurchasePrices = [];
 
-        for ($i = 6;$i >= 0;$i--){
+        $weeks = [];
+        $weekPurchasePrices = [];
+        $weekReturnPrices = [];
+
+        for ($i = 6;$i >= 0;$i--)
+        {
             $months[]= Carbon::now()->subMonths($i)->monthName .' '. Carbon::now()->subMonths($i)->year ;
-            $p = (int) Order::whereDate('created_at','>=',Carbon::now()->subMonths($i)->startOfMonth())
+            $monthPurchasePrices[] = (int) Order::whereDate('created_at','>=',Carbon::now()->subMonths($i)->startOfMonth())
                 ->whereDate('created_at','<=',Carbon::now()->subMonths($i)->endOfMonth())
                 ->sum('purchase_price');
-
-
-            $purchasePrices[] = $p;
-            $returnPrices[] = (int)Order::whereDate('created_at','>=',Carbon::now()->subMonths($i)->startOfMonth())
+            $monthReturnPrices[] = (int)Order::whereDate('created_at','>=',Carbon::now()->subMonths($i)->startOfMonth())
                 ->whereDate('created_at','<=',Carbon::now()->subMonths($i)->endOfMonth())
                 ->sum('return_price');
         }
+        $startWeekDay = Carbon::now()->startOfWeek();
+        for ($i = 0;$i <= 6;$i++)
+        {
+            $weeks[] = $startWeekDay->dayName;
+            $weekPurchasePrices[] = (int) Order::whereDate('created_at',$startWeekDay)
+                ->sum('purchase_price');
+            $weekReturnPrices[] = (int)Order::whereDate('created_at',$startWeekDay)
+                ->sum('return_price');
 
-        return view('admin.main',compact('monthName','returnPrices','purchasePrices','productCount','months','driverCount','productCount','counteragentCount','topProducts','salesrepCount','orderCount','storeCount','topSalesrepsByOrder'));
+            $startWeekDay->addDay();
+        }
+
+        return view('admin.main',compact('monthName','weeks','weekPurchasePrices','weekReturnPrices','monthPurchasePrices','monthReturnPrices','productCount','months','driverCount','productCount','counteragentCount','topProducts','salesrepCount','orderCount','storeCount','topSalesrepsByOrder'));
     }
 }
