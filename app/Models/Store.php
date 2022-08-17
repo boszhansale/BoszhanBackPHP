@@ -57,6 +57,8 @@ use OwenIt\Auditing\Contracts\Auditable;
  * @property-read int|null $audits_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Order[] $orders
  * @property-read int|null $orders_count
+ * @property int|null $driver_id
+ * @method static \Illuminate\Database\Eloquent\Builder|Store whereDriverId($value)
  */
 
 class Store extends Model implements Auditable

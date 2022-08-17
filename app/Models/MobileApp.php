@@ -25,6 +25,8 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|MobileApp whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|MobileApp whereVersion($value)
  * @mixin \Eloquent
+ * @property string|null $comment
+ * @method static \Illuminate\Database\Eloquent\Builder|MobileApp whereComment($value)
  */
 class MobileApp extends Model
 {

@@ -50,8 +50,15 @@ class BasketCreateAction
             }
 
             else{
-                $discount = $discount == 0 ?  $product->discount : $discount;
-                $value['price'] = $this->discount($productPriceType->price,$discount);
+                $productCounteragentPrice = $counteragent ? $product->counteragentPrices()->where('counteragent_id',$counteragent->id)->first() : null;
+
+                if ($productCounteragentPrice){
+                    $value['price'] = $productCounteragentPrice->price;
+                }else{
+                    $discount = $discount == 0 ?  $product->discount : $discount;
+                    $value['price'] = $this->discount($productPriceType->price,$discount);
+                }
+
             }
             $value['all_price'] = $value['count'] * $value['price'];
 

@@ -65,6 +65,8 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @method static \Illuminate\Database\Eloquent\Builder|Product whereDiscount15($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Product whereDiscount20($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Product whereDiscount5($value)
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\ProductCounteragentPrice[] $counteragentPrices
+ * @property-read int|null $counteragent_prices_count
  */
 class Product extends Model
 {
@@ -100,6 +102,11 @@ class Product extends Model
     function prices():HasMany
     {
         return $this->hasMany(ProductPriceType::class,'product_id');
+    }
+
+    function counteragentPrices():HasMany
+    {
+        return $this->hasMany(ProductCounteragentPrice::class,'product_id');
     }
 
     function baskets():HasMany

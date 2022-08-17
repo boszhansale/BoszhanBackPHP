@@ -5,7 +5,6 @@ use App\Http\Controllers\Admin\BrandController;
 use App\Http\Controllers\Admin\MainController;
 use App\Http\Controllers\Admin\MobileAppController;
 use App\Http\Controllers\Admin\OrderController;
-use App\Http\Controllers\Admin\PermissionController;
 use App\Http\Controllers\Admin\PlanGroupController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\RoleController;

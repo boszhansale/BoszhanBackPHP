@@ -41,6 +41,14 @@ use OwenIt\Auditing\Contracts\Auditable;
  * @property-read int|null $audits_count
  * @property-read \App\Models\Order $order
  * @property-read \App\Models\Product $product
+ * @property int|null $reason_refund_id
+ * @property string|null $comment
+ * @property-read \App\Models\ReasonRefund|null $reasonRefund
+ * @method static \Illuminate\Database\Query\Builder|Basket onlyTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder|Basket whereComment($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Basket whereReasonRefundId($value)
+ * @method static \Illuminate\Database\Query\Builder|Basket withTrashed()
+ * @method static \Illuminate\Database\Query\Builder|Basket withoutTrashed()
  */
 
 class Basket extends Model  implements Auditable

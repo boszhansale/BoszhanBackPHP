@@ -119,8 +119,9 @@ class OrderController extends Controller
 
         return view('admin.order.edit',compact('order','salesreps','drivers','statuses','paymentTypes','paymentStatuses'));
     }
-    function show(Order $order)
+    function show($orderId)
     {
+        $order = Order::find($orderId);
         return view('admin.order.show',compact('order'));
     }
     function update(OrderUpdateRequest $request,Order $order)

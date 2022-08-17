@@ -45,6 +45,8 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @method static \Illuminate\Database\Eloquent\Builder|Counteragent whereDiscount($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Counteragent whereEnabled($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Counteragent wherePaymentTypeId($value)
+ * @property string|null $delivery_time
+ * @method static \Illuminate\Database\Eloquent\Builder|Counteragent whereDeliveryTime($value)
  */
 class Counteragent extends Model
 {

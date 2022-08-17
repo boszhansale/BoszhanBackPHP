@@ -85,6 +85,8 @@ use Laravel\Sanctum\HasApiTokens;
  * @property-read int|null $salesreps_count
  * @method static \Illuminate\Database\Eloquent\Builder|User whereLat($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereLng($value)
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\UserPosition[] $userPositions
+ * @property-read int|null $user_positions_count
  */
 class User extends Authenticatable
 {

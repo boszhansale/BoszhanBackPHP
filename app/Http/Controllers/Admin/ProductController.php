@@ -6,8 +6,10 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\ProductStoreRequest;
 use App\Models\Brand;
 use App\Models\Category;
+use App\Models\Counteragent;
 use App\Models\PriceType;
 use App\Models\Product;
+use App\Models\ProductCounteragentPrice;
 use App\Models\ProductImage;
 use App\Models\ProductPriceType;
 use App\Models\User;
@@ -29,7 +31,8 @@ class ProductController extends Controller
     {
         $categories = Category::orderBy('brand_id')->where('enabled',1)->with('brand')->get();
         $priceTypes = PriceType::all();
-        return view('admin.product.create',compact('categories','priceTypes'));
+        $counteragents = Counteragent::orderBy('name')->get();
+        return view('admin.product.create',compact('categories','priceTypes','counteragents'));
     }
     function show(Product $product)
     {
@@ -54,6 +57,23 @@ class ProductController extends Controller
         $product->discount_20 = $request->has('discount_20');
 
         $product->save();
+
+
+        foreach ($request->get('counteragent_prices') as $item) {
+            if ($item['price'] != 0){
+                ProductCounteragentPrice::updateOrCreate(
+                    [
+                        'product_id' => $product->id,
+                        'counteragent_id' => $item['counteragent_id']
+                    ],
+                    [
+                        'product_id' => $product->id,
+                        'counteragent_id' => $item['counteragent_id'],
+                        'price' => $item['price']
+                    ]
+                );
+            }
+        }
 
         foreach ($request->get('price_types') as $item) {
             ProductPriceType::updateOrCreate(
@@ -88,7 +108,8 @@ class ProductController extends Controller
     {
         $priceTypes = PriceType::all();
         $categories = Category::orderBy('brand_id')->where('enabled',1)->with('brand')->get();
-        return view('admin.product.edit',compact('product','priceTypes','categories'));
+        $counteragents = Counteragent::orderBy('name')->get();
+        return view('admin.product.edit',compact('product','priceTypes','categories','counteragents'));
     }
     function update(Request $request,Product $product)
     {
@@ -121,6 +142,23 @@ class ProductController extends Controller
                     'price' => $item['price']
                 ]
             );
+        }
+        $product->counteragentPrices()->where('price',0)->delete();
+        foreach ($request->get('counteragent_prices') as $item) {
+            if ($item['price'] != 0){
+                ProductCounteragentPrice::updateOrCreate(
+                    [
+                        'product_id' => $product->id,
+                        'counteragent_id' => $item['counteragent_id']
+                    ],
+                    [
+                        'product_id' => $product->id,
+                        'counteragent_id' => $item['counteragent_id'],
+                        'price' => $item['price']
+                    ]
+                );
+            }
+
         }
         if ($request->file('images')){
 

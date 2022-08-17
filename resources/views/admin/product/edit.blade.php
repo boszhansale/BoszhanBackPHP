@@ -4,7 +4,7 @@
         @csrf
         @method('PUT')
        <div class="row">
-           <div class="col-md-6">
+           <div class="col-md-4">
                <div class="form-group">
                    <label for="">Название</label>
                    <input type="text" class="form-control" name="name" value="{{$product->name}}">
@@ -78,10 +78,24 @@
                    <input type="checkbox" class="form-check-input" name="discount_20" {{$product->discount_20 ? "selected":''}} value="1" id="product_discount_20">
                    <label class="form-check-label" for="product_discount_20"> ярлык Скидка 20%</label>
                </div>
-
+               <div class="form-group">
+                   <label for="">фото</label>
+                   <input type="file" multiple name="images[]" class="form-control" accept="image/*">
+               </div>
+               <div class="row align-items-center">
+                   @foreach($product->images as $img)
+                       <div class="col-md-6">
+                           <a class="mb-4" target="_blank" href="{{$img->path}}">
+                               <img src="{{$img->path}}" width="150">
+                           </a>
+                           <br>
+                           <a class="btn btn-danger" href="{{route('admin.product.deleteImage',$img->id)}}">удалить</a>
+                       </div>
+                   @endforeach
+               </div>
 
            </div>
-           <div class="col-md-6">
+           <div class="col-md-4">
                @foreach($priceTypes as $k => $priceType)
                    <div>
                        <label for="">
@@ -97,26 +111,24 @@
                    </div>
                @endforeach
            </div>
+           <div class="col-md-4">
+               @foreach($counteragents as $k => $counteragent)
+                   <div>
+                       <label for="">
+                           {{$counteragent->name}}
+
+                       </label>
+                       <input type="hidden" name="counteragent_prices[{{$k}}][counteragent_id]" value="{{$counteragent->id}}">
+                       @if($product->counteragentPrices()->where('counteragent_id',$counteragent->id)->exists())
+                           <input class="form-control" type="number" name="counteragent_prices[{{$k}}][price]" value="{{$product->counteragentPrices()->where('counteragent_id',$counteragent->id)->first()->price}}">
+                       @else
+                           <input class="form-control" type="number" name="counteragent_prices[{{$k}}][price]" value="0">
+                       @endif
+                   </div>
+               @endforeach
+           </div>
        </div>
-       <div class="row">
-            <div class="col-md-6">
-                <div class="form-group">
-                    <label for="">фото</label>
-                    <input type="file" multiple name="images[]" class="form-control" accept="image/*">
-                </div>
-                <div class="row align-items-center">
-                    @foreach($product->images as $img)
-                        <div class="col">
-                            <a class="mb-4" target="_blank" href="{{$img->path}}">
-                                <img src="{{$img->path}}" width="150">
-                            </a>
-                            <br>
-                            <a class="btn btn-danger" href="{{route('admin.product.deleteImage',$img->id)}}">удалить</a>
-                        </div>
-                    @endforeach
-                </div>
-            </div>
-       </div>
+
        <button type="submit" class="mt-5 mb-10 btn btn-primary col-3 ">Сохранить</button>
     </form>
 @endsection

@@ -3,7 +3,7 @@
     <form class="product-edit" action="{{route('admin.product.store')}}" method="post" enctype="multipart/form-data">
         @csrf
         <div class="row">
-            <div class="col-md-6">
+            <div class="col-md-4">
                 <div class="form-group">
                     <label for="">Название</label>
                     <input type="text" class="form-control" name="name" required>
@@ -73,9 +73,13 @@
                     <input type="checkbox" class="form-check-input" name="discount_20" value="1" id="product_discount_20">
                     <label class="form-check-label" for="product_discount_20"> ярлык Скидка 20%</label>
                 </div>
+                <div class="form-group">
+                    <label for="">фото</label>
+                    <input type="file" multiple name="images[]" class="form-control" accept="image/*">
+                </div>
 
             </div>
-            <div class="col-md-6">
+            <div class="col-md-4">
                 @foreach($priceTypes as $k => $priceType)
                     <div>
                         <label for="">
@@ -87,13 +91,16 @@
                     </div>
                 @endforeach
             </div>
-        </div>
-        <div class="row">
-            <div class="col-md-6"   >
-                <div class="form-group">
-                    <label for="">фото</label>
-                    <input type="file" multiple name="images[]" class="form-control" accept="image/*">
-                </div>
+            <div class="col-md-4">
+                @foreach($counteragents as $k => $counteragent)
+                    <div>
+                        <label for="">
+                            {{$counteragent->name}}
+                        </label>
+                        <input type="hidden" name="counteragent_prices[{{$k}}][counteragent_id]" value="{{$counteragent->id}}">
+                        <input class="form-control" type="number" name="counteragent_prices[{{$k}}][price]" value="0">
+                    </div>
+                @endforeach
             </div>
         </div>
         <button type="submit" class="mt-5 mb-10 btn btn-primary col-3 ">Сохранить</button>

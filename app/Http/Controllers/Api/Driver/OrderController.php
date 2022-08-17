@@ -129,22 +129,35 @@ class OrderController extends Controller
     function info()
     {
         $query = Auth::user()->driverOrders()
-            ->where('orders.status_id',3)
-            ->whereDate('orders.delivery_date',now());
+            ->where('orders.status_id',2);
+//            ->whereDate('orders.delivery_date',now());
 
         $data['full_name'] = Auth::user()->name;
-        $data['cash'] =  $query->clone()
-            ->where('payment_type_id',1)
-            ->count();
-        $data['card'] =$query->clone()
-            ->where('payment_type_id',2)
-            ->count();
-        $data['delay'] =$query->clone()
+
+        $data['cash'] =   round($query->clone()
+                ->where('payment_type_id',1)
+                ->sum('orders.purchase_price') - $query->clone()
+                ->where('payment_type_id',1)
+                ->sum('orders.return_price'));
+
+        $data['card'] = round($query->clone()
+                ->where('payment_type_id',2)
+                ->sum('orders.purchase_price') -  $query->clone()
+                ->where('payment_type_id',2)
+                ->sum('orders.return_price'));
+        $data['kaspi'] = round($query->clone()
+                ->where('payment_type_id',4)
+                ->sum('orders.purchase_price') -  $query->clone()
+                ->where('payment_type_id',4)
+                ->sum('orders.return_price'));
+
+        $data['delay'] = $query->clone()
             ->where('payment_type_id',3)
-            ->count();
+            ->sum('orders.purchase_price');
+
         $data['total_purchase_price'] = $query->clone()
             ->sum('purchase_price');
-        $data['total_return_price'] =$query->clone()
+        $data['total_return_price'] = $query->clone()
             ->sum('return_price');
 
         return response()->json($data);

@@ -8,43 +8,20 @@ use Illuminate\Console\Command;
 
 class GenerateReportCommand extends Command
 {
-    /**
-     * The name and signature of the console command.
-     *
-     * @var string
-     */
-    protected $signature = 'generate:report {type=0}';
-
-    /**
-     * The console command description.
-     *
-     * @var string
-     */
-    protected $description = 'Generate order, waybill and returns report by orders to xml';
+    protected $signature = 'generate:report';
+    protected $description = 'Generate order report by orders to xml';
 
 
     public function handle()
     {
-        $orderType = (int)$this->argument('type');
-        if ($orderType != 2) {
-            $query = Order::whereHas('salesrep.counterparty')
-                ->with(["salesrep.counterparty", 'store']);
-        } else {
-            $query = Order::where('rnk_generate', false)->where('status', 3);
-        }
+        $query = Order::select('orders.*')
+            ->whereHas('salesrep.counterparty')
+            ->with(["salesrep.counterparty", 'store']);
 
-        if ($orderType === OrderReport::REPORT_TYPE_ORDER) {
-            $query->whereDoesntHave('report', function ($q) use ($orderType) {
-                $q->where('type', $orderType);
-            });
-        } else {
-            $query->whereDoesntHave('report', function ($q) use ($orderType) {
-                $q->where('type', $orderType);
-            });
-            $query->where('status', Order::STATUS_DELIVERED);
-        }
-        $orders = $query->get();
-
+        $query->whereDoesntHave('report', function ($q) {
+            $q->where('type', 0);
+        });
+        $orders = $query->where('orders.id',14819)->get();
         if (!$orders) {
             $this->info('There is no orders to generate report for');
             return 0;
@@ -57,19 +34,10 @@ class GenerateReportCommand extends Command
 
         foreach ($orders as $order) {
 
-            if ($orderType == 2) {
-                $order->rnk_generate = true;
-                $order->save();
-            }
-            if ($orderType != 2 and $order->baskets->where('type', 1)->count() > 0) {
-                $path = OrderReport::generate($order, $todayDate, 1);
-                $returnsCount++;
-                $this->info("The return for order $order->id is saved here : $path, type is 1");
-            }
-            $path = OrderReport::generate($order, $todayDate, $orderType);
+            $path = OrderReport::generate($order, $todayDate);
             $reportsCount++;
 
-            $this->info("The report for order $order->id is saved here : $path, type is $orderType");
+            $this->info("The report for order $order->id is saved here : $path, type is 0");
         }
         $this->info("Orders total count $ordersCount, generated reports count $reportsCount, returns count: $returnsCount ");
     }

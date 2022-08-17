@@ -20,7 +20,7 @@ class ProductController extends Controller
             return $query->where('category_id',\request('category_id'));
         })
         ->where('products.remainder','>',0)
-        ->with(['images','prices.priceType'])
+        ->with(['images','prices.priceType','counteragentPrices.counteragent'])
         ->get();
 
 

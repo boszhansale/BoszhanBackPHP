@@ -38,6 +38,7 @@ class OrderResource extends JsonResource
             'baskets' => $this->baskets()
                 ->with('product')
                 ->join('products','products.id','baskets.product_id')
+                ->orderBy('baskets.type')
                 ->orderBy('products.measure','desc')
                 ->select('baskets.*')
                 ->get(),

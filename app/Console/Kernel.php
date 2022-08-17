@@ -19,11 +19,14 @@ class Kernel extends ConsoleKernel
         $schedule->command('export:order')->dailyAt('17:00');
         $schedule->command('export:order')->dailyAt('17:30');
         $schedule->command('export:order')->dailyAt('18:00');
+
+
 //        $schedule->command('import:all')->dailyAt('23:00');
         $schedule->command('generate:report')->dailyAt('23:10');
         $schedule->command('plan:init')->dailyAt('23:15');
         $schedule->command('plan:calk')->everyTenMinutes();
 
+        $schedule->command('db:backup')->dailyAt('02:00');
         $schedule->command('telescope:clear')->dailyAt('03:00');
         $schedule->command('order:delivery')->dailyAt('05:00');
 

@@ -97,7 +97,8 @@ class Order extends Model  implements Auditable
         'winning_name','winning_phone','winning_status',
         'rnk_generate',
         'delivery_date','delivered_date',
-        'purchase_price','return_price'
+        'purchase_price','return_price',
+        'salesrep_mobile_app_version'
     ];
 
     protected $hidden = ['updated_at','deleted_at','rnk_generate'];

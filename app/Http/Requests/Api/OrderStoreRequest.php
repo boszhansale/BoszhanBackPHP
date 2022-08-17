@@ -40,6 +40,7 @@ class OrderStoreRequest extends FormRequest
             'winning_status' => '',
 
             'delivery_date' => 'date',
+            'salesrep_mobile_app_version' => '',
 
             'baskets'=>'required|array|min:1',
             'baskets.*.type' => 'required|in:0,1',

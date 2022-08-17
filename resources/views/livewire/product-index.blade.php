@@ -29,19 +29,33 @@
             <table class="table">
                 <thead>
                 <tr>
+                    <th></th>
                     <th>#</th>
                     <th>name</th>
                     <th>cat</th>
+                    @foreach(\App\Models\PriceType::all() as $priceType)
+                    <th>{{$priceType->name}}</th>
+                    @endforeach
+
                     <th>шт/кг</th>
                     <th>продано</th>
                     <th>кол. заявок</th>
                     <th>остаток</th>
-                    <th></th>
                 </tr>
                 </thead>
                 <tbody>
                 @foreach($products as $product)
                     <tr>
+                        <td class="project-actions text-right">
+                            <a class="btn btn-info btn-sm" href="{{route('admin.product.edit',$product->id)}}">
+                                <i class="fas fa-pencil-alt">
+                                </i>
+                            </a>
+                            <a class="btn btn-danger btn-sm" href="{{route('admin.product.delete',$product->id)}}">
+                                <i class="fas fa-trash">
+                                </i>
+                            </a>
+                        </td>
                         <th>{{$product->id}}</th>
                         <td>
                             @if($product->images()->exists())
@@ -55,6 +69,12 @@
                             <br>
                             <a>{{$product->name}}</a>
                         </th>
+
+                        <th>{{$product->prices()->where('price_type_id',1)->first()?->price}}</th>
+                        <th>{{$product->prices()->where('price_type_id',2)->first()?->price}}</th>
+                        <th>{{$product->prices()->where('price_type_id',3)->first()?->price}}</th>
+                        <th>{{$product->prices()->where('price_type_id',4)->first()?->price}}</th>
+                        <th>{{$product->prices()->where('price_type_id',5)->first()?->price}}</th>
                         <th>
                             @if($product->measure == 1)
                                 штука
@@ -72,16 +92,7 @@
                             {{$product->remainder}}
                         </th>
 
-                        <td class="project-actions text-right">
-                            <a class="btn btn-info btn-sm" href="{{route('admin.product.edit',$product->id)}}">
-                                <i class="fas fa-pencil-alt">
-                                </i>
-                            </a>
-                            <a class="btn btn-danger btn-sm" href="{{route('admin.product.delete',$product->id)}}">
-                                <i class="fas fa-trash">
-                                </i>
-                            </a>
-                        </td>
+
                         {{--                <td>--}}
 
                     </tr>

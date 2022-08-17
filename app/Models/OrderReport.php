@@ -78,13 +78,15 @@ class OrderReport extends Model
 
     public $moveStatus = '';
 
-    public static function generate(Order $order, string $dates, $type, $rootPath = self::PATH_1C_PROCESSOR)
+    public static function generate(Order $order, string $dates, $rootPath = self::PATH_1C_PROCESSOR)
     {
+        $type = 0;
         $counteragent_id_1c = $order->salesrep->counterparty->id_1c;
 
-        $dateObj = Carbon::parse( $order->created_at)->addDay();//->format('Y-m-d');
+
+        $dateObj = Carbon::parse($order->created_at)->addDay();//->format('Y-m-d');
         $weekDay = date('w', strtotime(Carbon::parse($order->created_at)->format('Y-m-d')));
-        if($order->salesrep_id == 20 or $order->salesrep_id == 88){
+        if ($order->salesrep_id == 20 or $order->salesrep_id == 88) {
             switch ($weekDay) {
                 case 1:
                     $dateObj = Carbon::parse($order->created_at)->addDay();//->addDay()->format('Y-m-d');
@@ -101,7 +103,7 @@ class OrderReport extends Model
         $name = self::generateReportName($order, $type, $dateObj);
         $path = self::PATH . "$dates/$name";
         try {
-            $output = View::make('onec.report_template')->with(compact('order', 'type','counteragent_id_1c','date'))->render();
+            $output = View::make('onec.report_template')->with(compact('order', 'type', 'counteragent_id_1c', 'date'))->render();
             $output = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n" . $output;
 
             //storing in local storage
@@ -124,16 +126,76 @@ class OrderReport extends Model
             throw new Exception($e->getMessage());
         }
 
-	if($type !=2){
-        self::query()->create([
-            'order_id' => $order->id,
-            'path' => $path,
-            'status' => self::STATUS_GENERATED,
-            'created_at' => $date,
-            'type' => $type
-        ]);
+        if ($type != 2) {
+            self::query()->create([
+                'order_id' => $order->id,
+                'path' => $path,
+                'status' => self::STATUS_GENERATED,
+                'created_at' => $date,
+                'type' => $type
+            ]);
 
-}
+        }
+        return $path;
+    }
+
+    public static function generateReturn(Order $order, string $dates, $rootPath = self::PATH_1C_PROCESSOR)
+    {
+        $type = 1;
+        $counteragent_id_1c = $order->salesrep->counterparty->id_1c;
+
+        $dateObj = Carbon::parse($order->created_at)->addDay();//->format('Y-m-d');
+        $weekDay = date('w', strtotime(Carbon::parse($order->created_at)->format('Y-m-d')));
+        if ($order->salesrep_id == 20 or $order->salesrep_id == 88) {
+            switch ($weekDay) {
+                case 1:
+                    $dateObj = Carbon::parse($order->created_at)->addDay();//->addDay()->format('Y-m-d');
+                    break;
+                case 3:
+                    $dateObj = Carbon::parse($order->created_at)->addDay();//->addDay()->format('Y-m-d');
+                    break;
+                default:
+                    $dateObj = Carbon::parse($order->created_at)->addDay();//->format('Y-m-d');
+                    break;
+            }
+        }
+        $date = $dateObj->format('Y-m-d');
+        $name = self::generateReportName($order, $type, $dateObj);
+        $path = self::PATH . "$dates/$name";
+        try {
+            $output = View::make('onec.report_return_template')->with(compact('order', 'type', 'counteragent_id_1c', 'date'))->render();
+            $output = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n" . $output;
+
+            //storing in local storage
+            Storage::disk('public')->put($path, $output);
+
+            //storing in 1c processor folder
+            $client = Storage::createLocalDriver(['root' => $rootPath]);
+            $client->put($name, $output);
+
+        } catch (Exception $e) {
+
+            self::query()->create([
+                'order_id' => $order->id,
+                'path' => $path,
+                'status' => self::STATUS_GENERATION_FAILED,
+                'created_at' => $date,
+                'type' => $type
+            ]);
+
+            throw new Exception($e->getMessage());
+        }
+
+        if ($type != 2) {
+            self::query()->create([
+                'order_id' => $order->id,
+                'path' => $path,
+                'status' => self::STATUS_GENERATED,
+                'created_at' => $date,
+                'type' => $type
+            ]);
+
+        }
         return $path;
     }
 
@@ -160,8 +222,10 @@ class OrderReport extends Model
     {
         $head = self::REPORTS_TYPES[$type];
         $todayDateFor1C = now()->format('YmdHis');
-	    if($type == 1){$todayDateFor1C = $dateObj->format('YmdHis');}
-        return $head . "_$todayDateFor1C"."_{$order->salesrep->counterparty->id_1c}_9864232489962_{$order->id}" . ".xml";
+        if ($type == 1) {
+            $todayDateFor1C = $dateObj->format('YmdHis');
+        }
+        return $head . "_$todayDateFor1C" . "_{$order->salesrep->counterparty->id_1c}_9864232489962_{$order->id}" . ".xml";
     }
 
     public function determineOrder($order)

@@ -43,6 +43,7 @@ return new class extends Migration
 
             $table->float('purchase_price')->nullable();
             $table->float('return_price')->nullable();
+            $table->float('salesrep_mobile_app_version')->default('1.6');
 
             $table->softDeletes();
             $table->timestamps();
