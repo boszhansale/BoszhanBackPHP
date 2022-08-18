@@ -16,22 +16,42 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
 //         $schedule->command('inspire')->hourly();
-        $schedule->command('export:order')->dailyAt('17:00');
-        $schedule->command('export:order')->dailyAt('17:30');
-        $schedule->command('export:order')->dailyAt('18:00');
-
-
+//        $schedule->command('export:order')->dailyAt('17:00');
+//        $schedule->command('export:order')->dailyAt('17:30');
+//        $schedule->command('export:order')->dailyAt('18:00');
 //        $schedule->command('import:all')->dailyAt('23:00');
-        $schedule->command('generate:report')->dailyAt('23:10');
-        $schedule->command('plan:init')->dailyAt('23:15');
-        $schedule->command('plan:calk')->everyTenMinutes();
 
         $schedule->command('db:backup')->dailyAt('02:00');
         $schedule->command('telescope:clear')->dailyAt('03:00');
         $schedule->command('order:delivery')->dailyAt('05:00');
 
+        $schedule->command('store:report')->dailyAt('17:00');
+        $schedule->command('generate:report')->dailyAt('17:05');
+        $schedule->command('generate:report-return')->dailyAt('17:10');
+
+        $schedule->command('store:report')->dailyAt('17:30');
+        $schedule->command('generate:report')->dailyAt('17:35');
+        $schedule->command('generate:report-return')->dailyAt('17:40');
+
+        $schedule->command('store:report')->dailyAt('18:00');
+        $schedule->command('generate:report')->dailyAt('18:05');
+        $schedule->command('generate:report-return')->dailyAt('18:10');
+
+
+
+
+
+        $schedule->command('plan:init')->everyFourHours();
+        $schedule->command('plan:calk')->everyTenMinutes();
+
+
 
     }
+
+    /*
+        StoreRepord
+        generepord Repord
+        generepord Repord Rutenr
 
 
     /**

@@ -4,6 +4,7 @@ namespace App\Console\Commands\Order;
 
 use App\Models\Order;
 use App\Models\OrderReport;
+use App\Models\Store;
 use Illuminate\Console\Command;
 
 class GenerateReportReturnCommand extends Command
@@ -25,7 +26,14 @@ class GenerateReportReturnCommand extends Command
 
     public function handle()
     {
-        $query = Order::whereHas('salesrep.counterparty')
+
+
+
+        $query = Order::select('orders.*')
+            ->whereHas('salesrep.counterparty')
+            ->whereDate('orders.created_at',now())
+            ->where('orders.return_price','>',0)
+            ->whereIn('orders.id',[15667,15662,15660,15658])
             ->with(["salesrep.counterparty", 'store']);
 
 
@@ -33,7 +41,7 @@ class GenerateReportReturnCommand extends Command
             $q->where('type', 1);
         });
 //        $query->where('status_id', Order::STATUS_DELIVERED);
-        $orders = $query->where('orders.id',14819)->get();
+        $orders = $query->get();
 
         if (!$orders) {
             $this->info('There is no orders to generate report for');
@@ -53,10 +61,10 @@ class GenerateReportReturnCommand extends Command
                 $returnsCount++;
                 $this->info("The return for order $order->id is saved here : $path, type is 1");
             }
-            $path = OrderReport::generateReturn($order, $todayDate, 1);
-            $reportsCount++;
-
-            $this->info("The report for order $order->id is saved here : $path, type is 1");
+//            $path = OrderReport::generateReturn($order, $todayDate, 1);
+//            $reportsCount++;
+//
+//            $this->info("The report for order $order->id is saved here : $path, type is 1");
         }
         $this->info("Orders total count $ordersCount, generated reports count $reportsCount, returns count: $returnsCount ");
     }

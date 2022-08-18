@@ -89,6 +89,18 @@
                             <th>Возврат</th>
                             <td>{{$order->return_price}}</td>
                         </tr>
+                        <tr>
+                            <th>процент Возврат</th>
+                            @if($order->return_price > 0)
+                                <td>{{ round(($order->return_price / $order->purchase_price)*100)  }}%</td>
+                            @else
+                                <th>0%</th>
+                            @endif
+                        </tr>
+                        <tr>
+                            <th>Версия приложения</th>
+                            <td>{{$order->salesrep_mobile_app_version}}</td>
+                        </tr>
 
                     </table>
                 </div>

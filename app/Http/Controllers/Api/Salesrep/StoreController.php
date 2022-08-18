@@ -29,7 +29,7 @@ class StoreController extends Controller
 
         $store = Auth::user()->stores()->create($request->validated());
 
-        $store->id_1c = 300000000100000 + $store->id;
+        $store->id_1c = 300000000000000 + $store->id;
         $store->save();
 
 

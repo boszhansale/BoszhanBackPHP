@@ -5,12 +5,16 @@ namespace App\Exports\Excel;
 use App\Models\Store;
 use Illuminate\Contracts\View\View;
 use Maatwebsite\Excel\Concerns\FromView;
+use Maatwebsite\Excel\Concerns\WithMapping;
+use Maatwebsite\Excel\Concerns\WithColumnFormatting;
+use PhpOffice\PhpSpreadsheet\Style\NumberFormat;
 
-class StoresExport implements FromView
+class StoresExport implements FromView, WithColumnFormatting
 {
     /**
     * @return \Illuminate\Support\Collection
     */
+
 
     public $stores ;
 
@@ -26,5 +30,12 @@ class StoresExport implements FromView
         return view('exports.excel.store', [
             'stores' => $this->stores
         ]);
+    }
+    public function columnFormats(): array
+    {
+        return [
+            'A' => NumberFormat::FORMAT_NUMBER,
+            'D' => NumberFormat::FORMAT_NUMBER,
+        ];
     }
 }

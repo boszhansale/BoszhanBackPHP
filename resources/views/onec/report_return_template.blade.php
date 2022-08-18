@@ -1,6 +1,6 @@
 <RETURN>
 <DOCUMENTNAME>320</DOCUMENTNAME>
-<NUMBER>{{$order->id}}-0100-{{substr($order->salesrep->id_1c,-4)}}-{{$order->payment_type_id}}</NUMBER>
+<NUMBER>{{$order->id}}-0700{{\Carbon\Carbon::now()->year}}-{{substr($order->salesrep->id_1c,-4)}}-{{$order->payment_type_id}}</NUMBER>
 <DATE>{{\Carbon\Carbon::parse($order->created_at)->format('Y-m-d')}}</DATE>
 <DELIVERYDATE>{{\Carbon\Carbon::parse($order->delivery_date)->format('Y-m-d')}}</DELIVERYDATE>
 <MANAGER>{{$order->salesrep->driver->id_1c}}</MANAGER>
@@ -27,16 +27,16 @@
                 @else
                     <ORDERUNIT>KGM</ORDERUNIT>
                 @endif
-                <ORDERPRICE>{{ round($order->purchase_price - ($order->purchase_price / 100 * 12))}}.00</ORDERPRICE>
-                <PRICEWITHVAT>{{$order->purchase_price}}.00</PRICEWITHVAT>
+                <ORDERPRICE>{{ round($basket->price - ($order->price / 100 * 12))}}.00</ORDERPRICE>
+                <PRICEWITHVAT>{{$basket->price}}.00</PRICEWITHVAT>
                 <VAT>12</VAT>
                 <CHARACTERISTIC>
                     <DESCRIPTION>{{$basket->product->name}}</DESCRIPTION>
                 </CHARACTERISTIC>
-                @if($basket->type ==  1)
-                    @if($basket->reasonRefund)
-                        <RETURNREASON>{{$basket->reasonRefund->code}}</RETURNREASON>
-                    @endif
+                @if($basket->reasonRefund)
+                    <RETURNREASON> {{$basket->reasonRefund->code}}</RETURNREASON>
+                @else
+                    <RETURNREASON> 073-000017</RETURNREASON>
                 @endif
         </POSITION>
     @endforeach</HEAD>

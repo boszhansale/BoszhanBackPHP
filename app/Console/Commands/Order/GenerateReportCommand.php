@@ -4,6 +4,7 @@ namespace App\Console\Commands\Order;
 
 use App\Models\Order;
 use App\Models\OrderReport;
+use App\Models\Store;
 use Illuminate\Console\Command;
 
 class GenerateReportCommand extends Command
@@ -14,14 +15,19 @@ class GenerateReportCommand extends Command
 
     public function handle()
     {
+
         $query = Order::select('orders.*')
             ->whereHas('salesrep.counterparty')
+            ->whereDate('created_at',now())
+            ->whereIn('id',[15667,15662,15660,15658])
             ->with(["salesrep.counterparty", 'store']);
 
+
+//        dd($query->count());
         $query->whereDoesntHave('report', function ($q) {
             $q->where('type', 0);
         });
-        $orders = $query->where('orders.id',14819)->get();
+        $orders = $query->get();
         if (!$orders) {
             $this->info('There is no orders to generate report for');
             return 0;

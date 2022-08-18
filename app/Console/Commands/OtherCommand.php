@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Console\Commands\Export;
+namespace App\Console\Commands;
 
 use App\Actions\OldDbOrderCreateAction;
 use App\Exports\Excel\StoresExport;
@@ -17,21 +17,21 @@ use Exception;
 use Illuminate\Support\Facades\Mail;
 use Maatwebsite\Excel\Facades\Excel;
 
-class ExportStore extends Command
+class OtherCommand extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'export:store';
+    protected $signature = 'other:run';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'export stores to 1C';
+    protected $description = 'TESTING';
 
     /**
      * Execute the console command.
@@ -43,18 +43,6 @@ class ExportStore extends Command
     public function handle()
     {
 
-        $stores = Store::whereNotNull('salesrep_id')
-            ->with('salesrep')
-            ->whereDate('created_at',now()->subDay())
-            ->get();
-
-        $filename = 'excel/stores/'.now()->format('Y_m_d') . "_stores_list.xlsx";
-
-        Excel::store(new StoresExport($stores),$filename,'public');
-        $this->info('Отчет сгенерирован.');
-        Mail::to(config('mail.emails'))->send(new SendStoreExcel($filename));
-
-        $this->info('Отчет был отправлен!');
 
 
         return 0;

@@ -66,16 +66,19 @@
                     <th>ID</th>
                     <th></th>
                     <th>Контрагент</th>
+                    <th>Контрагент(BIN)</th>
                     <th>ТТ</th>
                     <th>Статус</th>
                     <th>Торговый</th>
                     <th>Водитель</th>
                     <th>сумма</th>
                     <th>возврат</th>
+                    <th>процент Возврат</th>
                     <th>Дата создание</th>
                     <th>Дата доставки</th>
                     <th>тип оплаты</th>
                     <th>статус оплаты</th>
+                    <th>версия</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -113,16 +116,27 @@
                                 <a href="{{route('admin.counteragent.show',$order->store->counteragent_id)}}">{{$order->store->counteragent->name}}</a>
                             @endif
                         </td>
+                        <td>
+                            @if($order->store->counteragent)
+                                {{$order->store->counteragent->bin}}
+                            @endif
+                        </td>
                         <td><a href="{{route('admin.store.show',$order->store_id)}}">{{$order->store->name}}</a></td>
                         <td>{{$order->status->description}}</td>
                         <td><a href="{{route('admin.user.show',$order->salesrep_id)}}">{{$order->salesrep->name}}</a></td>
                         <td><a href="{{route('admin.user.show',$order->driver_id)}}">{{$order->driver->name}}</a></td>
                         <td class="price">{{$order->purchase_price}}</td>
                         <td class="price">{{$order->return_price}}</td>
+                        @if($order->return_price > 0)
+                            <th>{{ round(($order->return_price / $order->purchase_price)*100)  }}%</th>
+                        @else
+                            <td>0%</td>
+                        @endif
                         <td>{{$order->created_at}}</td>
                         <td>{{$order->delivery_date}}</td>
                         <td>{{$order->paymentType->name}}</td>
                         <td>{{$order->paymentStatus->name}}</td>
+                        <td>{{$order->salesrep_mobile_app_version}}</td>
 
                     </tr>
                 @endforeach
