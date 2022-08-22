@@ -15,15 +15,20 @@
                 </i>
                 скачать waybill
             </a>
-            <a class="btn btn-info btn-sm" href="{{route('admin.order.edit',$order->id)}}">
-                <i class="fas fa-pencil-alt">
-                </i>
-                изменить
-            </a>
-            <a  class="btn btn-danger btn-sm" href="{{route('admin.order.delete',$order->id)}}" onclick="return confirm('Удалить?')">
-                <i class="fas fa-trash"></i>
-                удалить
-            </a>
+            @if(Auth::user()->permissionExists("order_edit"))
+                <a class="btn btn-info btn-sm" href="{{route('admin.order.edit',$order->id)}}">
+                    <i class="fas fa-pencil-alt">
+                    </i>
+                    изменить
+                </a>
+            @endif
+            @if(Auth::user()->permissionExists("order_delete"))
+                <a  class="btn btn-danger btn-sm" href="{{route('admin.order.delete',$order->id)}}" onclick="return confirm('Удалить?')">
+                    <i class="fas fa-trash"></i>
+                    удалить
+                </a>
+            @endif
+
         </div>
     </div>
 
@@ -123,11 +128,13 @@
                            <th>Количество</th>
                            <th>итог</th>
                            <th>
+                               @if(Auth::user()->permissionExists("basket_edit"))
                                <a class="btn btn-info btn-sm" href="{{route('admin.basket.create',[$order->id,0])}}">
                                    <i class="fas fa-pencil-alt">
                                    </i>
                                    создать
                                </a>
+                               @endif
                            </th>
                        </tr>
                        </thead>
@@ -142,15 +149,18 @@
                                <td>{{$basket->count}}</td>
                                <td>{{$basket->all_price}}</td>
                                <td class="project-actions text-right">
-                                   <a class="btn btn-info btn-sm" href="{{route('admin.basket.edit',$basket->id)}}">
-                                       <i class="fas fa-pencil-alt">
-                                       </i>
-                                       изменить
-                                   </a>
-                                   <a  class="btn btn-danger btn-sm" href="{{route('admin.basket.delete',$basket->id)}}" onclick="return confirm('Удалить?')">
-                                       <i class="fas fa-trash"></i>
-                                       удалить
-                                   </a>
+                                   @if(Auth::user()->permissionExists("basket_edit"))
+                                       <a class="btn btn-info btn-sm" href="{{route('admin.basket.edit',$basket->id)}}">
+                                           <i class="fas fa-pencil-alt">
+                                           </i>
+                                           изменить
+                                       </a>
+                                       <a  class="btn btn-danger btn-sm" href="{{route('admin.basket.delete',$basket->id)}}" onclick="return confirm('Удалить?')">
+                                           <i class="fas fa-trash"></i>
+                                           удалить
+                                       </a>
+                                   @endif
+
                                </td>
                            </tr>
                        @endforeach
@@ -173,12 +183,15 @@
                            <th>Цена</th>
                            <th>Количество</th>
                            <th>итог</th>
+                           <th>причина</th>
                            <th>
+                               @if(Auth::user()->permissionExists("basket_edit"))
                                <a class="btn btn-info btn-sm" href="{{route('admin.basket.create',[$order->id,1])}}">
                                    <i class="fas fa-pencil-alt">
                                    </i>
                                    создать
                                </a>
+                               @endif
                            </th>
                        </tr>
                        </thead>
@@ -192,16 +205,19 @@
                                <td>{{$basket->price}}</td>
                                <td>{{$basket->count}}</td>
                                <td>{{$basket->all_price}}</td>
+                               <td>{{$basket->reasonRefund ? $basket->reasonRefund->title :''}}</td>
                                <td class="project-actions text-right">
-                                   <a class="btn btn-info btn-sm" href="{{route('admin.basket.edit',$basket->id)}}">
-                                       <i class="fas fa-pencil-alt">
-                                       </i>
-                                       изменить
-                                   </a>
-                                   <a  class="btn btn-danger btn-sm" href="{{route('admin.basket.delete',$basket->id)}}" onclick="return confirm('Удалить?')">
-                                       <i class="fas fa-trash"></i>
-                                       удалить
-                                   </a>
+                                   @if(Auth::user()->permissionExists("basket_edit"))
+                                       <a class="btn btn-info btn-sm" href="{{route('admin.basket.edit',$basket->id)}}">
+                                           <i class="fas fa-pencil-alt">
+                                           </i>
+                                           изменить
+                                       </a>
+                                       <a  class="btn btn-danger btn-sm" href="{{route('admin.basket.delete',$basket->id)}}" onclick="return confirm('Удалить?')">
+                                           <i class="fas fa-trash"></i>
+                                           удалить
+                                       </a>
+                                   @endif
                                </td>
                            </tr>
                        @endforeach

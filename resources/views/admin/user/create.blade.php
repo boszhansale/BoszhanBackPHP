@@ -28,6 +28,24 @@
                     <label for="">id_1c</label>
                     <input type="text" class="form-control" name="id_1c" >
                 </div>
+                <div class="form-group">
+                    <label for="">Инвентарный номер планшета</label>
+                    <input type="text" class="form-control" name="inventory_number" >
+                </div>
+                <div class="form-group">
+                    <label for="">Номер сим карты</label>
+                    <input type="text" class="form-control" name="sim_number" >
+                </div>
+
+                <div class="form-check">
+                    <input type="checkbox" class="form-check-input" name="case" value="1" id="case">
+                    <label class="form-check-label" for="case">Чехол планшета</label>
+                </div>
+                <div class="form-check">
+                    <input type="checkbox" class="form-check-input" name="screen_security" value="1" id="screen_security">
+                    <label class="form-check-label" for="screen_security">Пленка защиты</label>
+                </div>
+
 
                 <div class="row">
                     @if($roleId == 1)
@@ -54,6 +72,7 @@
                         @endforeach
                     @endif
                 </div>
+
 
                 <div class="form-check">
                     <input type="checkbox" class="form-check-input" name="winning_access" value="1" id="winning_access">

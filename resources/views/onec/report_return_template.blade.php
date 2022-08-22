@@ -34,9 +34,9 @@
                     <DESCRIPTION>{{$basket->product->name}}</DESCRIPTION>
                 </CHARACTERISTIC>
                 @if($basket->reasonRefund)
-                    <RETURNREASON> {{$basket->reasonRefund->code}}</RETURNREASON>
+                    <RETURNREASON> {{$basket->reasonRefund->code}} </RETURNREASON>
                 @else
-                    <RETURNREASON> 073-000017</RETURNREASON>
+                    <RETURNREASON> 073-000017 </RETURNREASON>
                 @endif
         </POSITION>
     @endforeach</HEAD>

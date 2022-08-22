@@ -14,7 +14,7 @@ class AuthController extends Controller
     function login()
     {
         if (Auth::check()){
-            if (Auth::user()->isAdmin() ){
+            if (Auth::user()->permissionExists("admin_panel") ){
                 return to_route('admin.main');
             }
         }
@@ -30,7 +30,7 @@ class AuthController extends Controller
         if (!Hash::check($request->get('password'),$user->password)){
             return  back()->withErrors('Неправильный пароль');
         }
-        if (!$user->isAdmin()){
+        if ($user->permissionExists("admin_panel")){
             return  back()->withErrors('У вас нет доступа');
         }
 

@@ -87,6 +87,11 @@ class UserController extends Controller
         $user->winning_access = $request->has('winning_access');
         $user->payout_access = $request->has('payout_access');
         $user->password = Hash::make($request->get('password'));
+        $user->inventory_number = $request->get('inventory_number');
+        $user->sim_number = $request->get('sim_number');
+        $user->case = $request->has('case');
+        $user->screen_security = $request->has('screen_security');
+
         $user->save();
 
 
@@ -188,6 +193,10 @@ class UserController extends Controller
         $user->login = $request->get('login');
         $user->phone = $request->get('phone');
         $user->id_1c = $request->get('id_1c');
+        $user->inventory_number = $request->get('inventory_number');
+        $user->sim_number = $request->get('sim_number');
+        $user->case = $request->has('case');
+        $user->screen_security = $request->has('screen_security');
         $user->winning_access = $request->has('winning_access');
         $user->payout_access = $request->has('payout_access');
         if ($request->has('password')){
@@ -308,4 +317,12 @@ class UserController extends Controller
         return redirect()->back();
     }
 
+    function drivers()
+    {
+        return response()->view('admin.user.drivers')    ;
+    }
+    function salesreps()
+    {
+        return response()->view('admin.user.salesreps')    ;
+    }
 }

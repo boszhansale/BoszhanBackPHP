@@ -79,6 +79,7 @@ class Store extends Model implements Auditable
         'lng',
         'discount',
         'created_at',
+        'export_1c'
     ];
 
     protected $hidden = ['created_at','updated_at','deleted_at'];

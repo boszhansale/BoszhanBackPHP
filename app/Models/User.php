@@ -104,7 +104,11 @@ class User extends Authenticatable
         'winning_access',
         'payout_access',
         'created_at',
-        'lat','lng'
+        'lat','lng',
+        'inventory_number',
+        'sim_number',
+        'case',
+        'screen_security'
     ];
 
 
@@ -170,7 +174,6 @@ class User extends Authenticatable
     {
         return  $this->hasManyThrough(User::class,DriverSalesrep::class,'driver_id','id','id','salesrep_id');
     }
-
 
     function stores():HasMany
     {

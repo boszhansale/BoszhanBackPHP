@@ -44,7 +44,7 @@ class UserOrderIndex extends Component
             })
             ->latest();
 
-        return view('livewire.user-order-index', [
+        return view('admin.user.order_live', [
             'statuses' => Status::all(),
             'orders' => $query->clone()->paginate(50),
             'order_count' =>  $query->clone()->count(),

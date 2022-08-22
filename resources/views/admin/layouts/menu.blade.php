@@ -22,7 +22,23 @@
     <a href="{{route('admin.user.index')}}" class="nav-link">
         <i class="nav-icon fas fa-user"></i>
         <p>
-            Пользователи
+            Все Пользователи
+        </p>
+    </a>
+</li>
+<li class="nav-item">
+    <a href="{{route('admin.user.salesreps')}}" class="nav-link">
+        <i class="nav-icon fas fa-user"></i>
+        <p>
+            Торговые
+        </p>
+    </a>
+</li>
+<li class="nav-item">
+    <a href="{{route('admin.user.drivers')}}" class="nav-link">
+        <i class="nav-icon fas fa-user"></i>
+        <p>
+            Водители
         </p>
     </a>
 </li>

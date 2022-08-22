@@ -2,40 +2,45 @@
 
 namespace App\Http\Controllers\Api\Driver;
 
-use App\Actions\BasketCreateAction;
 use App\Actions\BasketUpdateAction;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\OrderUpdateRequest;
 use App\Http\Resources\OrderResource;
 use App\Models\Order;
-use App\Models\OrderComment;
 use Barryvdh\DomPDF\Facade\Pdf;
-use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class OrderController extends Controller
 {
-    function index(Request $request):JsonResponse
+    function index(Request $request): JsonResponse
     {
+
+        $lat = Auth::user()->lat;
+        $lng = Auth::user()->lng;
+
         $orders = Auth::user()->driverOrders()
-            ->whereDate('orders.delivery_date',now())
-            ->where('orders.status_id',2)
-            ->with(['store','baskets','baskets.product'])
+            ->when($lat or $lng, function ($q) use ($lng,$lat) {
+                return $q->selectRaw("ST_Distance_Sphere(point('$lng','$lat'),point(stores.lng,stores.lat)) AS distance, orders.*")
+                    ->join('stores', 'stores.id', 'orders.store_id');
+            })
+            ->whereDate('orders.delivery_date', now())
+            ->where('orders.status_id', 2)
+            ->with(['store', 'baskets', 'baskets.product'])
             ->get();
 
         return response()->json(OrderResource::collection($orders));
     }
 
-    function delivered(Request $request):JsonResponse
+    function delivered(Request $request): JsonResponse
     {
         $orders = Auth::user()
             ->driverOrders()
             ->whereIn('orders.status_id', [3, 4, 5, 6])
 //            ->whereDate('created_at','>=',Carbon::now()->subDays(3))
-            ->whereDate('orders.delivery_date',now())
-            ->with(['store','baskets','baskets.product'])
+            ->whereDate('orders.delivery_date', now())
+            ->with(['store', 'baskets', 'baskets.product'])
             ->get();
 
 //        $orders = Order::join('driver_store_representatives', 'driver_store_representatives.store_representative_id', 'orders.user_id')
@@ -50,17 +55,15 @@ class OrderController extends Controller
         return response()->json(OrderResource::collection($orders));
     }
 
-    function update(OrderUpdateRequest $request,Order $order)
+    function update(OrderUpdateRequest $request, Order $order)
     {
-        if ($request->has('status_id'))
-        {
+        if ($request->has('status_id')) {
             $order->status_id = $request->get('status_id');
             if ($order->status_id == Order::STATUS_DELIVERED) {
                 $order->delivered_date = now();
             }
         }
-        if ($request->has('payment_type_id'))
-        {
+        if ($request->has('payment_type_id')) {
             $order->payment_type_id = $request->get('payment_type_id');
             switch ($order->payment_type_id) {
                 case Order::PAYMENT_CASH:
@@ -97,27 +100,23 @@ class OrderController extends Controller
 
             }
         }
-        if ($request->has('winning_name'))
-        {
+        if ($request->has('winning_name')) {
             $order->winning_name = $request->get('winning_name');
         }
-        if ($request->has('winning_phone'))
-        {
+        if ($request->has('winning_phone')) {
             $order->winning_phone = $request->get('winning_phone');
         }
         $order->save();
-        if ($request->has('comment'))
-        {
+        if ($request->has('comment')) {
             $order->comments()->create([
                 'user_id' => Auth::id(),
                 'description' => $request->get('comment')
             ]);
         }
 
-        if ($request->has('baskets'))
-        {
+        if ($request->has('baskets')) {
             $basketUpdateAction = new BasketUpdateAction();
-            $basketUpdateAction->execute($request->get('baskets'),$order);
+            $basketUpdateAction->execute($request->get('baskets'), $order);
         }
 
 
@@ -129,30 +128,30 @@ class OrderController extends Controller
     function info()
     {
         $query = Auth::user()->driverOrders()
-            ->where('orders.status_id',2);
+            ->where('orders.status_id', 2);
 //            ->whereDate('orders.delivery_date',now());
 
         $data['full_name'] = Auth::user()->name;
 
-        $data['cash'] =   round($query->clone()
-                ->where('payment_type_id',1)
+        $data['cash'] = round($query->clone()
+                ->where('payment_type_id', 1)
                 ->sum('orders.purchase_price') - $query->clone()
-                ->where('payment_type_id',1)
+                ->where('payment_type_id', 1)
                 ->sum('orders.return_price'));
 
         $data['card'] = round($query->clone()
-                ->where('payment_type_id',2)
-                ->sum('orders.purchase_price') -  $query->clone()
-                ->where('payment_type_id',2)
+                ->where('payment_type_id', 2)
+                ->sum('orders.purchase_price') - $query->clone()
+                ->where('payment_type_id', 2)
                 ->sum('orders.return_price'));
         $data['kaspi'] = round($query->clone()
-                ->where('payment_type_id',4)
-                ->sum('orders.purchase_price') -  $query->clone()
-                ->where('payment_type_id',4)
+                ->where('payment_type_id', 4)
+                ->sum('orders.purchase_price') - $query->clone()
+                ->where('payment_type_id', 4)
                 ->sum('orders.return_price'));
 
         $data['delay'] = $query->clone()
-            ->where('payment_type_id',3)
+            ->where('payment_type_id', 3)
             ->sum('orders.purchase_price');
 
         $data['total_purchase_price'] = $query->clone()
@@ -166,10 +165,10 @@ class OrderController extends Controller
     function rnk(Order $order)
     {
 
-        $price = $order->baskets()->where('type',0)->sum('price');
+        $price = $order->baskets()->where('type', 0)->sum('price');
         $all_price = $order->purchase_price;
         $return_price = $order->return_price;
-        $count = $order->baskets()->where('type',0)->count();
+        $count = $order->baskets()->where('type', 0)->count();
 
         $counteragent = $order->store->counteragent;
         if ($counteragent) {
@@ -178,18 +177,18 @@ class OrderController extends Controller
         if ($order->store->name) {
             $recipient[] = $order->store->name;
         }
-        if ( $order->store->address) {
-            $recipient[] =  $order->store->address;
+        if ($order->store->address) {
+            $recipient[] = $order->store->address;
         }
         if ($order->store->phone) {
             $recipient[] = $order->store->phone;
         }
 
-        $qr_price = $all_price-$return_price;
-        return view('pdf.rnk',compact('order', 'price','qr_price', 'all_price', 'count', 'recipient'));
+        $qr_price = $all_price - $return_price;
+        return view('pdf.rnk', compact('order', 'price', 'qr_price', 'all_price', 'count', 'recipient'));
         PDF::setOptions(['dpi' => 210, 'defaultFont' => 'sans-serif']);
 
-        $pdf = PDF::loadView('pdf.rnk', compact('order', 'price','qr_price', 'all_price', 'count', 'recipient'));
+        $pdf = PDF::loadView('pdf.rnk', compact('order', 'price', 'qr_price', 'all_price', 'count', 'recipient'));
 
         return $pdf->download('rnk.pdf');
     }
@@ -197,17 +196,17 @@ class OrderController extends Controller
     function beforeRnk(Order $order)
     {
 
-        $price = $order->baskets()->where('type',0)->sum('price');
+        $price = $order->baskets()->where('type', 0)->sum('price');
         $all_price = $order->purchase_price;
-        $count =  $order->baskets()->where('type',0)->count();;
+        $count = $order->baskets()->where('type', 0)->count();;
 
-        $return_price = $order->baskets()->where('type',1)->sum('price');
-        $return_all_price =  $order->return_price0;
-        $return_count = $order->baskets()->where('type',1)->count();
-        return view('pdf.before_rnk',compact('order', 'price', 'all_price', 'count','return_price','return_count','return_all_price'));
+        $return_price = $order->baskets()->where('type', 1)->sum('price');
+        $return_all_price = $order->return_price0;
+        $return_count = $order->baskets()->where('type', 1)->count();
+        return view('pdf.before_rnk', compact('order', 'price', 'all_price', 'count', 'return_price', 'return_count', 'return_all_price'));
         PDF::setOptions(['dpi' => 210, 'defaultFont' => 'sans-serif']);
 
-        $pdf = PDF::loadView('pdf.before_rnk', compact('order', 'price', 'all_price', 'count','return_price','return_count','return_all_price'));
+        $pdf = PDF::loadView('pdf.before_rnk', compact('order', 'price', 'all_price', 'count', 'return_price', 'return_count', 'return_all_price'));
 
         return $pdf->download('before_rnk.pdf');
     }
@@ -228,11 +227,11 @@ class OrderController extends Controller
         if ($store->address) {
             $recipient[] = $store->address;
         }
-        if ( $store->phone) {
-            $recipient[] =  $store->phone;
+        if ($store->phone) {
+            $recipient[] = $store->phone;
         }
 
-        return view('pdf.pko',compact('order', 'all_price', 'recipient'));
+        return view('pdf.pko', compact('order', 'all_price', 'recipient'));
 
         PDF::setOptions(['dpi' => 210, 'defaultFont' => 'sans-serif']);
 
@@ -244,10 +243,9 @@ class OrderController extends Controller
     function vozvrat(Order $order)
     {
 
-        $price = $order->baskets()->where('type',1)->sum('price');
+        $price = $order->baskets()->where('type', 1)->sum('price');
         $all_price = $order->return_price;
-        $count = $order->baskets()->where('type',1)->count();
-
+        $count = $order->baskets()->where('type', 1)->count();
 
 
         if ($order->store->counteragent) {
@@ -260,11 +258,11 @@ class OrderController extends Controller
         if ($store->address) {
             $recipient[] = $store->address;
         }
-        if ( $store->phone) {
-            $recipient[] =  $store->phone;
+        if ($store->phone) {
+            $recipient[] = $store->phone;
         }
 
-        return view('pdf.vozvrat',compact('order', 'price', 'all_price', 'count', 'recipient'));
+        return view('pdf.vozvrat', compact('order', 'price', 'all_price', 'count', 'recipient'));
 
         PDF::setOptions(['dpi' => 210, 'defaultFont' => 'sans-serif']);
 

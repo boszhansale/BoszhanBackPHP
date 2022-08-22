@@ -5,23 +5,24 @@ namespace App\Http\Livewire;
 use App\Models\Order;
 use App\Models\Status;
 use App\Models\User;
+use Carbon\Carbon;
 use Livewire\Component;
 use Livewire\WithPagination;
-class UserIndex extends Component
+class DriverIndex extends Component
 {
 
     use WithPagination;
     protected $paginationTheme = 'bootstrap';
 
-    public $roleId;
     public $search;
-    public $sort = 'id';
-    public $sortBy = 'desc';
+
+    public $start_date;
+    public $end_date;
 
 
     public function render()
     {
-        return view('admin.user.index_live',[
+        return view('admin.user.drivers_live',[
             'users' => User::select('users.*')
                 ->when($this->search,function ($q){
                     return $q->where(function ($qq){
@@ -31,15 +32,18 @@ class UserIndex extends Component
                     });
                 })
                 ->join('user_roles','user_roles.user_id','users.id')
-                ->when($this->roleId,function ($q){
-                    return $q->where('user_roles.role_id',$this->roleId);
-                })
+                ->where('user_roles.role_id',2)
                 ->groupBy('users.id')
-                ->orderBy('users.status')
-                ->orderBy($this->sort,$this->sortBy)
+                ->orderBy('status','asc')
+                ->orderBy('id','desc')
 
                 ->get()
         ]);
+    }
+
+    function mount(){
+        $this->start_date = Carbon::now()->format('Y-m-d');
+        $this->end_date = Carbon::now()->format('Y-m-d');
     }
 
     function statusChange($userId,$status)

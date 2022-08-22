@@ -16,18 +16,15 @@ class GenerateReportCommand extends Command
     public function handle()
     {
 
-        $query = Order::select('orders.*')
+        $orders = Order::select('orders.*')
             ->whereHas('salesrep.counterparty')
             ->whereDate('created_at',now())
-            ->whereIn('id',[15667,15662,15660,15658])
-            ->with(["salesrep.counterparty", 'store']);
+            ->with(["salesrep.counterparty", 'store'])
+            ->whereDoesntHave('report', function ($q) {
+                $q->where('type', 0);
+            })
+            ->get();
 
-
-//        dd($query->count());
-        $query->whereDoesntHave('report', function ($q) {
-            $q->where('type', 0);
-        });
-        $orders = $query->get();
         if (!$orders) {
             $this->info('There is no orders to generate report for');
             return 0;

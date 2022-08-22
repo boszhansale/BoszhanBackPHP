@@ -17,10 +17,11 @@ class StoreIndex extends Component
     public $search ;
     public $salesrepId;
     public $counteragentId;
-
+    public $start_date;
+    public $end_date;
     public function render()
     {
-        return view('livewire.store-index',[
+        return view('admin.store.index_live',[
            'salesreps' => User::join('user_roles','user_roles.user_id','users.id')
                ->orderBy('users.name')
                ->groupBy('users.id')
@@ -38,6 +39,12 @@ class StoreIndex extends Component
             })
             ->when($this->counteragentId,function ($q){
                 return $q->where('counteragent_id',$this->counteragentId);
+            })
+            ->when($this->start_date, function ($query) {
+                return $query->whereDate('stores.created_at', '>=', $this->start_date);
+            })
+            ->when($this->end_date, function ($query) {
+                return $query->whereDate('stores.created_at', '<=', $this->end_date);
             })
             ->orderBy('stores.id','desc')
             ->paginate(50),

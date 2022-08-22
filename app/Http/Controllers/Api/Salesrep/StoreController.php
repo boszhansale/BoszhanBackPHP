@@ -14,14 +14,27 @@ class StoreController extends Controller
 {
     function index(Request $request)
     {
+        $lat = Auth::user()->lat;
+        $lng =  Auth::user()->lng;
+
         $stores = Auth::user()->stores()
-            ->when($request->has('counteragent'),function ($query){
-                if (\request('counteragent') == 1){
-                    return $query->whereNotNull("counteragent_id");
-                }else{
-                    return $query->whereNull("counteragent_id");
-                }
-        })->with(['salesrep','counteragent'])->get();
+        ->when($lat or $lng,function ($q) use($lng,$lat){
+            $q->selectRaw("ST_Distance_Sphere(
+                point('$lng','$lat'),
+                point(stores.lng,stores.lat)
+            ) AS distance,stores.*"
+            );
+        })
+        ->when($request->has('counteragent'),function ($query){
+            if (\request('counteragent') == 1){
+                return $query->whereNotNull("counteragent_id");
+            }else{
+                return $query->whereNull("counteragent_id");
+            }
+        })
+        ->orderBy('distance')
+        ->with(['salesrep','counteragent'])
+        ->get();
         return response()->json($stores);
     }
     function store(StoreStoreRequest $request)

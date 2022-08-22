@@ -7,12 +7,14 @@
 @section('content')
     <div class="row">
         <div class="col-12">
-
-            <a href="{{route('admin.user.edit',$user->id)}}" class="btn btn-warning">изменить</a>
-
+            @if(Auth::user()->permissionExists('user_edit'))
+                <a href="{{route('admin.user.edit',$user->id)}}" class="btn btn-warning">изменить</a>
+            @endif
+            @if(Auth::user()->permissionExists('user_delete'))
             <a  class="btn btn-danger" href="{{route('admin.user.delete',$user->id)}}" onclick="return confirm('Удалить?')">
               удалит
             </a>
+            @endif
            @if($user->isSalesrep())
                 <a href="{{route('admin.user.order',[$user->id,1])}}" class="btn btn-primary">заявки торгового</a>
            @endif

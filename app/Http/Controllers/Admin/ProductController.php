@@ -195,4 +195,19 @@ class ProductController extends Controller
 
         return redirect()->back();
     }
+    function counteragentPriceStore(Request $request,Product $product){
+        $product->counteragentPrices()->updateOrCreate([
+            'counteragent_id' => $request->get('counteragent_id'),
+        ],[
+            'counteragent_id' => $request->get('counteragent_id'),
+            'price' => $request->get('price')
+        ]);
+
+        return back();
+    }
+    function counteragentPriceDelete(ProductCounteragentPrice $counteragentPrice){
+        $counteragentPrice->delete();
+
+        return back();
+    }
 }

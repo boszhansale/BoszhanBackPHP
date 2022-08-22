@@ -45,6 +45,7 @@ class StoreReport extends Command
 
         $stores = Store::whereNotNull('salesrep_id')
             ->with('salesrep')
+            ->where('export_1c',0)
             ->whereDate('created_at',now())
             ->get();
 
@@ -56,6 +57,13 @@ class StoreReport extends Command
 
         $this->info('Отчет был отправлен!');
 
+       Store::whereNotNull('salesrep_id')
+            ->with('salesrep')
+            ->where('export_1c',0)
+            ->whereDate('created_at',now())
+            ->update([
+                'export_1c' => 1
+            ]);
 
         return 0;
     }

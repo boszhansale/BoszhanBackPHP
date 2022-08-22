@@ -31,6 +31,7 @@
                 <tr>
                     <th></th>
                     <th>#</th>
+                    <th>артикул</th>
                     <th>name</th>
                     <th>cat</th>
                     @foreach(\App\Models\PriceType::all() as $priceType)
@@ -57,6 +58,7 @@
                             </a>
                         </td>
                         <th>{{$product->id}}</th>
+                        <th>{{$product->article}}</th>
                         <td>
                             @if($product->images()->exists())
                                 <img src="{{$product->images[0]->path}}" width="100">

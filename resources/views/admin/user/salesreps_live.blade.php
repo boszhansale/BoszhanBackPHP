@@ -7,17 +7,9 @@
                     <input wire:model="search" type="search" name="search" placeholder="поиск" class="form-control">
                 </div>
                 <div class="col-md-2">
-                    <div class="form-group">
-                        <label for="">роли</label>
-                        <select wire:model="roleId" name="" class="form-control">
-                            <option value="">все</option>
-                            @foreach(\App\Models\Role::all() as $role)
-                                <option value="{{$role->id}}">{{$role->description}}</option>
-                            @endforeach
-                        </select>
-                    </div>
+                    <input wire:model="start_date"  type="date" class="form-control">
+                    <input wire:model="end_date"  type="date" class="form-control">
                 </div>
-
             </div>
         </div>
     </div>
@@ -28,12 +20,13 @@
                 <tr>
                     <th>#</th>
                     <th></th>
-                    <th>ФИО</th>
                     <th>Логин</th>
-                    <th>Статус</th>
+                    <th>ФИО</th>
+                    <th>Водитель</th>
+                    <th>кол. заказов</th>
                     <th>кол. ТТ</th>
-                    <th>Роль</th>
                     <th>Личный план</th>
+                    <th>Статус</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -45,19 +38,34 @@
                                 <i class="fas fa-folder">
                                 </i>
                             </a>
-                            <a class="btn btn-info btn-sm" href="{{route('admin.user.edit',$user->id)}}">
-                                <i class="fas fa-pencil-alt">
-                                </i>
-                            </a>
+                            @if(Auth::user()->permissionExists('user_edit'))
+                                <a class="btn btn-info btn-sm" href="{{route('admin.user.edit',$user->id)}}">
+                                    <i class="fas fa-pencil-alt">
+                                    </i>
+                                </a>
+                            @endif
+                            @if(Auth::user()->permissionExists('user_delete'))
                             <a  class="btn btn-danger btn-sm" href="{{route('admin.user.delete',$user->id)}}" onclick="return confirm('Удалить?')">
                                 <i class="fas fa-trash"></i>
                             </a>
+                            @endif
                         </td>
+                        <th>{{$user->login}}</th>
+                        <th><a href="{{route('admin.user.show',$user->id)}}">{{$user->name}}</a></th>
                         <th>
-                            {{$user->name}}
+                           @if($user->driver)
+                                <a href="{{route('admin.user.show',$user->driver->id)}}">{{$user->driver->name}}</a>
+                           @endif
                         </th>
+
+                        <th>{{$user->salesrepOrders()->whereBetween('created_at',[$start_date,$end_date])->count()}}</th>
+
+                        <th>{{$user->stores->count()}}</th>
                         <th>
-                            {{$user->login}}
+                          @if($user->planGroupUser)
+                                <small class="price">{{$user->planGroupUser->plan}}</small>
+                                <p class="price">{{$user->planGroupUser->completed}}</p>
+                          @endif
                         </th>
                         <th>
                             @if($user->status == 1)
@@ -67,23 +75,6 @@
 
                             @endif
                         </th>
-                        <th>
-                            @if($user->isSalesrep())
-                                {{$user->stores->count()}}
-                            @endif
-                        </th>
-                        <th>
-                            @foreach($user->roles as $role)
-                                <small>{{$role->description}}</small>
-                            @endforeach
-                        </th>
-                        <th>
-                          @if($user->planGroupUser)
-                                <small class="price">{{$user->planGroupUser->plan}}</small>
-                                <p class="price">{{$user->planGroupUser->completed}}</p>
-                          @endif
-                        </th>
-
 
                     </tr>
                 @endforeach

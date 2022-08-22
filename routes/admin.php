@@ -45,10 +45,15 @@ Route::middleware(['auth','admin'])->group(function () {
         Route::put('update/{product}',[ProductController::class,'update'])->name('update');
         Route::get('delete/{product}',[ProductController::class,'delete'])->name('delete');
         Route::get('deleteImage/{productImage}',[ProductController::class,'deleteImage'])->name('deleteImage');
+
+        Route::post('counteragent-price/{product}',[ProductController::class,'counteragentPriceStore'])->name('counteragentPriceStore');
+        Route::get('counteragent-price/{counteragentPrice}',[ProductController::class,'counteragentPriceDelete'])->name('counteragentPriceDelete');
     });
 
     Route::prefix('user')->name('user.')->group(function (){
         Route::get('/',[UserController::class,'index'])->name('index');
+        Route::get('drivers',[UserController::class,'drivers'])->name('drivers');
+        Route::get('salesreps',[UserController::class,'salesreps'])->name('salesreps');
         Route::get('create/{roleId}',[UserController::class,'create'])->name('create');
         Route::post('store',[UserController::class,'store'])->name('store');
         Route::get('edit/{user}',[UserController::class,'edit'])->name('edit');

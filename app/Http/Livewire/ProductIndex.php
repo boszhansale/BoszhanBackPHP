@@ -31,7 +31,13 @@ class ProductIndex extends Component
         return view('livewire.product-index',[
             'brands' => Brand::all(),
             'categories' =>   $this->categories,
-            'products' => Product::where('products.name','LIKE','%'.$this->search.'%')
+            'products' => Product::select('products.*')
+                ->when($this->search,function ($q){
+                    return $q->where(function ($qq){
+                        return $qq->where('products.name','LIKE','%'.$this->search.'%')
+                            ->orWhere('products.article','LIKE','%'.$this->search.'%');
+                    });
+                })
                 ->join('categories','categories.id','products.category_id')
                 ->when($this->brand_id != 'all',function ($q){
                     return $q->where('categories.brand_id',$this->brand_id);
@@ -40,7 +46,7 @@ class ProductIndex extends Component
                     return $q->where('categories.id',$this->category_id);
                 })
                 ->with('category')
-                ->select('products.*')
+
                 ->orderBy('products.name')
                 ->paginate(25)
         ]);

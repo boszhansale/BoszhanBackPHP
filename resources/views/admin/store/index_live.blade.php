@@ -22,6 +22,10 @@
                         @endforeach
                     </select>
                 </div>
+                <div class="col-md-2">
+                    <input wire:model="start_date"  type="date" class="form-control">
+                    <input wire:model="end_date"  type="date" class="form-control">
+                </div>
             </div>
         </div>
     </div>

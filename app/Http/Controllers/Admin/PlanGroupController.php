@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Brand;
 use App\Models\PlanGroup;
+use App\Models\Store;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
@@ -14,7 +15,6 @@ class PlanGroupController extends Controller
     function index()
     {
         $planGroups = PlanGroup::all();
-
         return view('admin.plan-group.index',compact('planGroups'));
     }
     function create()

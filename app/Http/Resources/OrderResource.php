@@ -16,6 +16,7 @@ class OrderResource extends JsonResource
     {
 
         return [
+            'distance' => $this->distance,
             'id' => $this->id,
             'status' => $this->status,
             'store' => $this->store,

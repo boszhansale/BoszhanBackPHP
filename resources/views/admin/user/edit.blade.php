@@ -30,6 +30,25 @@
                     <input type="text" class="form-control" name="id_1c" value="{{$user->id_1c}}">
                 </div>
 
+                <div class="form-group">
+                    <label for="">Инвентарный номер планшета</label>
+                    <input type="text" class="form-control" name="inventory_number" value="{{$user->inventory_number}}" >
+                </div>
+                <div class="form-group">
+                    <label for="">Номер сим карты</label>
+                    <input type="text" class="form-control" name="sim_number" value="{{$user->sim_number}}" >
+                </div>
+
+                <div class="form-check">
+                    <input type="checkbox" class="form-check-input" name="case" {{$user->case ? 'checked' : ''}} value="1" id="case">
+                    <label class="form-check-label" for="case">Чехол планшета</label>
+                </div>
+                <div class="form-check">
+                    <input type="checkbox" class="form-check-input" name="screen_security" {{$user->screen_security ? 'checked' : ''}} value="1" id="screen_security">
+                    <label class="form-check-label" for="screen_security">Пленка защиты</label>
+                </div>
+
+
                 <div class="row">
                     @if($user->roles()->where('roles.id',1)->exists())
                         <div class="form-group col-md-8">
