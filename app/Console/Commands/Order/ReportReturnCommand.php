@@ -13,7 +13,7 @@ class ReportReturnCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'generate:report-return';
+    protected $signature = 'order:report-return';
 
     /**
      * The console command description.

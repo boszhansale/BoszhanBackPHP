@@ -9,7 +9,7 @@ use Illuminate\Console\Command;
 
 class ReportCommand extends Command
 {
-    protected $signature = 'generate:report';
+    protected $signature = 'order:report';
     protected $description = 'Generate order report by orders to xml';
 
 
