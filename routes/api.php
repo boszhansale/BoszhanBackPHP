@@ -109,6 +109,7 @@ Route::middleware('auth:sanctum')->group(function (){
         Route::prefix('basket')->group(function (){
             Route::get('{order}',[DriverBasketController::class,'index']);
             Route::post('update/{basket}',[DriverBasketController::class,'update']);
+            Route::post('initial-state/{order}',[DriverBasketController::class,'initialState']);
             Route::delete('{basket}',[DriverBasketController::class,'delete']);
         });
 

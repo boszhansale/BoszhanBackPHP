@@ -114,10 +114,10 @@ class OrderController extends Controller
             ]);
         }
 
-        if ($request->has('baskets')) {
-            $basketUpdateAction = new BasketUpdateAction();
-            $basketUpdateAction->execute($request->get('baskets'), $order);
-        }
+//        if ($request->has('baskets')) {
+//            $basketUpdateAction = new BasketUpdateAction();
+//            $basketUpdateAction->execute($request->get('baskets'), $order);
+//        }
 
 
         return response()->json(['message' => 'Успешно']);

@@ -7,7 +7,7 @@ use App\Models\OrderReport;
 use App\Models\Store;
 use Illuminate\Console\Command;
 
-class GenerateReportCommand extends Command
+class ReportCommand extends Command
 {
     protected $signature = 'generate:report';
     protected $description = 'Generate order report by orders to xml';

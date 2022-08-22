@@ -6,7 +6,7 @@ use App\Models\Order;
 use App\Models\OrderReport;
 use Illuminate\Console\Command;
 
-class GenerateReportReturnCommand extends Command
+class ReportReturnCommand extends Command
 {
     /**
      * The name and signature of the console command.

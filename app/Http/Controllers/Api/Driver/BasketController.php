@@ -32,6 +32,19 @@ class BasketController extends Controller
             ->get()
         );
     }
+    function initialState(Order $order):JsonResponse
+    {
+        foreach ($order->baskets as $basket) {
+            $firstBasket = $basket->audits()->whereEvent('created')->first()->new_values;
+            $basket->count = $firstBasket->count;
+            $basket->all_price = $firstBasket->all_price;
+            $basket->save();
+        }
+        OrderPriceAction::execute($order);
+
+        return  response()->json(['message' => 'success']);
+    }
+
     function update(BasketUpdateRequest $request,Basket $basket)
     {
 
