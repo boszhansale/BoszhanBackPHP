@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\ProductStoreRequest;
+use App\Imports\CounteragentsImport;
 use App\Models\Brand;
 use App\Models\Category;
 use App\Models\Counteragent;
@@ -21,6 +22,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;
+use Maatwebsite\Excel\Facades\Excel;
 
 class CounteragentController extends Controller
 {
@@ -112,4 +114,13 @@ class CounteragentController extends Controller
         return redirect()->route('admin.counteragent.index');
     }
 
+    function import(Request $request)
+    {
+        return view('admin.counteragent.import');
+    }
+    function importing(Request $request)
+    {
+       $collect =  Excel::import(new CounteragentsImport, $request->file('file'));
+        dd($collect);
+    }
 }

@@ -160,7 +160,12 @@ class StoreController extends Controller
             })
             ->latest()
             ->paginate(50);
-        return view('admin.store.show',compact('store','orders'));
+
+        $purchasePrices = $store->orders()->sum('purchase_price');
+        $returnPrices = $store->orders()->sum('return_price');
+
+
+        return view('admin.store.show',compact('store','orders','purchasePrices','returnPrices'));
     }
 
     function delete(Store $store)

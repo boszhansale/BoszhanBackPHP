@@ -26,16 +26,16 @@ class Kernel extends ConsoleKernel
         $schedule->command('order:delivery')->dailyAt('05:00');
 
         $schedule->command('store:report')->dailyAt('17:00');
-        $schedule->command('generate:report')->dailyAt('17:05');
-        $schedule->command('generate:report-return')->dailyAt('17:10');
+        $schedule->command('order:report')->dailyAt('17:05');
+        $schedule->command('order:report-return')->dailyAt('17:10');
 
         $schedule->command('store:report')->dailyAt('17:30');
-        $schedule->command('generate:report')->dailyAt('17:35');
-        $schedule->command('generate:report-return')->dailyAt('17:40');
+        $schedule->command('order:report')->dailyAt('17:35');
+        $schedule->command('order:report-return')->dailyAt('17:40');
 
         $schedule->command('store:report')->dailyAt('18:00');
-        $schedule->command('generate:report')->dailyAt('18:05');
-        $schedule->command('generate:report-return')->dailyAt('18:10');
+        $schedule->command('order:report')->dailyAt('18:05');
+        $schedule->command('order:report-return')->dailyAt('18:10');
 
 
 

@@ -42,7 +42,7 @@ class OrderIndex extends Component
                 return $query->whereDate('orders.delivery_date', '<=', $this->end_date);
             })
             ->latest();
-        return view('admin.order.index_index', [
+        return view('admin.order.index_live', [
             'drivers' => User::join('user_roles', 'user_roles.user_id', 'users.id')
                 ->where('role_id', 2)
                 ->orderBy('users.name')

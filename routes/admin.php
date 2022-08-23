@@ -82,6 +82,9 @@ Route::middleware(['auth','admin'])->group(function () {
         Route::get('show/{counteragent}',[CounteragentController::class,'show'])->name('show');
         Route::put('update/{counteragent}',[CounteragentController::class,'update'])->name('update');
         Route::get('delete/{counteragent}',[CounteragentController::class,'delete'])->name('delete');
+
+        Route::get('import',[CounteragentController::class,'import'])->name('import');
+        Route::post('importing',[CounteragentController::class,'importing'])->name('importing');
     });
 
 
