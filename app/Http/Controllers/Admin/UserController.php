@@ -8,6 +8,7 @@ use App\Models\Brand;
 use App\Models\Category;
 use App\Models\Counteragent;
 use App\Models\CounteragentUser;
+use App\Models\Counterparty;
 use App\Models\DriverSalesrep;
 use App\Models\Order;
 use App\Models\PlanGroup;
@@ -74,7 +75,8 @@ class UserController extends Controller
             ->get();
         $planGroups = PlanGroup::all();
         $brands = Brand::all();
-        return view('admin.user.create',compact('roles','brands','salesreps','drivers','planGroups','roleId'));
+        $id_1c = User::latest()->firstOrFail()->id_1c + 1;
+        return view('admin.user.create',compact('roles','brands','id_1c','salesreps','drivers','planGroups','roleId'));
     }
     function store(Request $request)
     {
@@ -91,8 +93,15 @@ class UserController extends Controller
         $user->sim_number = $request->get('sim_number');
         $user->case = $request->has('case');
         $user->screen_security = $request->has('screen_security');
-
         $user->save();
+
+        if ($request->has('counterparty')){
+            $c = new Counterparty();
+            $c->name = $request->get('name');
+            $c->user_id = $user->id;
+            $c->id_1c = Counterparty::latest()->firstOrFail()->id_1c + 1;
+            $c->save();
+        }
 
 
         if ($request->has('drivers')){

@@ -26,8 +26,15 @@
 
                 <div class="form-group">
                     <label for="">id_1c</label>
-                    <input type="text" class="form-control" name="id_1c" >
+                    <input type="text" class="form-control" name="id_1c" value="{{$id_1c}}" >
                 </div>
+                @if($roleId == 1)
+                <div class="form-group">
+                    <label for="">население</label>
+                    <input type="text" class="form-control" name="counterparty" value="население ">
+                </div>
+                @endif
+
                 <div class="form-group">
                     <label for="">Инвентарный номер планшета</label>
                     <input type="text" class="form-control" name="inventory_number" >
@@ -36,6 +43,7 @@
                     <label for="">Номер сим карты</label>
                     <input type="text" class="form-control" name="sim_number" >
                 </div>
+
 
                 <div class="form-check">
                     <input type="checkbox" class="form-check-input" name="case" value="1" id="case">
@@ -49,6 +57,7 @@
 
                 <div class="row">
                     @if($roleId == 1)
+
                         <div class="form-group col-md-8">
                             <label for="">группа</label>
                             <select name="plan_group_id" class="form-control" required>
