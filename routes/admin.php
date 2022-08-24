@@ -98,7 +98,7 @@ Route::middleware(['auth','admin'])->group(function () {
     });
     Route::prefix('mobile-app')->name('mobile-app.')->group(function (){
         Route::get('/',[MobileAppController::class,'index'])->name('index');
-        Route::get('create',[MobileAppController::class,'create'])->name('create');
+        Route::get('create/{type}',[MobileAppController::class,'create'])->name('create');
         Route::post('store',[MobileAppController::class,'store'])->name('store');
         Route::get('delete/{mobileApp}',[MobileAppController::class,'delete'])->name('delete');
         Route::get('download/{mobileApp}',[MobileAppController::class,'download'])->name('download');

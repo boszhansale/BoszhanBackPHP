@@ -15,16 +15,14 @@ class MobileAppController extends Controller
     function index()
     {
 
-
-
-
-        $mobile_apps = MobileApp::latest()->get();
-        return view('admin.mobile-app.index',compact('mobile_apps'));
+        $driverApps = MobileApp::where('type',2)->latest()->limit(6)->get();
+        $salesrepApps = MobileApp::where('type',1)->latest()->limit(6)->get();
+        return view('admin.mobile-app.index',compact('driverApps','salesrepApps'));
     }
-    function create()
+    function create($type)
     {
-        $version = MobileApp::max('version') + 0.1;
-        return view('admin.mobile-app.create',compact('version'));
+        $version = MobileApp::where('type',$type)->max('version') + 0.1;
+        return view('admin.mobile-app.create',compact('version','type'));
     }
     function store(Request $request)
     {
