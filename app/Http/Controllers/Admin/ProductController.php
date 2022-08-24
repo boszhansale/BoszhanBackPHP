@@ -144,21 +144,24 @@ class ProductController extends Controller
             );
         }
         $product->counteragentPrices()->where('price',0)->delete();
-        foreach ($request->get('counteragent_prices') as $item) {
-            if ($item['price'] != 0){
-                ProductCounteragentPrice::updateOrCreate(
-                    [
-                        'product_id' => $product->id,
-                        'counteragent_id' => $item['counteragent_id']
-                    ],
-                    [
-                        'product_id' => $product->id,
-                        'counteragent_id' => $item['counteragent_id'],
-                        'price' => $item['price']
-                    ]
-                );
-            }
+        if ($request->has('counteragent_prices'))
+        {
+            foreach ($request->get('counteragent_prices') as $item) {
+                if ($item['price'] != 0){
+                    ProductCounteragentPrice::updateOrCreate(
+                        [
+                            'product_id' => $product->id,
+                            'counteragent_id' => $item['counteragent_id']
+                        ],
+                        [
+                            'product_id' => $product->id,
+                            'counteragent_id' => $item['counteragent_id'],
+                            'price' => $item['price']
+                        ]
+                    );
+                }
 
+            }
         }
         if ($request->file('images')){
 
