@@ -17,7 +17,11 @@
             <td>{{ $store->address }}</td>
             <td>{{ $store->phone }}</td>
             <td>{{ $store->name }} ({{$store->id}})</td>
-            <td>{{ $store->bin }}</td>
+            @if($store->counteragent)
+                <td>{{ $store->counteragent->bin }}</td>
+            @else
+                <td>{{ $store->bin }}</td>
+            @endif
         </tr>
     @endforeach
     </tbody>

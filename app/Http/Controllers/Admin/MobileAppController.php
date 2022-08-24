@@ -26,12 +26,14 @@ class MobileAppController extends Controller
     }
     function store(Request $request)
     {
+        $path = $request->get('type') == 1 ? 'mobile-apps/salesrep':'mobile-apps/driver';
+        $name = $request->get('version').'/'.$request->file('app')->getClientOriginalName() ;
+
         $mobileApp = new MobileApp();
         $mobileApp->type = $request->get('type');
         $mobileApp->version = $request->get('version');
         $mobileApp->comment = $request->get('comment');
-        $mobileApp->path = Storage::disk('public')
-            ->putFileAs('mobile-apps',$request->file('app'),$request->get('version').'/'.$request->file('app')->getClientOriginalName());
+        $mobileApp->path = Storage::disk('public')->putFileAs($path,$request->file('app'),$name);
         $mobileApp->save();
         return redirect()->route('admin.mobile-app.index');
 
