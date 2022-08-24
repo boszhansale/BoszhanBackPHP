@@ -7,6 +7,7 @@ use App\Http\Requests\Api\LoginAuthRequest;
 use App\Http\Resources\CounteragentResource;
 use App\Models\Brand;
 use App\Models\MobileApp;
+use App\Models\MobileAppDownload;
 use App\Models\PaymentStatus;
 use App\Models\PaymentType;
 use App\Models\ReasonRefund;
@@ -54,6 +55,14 @@ class ListController extends Controller
     function mobileAppDownload(Request $request)
     {
         $app = MobileApp::whereType($request->get('type'))->orderBy('version','desc')->firstOrFail();
+        MobileAppDownload::updateOrCreate([
+            'ip' => $request->ip(),
+            'mobile_app_id' => $app->id
+        ],[
+            'ip' => $request->ip(),
+            'mobile_app_id' => $app->id
+        ]);
+
 
        return Storage::disk('public')->download($app->path,'app.apk',[
            'Content-Type'=>'application/vnd.android.package-archive',

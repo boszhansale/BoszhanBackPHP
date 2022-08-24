@@ -16,6 +16,7 @@
                        <thead>
                        <tr>
                            <th>Версия</th>
+                           <th>загружено</th>
                            <th>Дата</th>
                            <th>Коммент</th>
                            <th>Скачать</th>
@@ -27,6 +28,9 @@
                            <tr>
                                <th>
                                    {{$mobileApp->version}}
+                               </th>
+                               <th>
+                                   {{$mobileApp->downloads()->count()}}
                                </th>
                                <th>
                                    {{\Carbon\Carbon::parse($mobileApp->created_at)->format('d.m.Y')}}
@@ -60,6 +64,7 @@
                         <thead>
                         <tr>
                             <th>Версия</th>
+                            <th>загружено</th>
                             <th>Дата</th>
                             <th>Коммент</th>
                             <th>Скачать</th>
@@ -71,6 +76,9 @@
                             <tr>
                                 <th>
                                     {{$mobileApp->version}}
+                                </th>
+                                <th>
+                                    {{$mobileApp->downloads()->count()}}
                                 </th>
                                 <th>
                                     {{\Carbon\Carbon::parse($mobileApp->created_at)->format('d.m.Y')}}
