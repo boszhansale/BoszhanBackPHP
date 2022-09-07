@@ -45,7 +45,7 @@ class CounteragentController extends Controller
     }
     function show(Counteragent $counteragent)
     {
-        dd("Работаю");
+        return \view('admin.counteragent.show',compact('counteragent'));
     }
     function store(Request $request)
     {
@@ -57,6 +57,7 @@ class CounteragentController extends Controller
         $counteragent->price_type_id = $request->get('price_type_id');
         $counteragent->discount = $request->get('discount');
         $counteragent->enabled = $request->has('enabled');
+        $counteragent->delivery_time = $request->get    ('delivery_time');
         $counteragent->save();
         if ($request->has('salesreps')){
             foreach ($request->get('salesreps') as $userId) {
@@ -89,6 +90,7 @@ class CounteragentController extends Controller
         $counteragent->price_type_id = $request->get('price_type_id');
         $counteragent->discount = $request->get('discount');
         $counteragent->enabled = $request->has('enabled');
+        $counteragent->delivery_time = $request->get('delivery_time');
         $counteragent->save();
 
 
@@ -113,6 +115,11 @@ class CounteragentController extends Controller
 
         return redirect()->route('admin.counteragent.index');
     }
+    function order(Counteragent $counteragent)
+    {
+        return \view('admin.counteragent.order',compact('counteragent'));
+    }
+
 
     function import(Request $request)
     {
@@ -123,4 +130,6 @@ class CounteragentController extends Controller
        $collect =  Excel::import(new CounteragentsImport, $request->file('file'));
         dd($collect);
     }
+
+
 }

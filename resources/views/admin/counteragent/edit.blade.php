@@ -22,7 +22,10 @@
                     <label for="">Скидка %</label>
                     <input type="number" class="form-control" name="discount"  value="{{$counteragent->discount}}">
                 </div>
-
+                <div class="form-group">
+                    <label for="delivery_time">доставить до</label>
+                    <input type="time" name="delivery_time" class="form-control" value="{{$counteragent->delivery_time}}">
+                </div>
                 <div class="form-group">
                     <label for="">Тип оплаты</label>
                     <select name="payment_type_id" required class="form-control">

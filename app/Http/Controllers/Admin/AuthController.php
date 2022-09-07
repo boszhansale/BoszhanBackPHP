@@ -26,11 +26,10 @@ class AuthController extends Controller
     {
 
         $user = User::whereLogin($request->get('login'))->first();
-
         if (!Hash::check($request->get('password'),$user->password)){
             return  back()->withErrors('Неправильный пароль');
         }
-        if ($user->permissionExists("admin_panel")){
+        if (!$user->permissionExists("admin_panel")){
             return  back()->withErrors('У вас нет доступа');
         }
 

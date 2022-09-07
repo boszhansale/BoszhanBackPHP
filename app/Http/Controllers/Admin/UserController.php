@@ -96,10 +96,11 @@ class UserController extends Controller
         $user->save();
 
         if ($request->has('counterparty')){
+            $id_1c = (int) Counterparty::orderBy('id','desc')->firstOrFail()->id_1c;
             $c = new Counterparty();
             $c->name = $request->get('name');
             $c->user_id = $user->id;
-            $c->id_1c = Counterparty::latest()->firstOrFail()->id_1c + 1;
+            $c->id_1c =  $id_1c + 1;
             $c->save();
         }
 

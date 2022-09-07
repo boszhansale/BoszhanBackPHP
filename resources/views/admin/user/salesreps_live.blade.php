@@ -22,6 +22,7 @@
                     <th></th>
                     <th>Логин</th>
                     <th>ФИО</th>
+                    <th>ID_1C</th>
                     <th>Водитель</th>
                     <th>кол. заказов</th>
                     <th>кол. ТТ</th>
@@ -52,6 +53,7 @@
                         </td>
                         <th>{{$user->login}}</th>
                         <th><a href="{{route('admin.user.show',$user->id)}}">{{$user->name}}</a></th>
+                        <th>{{$user->id_1c}}</th>
                         <th>
                            @if($user->driver)
                                 <a href="{{route('admin.user.show',$user->driver->id)}}">{{$user->driver->name}}</a>

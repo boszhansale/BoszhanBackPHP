@@ -22,6 +22,7 @@
                     <th></th>
                     <th>Логин</th>
                     <th>ФИО</th>
+                    <th>ID_1C</th>
                     <th>Кол. заявок</th>
                     <th>Кол. закрытых заявок</th>
                     <th>Кол. не закрытых заявок</th>
@@ -56,6 +57,7 @@
                         </td>
                         <th>{{$user->login}}</th>
                         <th>{{$user->name}}</th>
+                        <th>{{$user->id_1c}}</th>
                         <th>{{$user->driverOrders()->whereBetween('delivery_date',[$start_date,$end_date])->count()}}</th>
                         <th>{{$user->driverOrders()->whereBetween('delivery_date',[$start_date,$end_date])->where('status_id',3)->count()}}</th>
                         <th>{{$user->driverOrders()->whereBetween('delivery_date',[$start_date,$end_date])->where('status_id',2)->count()}}</th>

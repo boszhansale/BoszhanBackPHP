@@ -13,6 +13,7 @@ use App\Models\Status;
 use App\Models\User;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;
 use Maatwebsite\Excel\Facades\Excel;
@@ -21,7 +22,8 @@ class OrderController extends Controller
 {
     function index()
     {
-        return view('admin.order.index');
+        $query = Order::query();
+        return view('admin.order.index',compact('query'));
     }
 
     function edit(Order $order):View
@@ -79,6 +81,16 @@ class OrderController extends Controller
         $pdf = PDF::loadView('pdf.waybill', compact('order'));
 
         return $pdf->download('waybill.pdf');
+    }
+
+    function toOnec()
+    {
+        Artisan::call('order:report');
+        Artisan::call('order:report-return');
+        dump('отправлен');
+
+
+        return redirect()->back();
     }
 
 }

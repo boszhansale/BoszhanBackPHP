@@ -205,7 +205,7 @@ class User extends Authenticatable
     {
        return Permission::join('role_permissions','role_permissions.permission_id','permissions.id')
             ->join('user_roles','user_roles.role_id','role_permissions.role_id')
-            ->where('user_roles.user_id',Auth::id())
+            ->where('user_roles.user_id',$this->id)
            ->where('permissions.name',$permission)
             ->exists();
     }

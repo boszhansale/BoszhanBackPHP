@@ -2,6 +2,11 @@
 @section('content')
     <form class="product-edit" action="{{route('admin.user.store')}}" method="post" enctype="multipart/form-data">
         @csrf
+        @if ($errors->any())
+            @foreach ($errors->all() as $error)
+                <div>{{$error}}</div>
+            @endforeach
+        @endif
         <div class="row">
             <div class="col-md-6">
                 <div class="form-group">

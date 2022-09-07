@@ -22,7 +22,7 @@ class CounteragentResource extends JsonResource
             'enabled' => $this->enabled,
             'price_type' => $this->priceType,
             'payment_type' => $this->paymentType,
-            'debt' => 0,
+            'debt' => $this->debt(),
             'delay' => 0,
         ];
     }

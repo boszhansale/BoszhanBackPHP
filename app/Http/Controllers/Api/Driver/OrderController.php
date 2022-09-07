@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Api\Driver;
 
-use App\Actions\BasketUpdateAction;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\OrderUpdateRequest;
 use App\Http\Resources\OrderResource;
@@ -11,12 +10,10 @@ use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-
 class OrderController extends Controller
 {
     function index(Request $request): JsonResponse
     {
-
         $lat = Auth::user()->lat;
         $lng = Auth::user()->lng;
 
@@ -29,6 +26,16 @@ class OrderController extends Controller
             ->where('orders.status_id', 2)
             ->with(['store', 'baskets', 'baskets.product'])
             ->get();
+
+//        if  (Auth::user()->login == 'nazh'){
+//            $orders = Auth::user()->driverOrders()
+//                ->whereDate('orders.delivery_date', now())
+//                ->where('orders.status_id', 2)
+//                ->with(['store', 'baskets', 'baskets.product'])
+//                ->limit(17)
+//                ->orderBy('id','desc')
+//                ->get();
+//        }
 
         return response()->json(OrderResource::collection($orders));
     }
@@ -59,8 +66,11 @@ class OrderController extends Controller
     {
         if ($request->has('status_id')) {
             $order->status_id = $request->get('status_id');
-            if ($order->status_id == Order::STATUS_DELIVERED) {
+            if ($request->get('status_id') == Order::STATUS_DELIVERED) {
                 $order->delivered_date = now();
+                if ($order->payment_type_id == Order::PAYMENT_CASH OR $order->payment_type_id == Order::PAYMENT_KASPI){
+                    $order->payment_status_id = Order::PAYMENT_STATUS_PAID;
+                }
             }
         }
         if ($request->has('payment_type_id')) {
@@ -69,20 +79,24 @@ class OrderController extends Controller
                 case Order::PAYMENT_CASH:
                     $order->status_id = Order::STATUS_DELIVERED;
                     $order->payment_full = $request->get('payment_full');
+                    $order->delivered_date = now();
+                    $order->payment_status_id = Order::PAYMENT_STATUS_PAID;
                     if ($request->has('payment_partial')) {
                         $order->payment_partial = $request->get('payment_partial');
                     }
                     break;
                 case Order::PAYMENT_CARD:
                     $order->status_id = Order::STATUS_DELIVERED;
+                    $order->delivered_date = now();
                     break;
                 case Order::PAYMENT_KASPI:
                     $order->status_id = Order::STATUS_DELIVERED;
+                    $order->delivered_date = now();
+                    $order->payment_status_id = Order::PAYMENT_STATUS_PAID;
                     $order->payment_full = $request->get('payment_full');
-
-//                    if ($request->has('kaspi_phone')) {
-////                        $order->kaspi_phone = $request->get('kaspi_phone');
-//                    }
+                    if ($request->has('kaspi_phone')) {
+                        $order->kaspi_phone = $request->get('kaspi_phone');
+                    }
                     if ($request->has('payment_partial')) {
                         $order->payment_partial = $request->get('payment_partial');
                     }

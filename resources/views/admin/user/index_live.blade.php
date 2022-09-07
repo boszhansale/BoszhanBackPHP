@@ -30,6 +30,7 @@
                     <th></th>
                     <th>Логин</th>
                     <th>ФИО</th>
+                    <th>ID_1C</th>
                     <th>Роль</th>
                     <th>Статус</th>
                 </tr>
@@ -57,6 +58,7 @@
                         </td>
                         <th>{{$user->login}}</th>
                         <th>{{$user->name}}</th>
+                        <th>{{$user->id_1c}}</th>
                         <th>
                             @foreach($user->roles as $role)
                                 <small>{{$role->description}}</small>

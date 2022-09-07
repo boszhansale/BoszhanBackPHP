@@ -71,6 +71,7 @@ Route::middleware(['auth','admin'])->group(function () {
         Route::get('show/{store}',[StoreController::class,'show'])->name('show');
         Route::put('update/{store}',[StoreController::class,'update'])->name('update');
         Route::get('delete/{store}',[StoreController::class,'delete'])->name('delete');
+        Route::get('order/{store}',[StoreController::class,'order'])->name('order');
         Route::get('move',[StoreController::class,'move'])->name('move');
         Route::post('moving',[StoreController::class,'moving'])->name('moving');
     });
@@ -82,6 +83,7 @@ Route::middleware(['auth','admin'])->group(function () {
         Route::get('show/{counteragent}',[CounteragentController::class,'show'])->name('show');
         Route::put('update/{counteragent}',[CounteragentController::class,'update'])->name('update');
         Route::get('delete/{counteragent}',[CounteragentController::class,'delete'])->name('delete');
+        Route::get('order/{counteragent}',[CounteragentController::class,'order'])->name('order');
 
         Route::get('import',[CounteragentController::class,'import'])->name('import');
         Route::post('importing',[CounteragentController::class,'importing'])->name('importing');
@@ -126,6 +128,7 @@ Route::middleware(['auth','admin'])->group(function () {
 
     Route::prefix('order')->name('order.')->group(function (){
         Route::get('/',[OrderController::class,'index'])->name('index');
+        Route::get('to-onec',[OrderController::class,'toOnec'])->name('to-onec');
         Route::get('create',[OrderController::class,'create'])->name('create');
         Route::post('store',[OrderController::class,'store'])->name('store');
         Route::get('edit/{order}',[OrderController::class,'edit'])->name('edit');

@@ -5,6 +5,7 @@ namespace App\Http\Livewire;
 use App\Models\Order;
 use App\Models\Status;
 use App\Models\User;
+use Illuminate\Database\Eloquent\Builder;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -14,34 +15,41 @@ class OrderIndex extends Component
     use WithPagination;
 
     protected $paginationTheme = 'bootstrap';
+
     public $search;
-    public $salesrep_id = 'all';
-    public $driver_id = 'all';
-    public $status_id = 'all';
+    public $salesrep_id;
+    public $driver_id;
+    public $status_id;
     public $start_date;
     public $end_date;
+
 
 
     public function render()
     {
         $query = Order::with(['store', 'salesrep', 'driver'])
-            ->where('orders.id', 'LIKE', $this->search . '%')
-            ->when($this->status_id != 'all', function ($query) {
-                return $query->where('orders.status_id', $this->status_id);
+            ->when($this->search,function ($q){
+                return $q->where('orders.id', 'LIKE', $this->search . '%');
             })
-            ->when($this->driver_id != 'all', function ($query) {
-                return $query->where('orders.driver_id', $this->driver_id);
+            ->when($this->status_id, function ($q) {
+                return $q->where('orders.status_id', $this->status_id);
             })
-            ->when($this->salesrep_id != 'all', function ($query) {
-                return $query->where('orders.salesrep_id', $this->salesrep_id);
+            ->when($this->driver_id, function ($q) {
+                return $q->where('orders.driver_id', $this->driver_id);
             })
-            ->when($this->start_date, function ($query) {
-                return $query->whereDate('orders.delivery_date', '>=', $this->start_date);
+            ->when($this->salesrep_id, function ($q) {
+                return $q->where('orders.salesrep_id', $this->salesrep_id);
             })
-            ->when($this->end_date, function ($query) {
-                return $query->whereDate('orders.delivery_date', '<=', $this->end_date);
+            ->when($this->start_date, function ($q) {
+                return $q->whereDate('orders.delivery_date', '>=', $this->start_date);
+            })
+            ->when($this->end_date, function ($q) {
+                return $q->whereDate('orders.delivery_date', '<=', $this->end_date);
             })
             ->latest();
+
+
+
         return view('admin.order.index_live', [
             'drivers' => User::join('user_roles', 'user_roles.user_id', 'users.id')
                 ->where('role_id', 2)

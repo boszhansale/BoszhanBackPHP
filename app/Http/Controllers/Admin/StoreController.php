@@ -108,7 +108,6 @@ class StoreController extends Controller
         return redirect()->back();
 
     }
-
     function show(Request $request,Store $store)
     {
 //        $orders = Order::limit(400)->offset(1600)->get();
@@ -167,7 +166,6 @@ class StoreController extends Controller
 
         return view('admin.store.show',compact('store','orders','purchasePrices','returnPrices'));
     }
-
     function delete(Store $store)
     {
 
@@ -175,6 +173,10 @@ class StoreController extends Controller
         $store->delete();
 
         return redirect()->back();
+    }
+    function order(Store $store)
+    {
+        return response()->view('admin.store.order',compact('store'));
     }
     function move():View
     {
@@ -186,8 +188,6 @@ class StoreController extends Controller
 
         CounteragentUser::where('user_id',$request->get('from_salesrep_id'))
             ->update(['user_id' => $request->get('to_salesrep_id')]);
-
-
         return to_route('admin.user.show',$request->get('to_salesrep_id'));
     }
 

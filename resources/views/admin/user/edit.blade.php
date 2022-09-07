@@ -5,6 +5,11 @@
         @method('PUT')
         <div class="row">
             <div class="col-md-6">
+                @if ($errors->any())
+                    @foreach ($errors->all() as $error)
+                        <div>{{$error}}</div>
+                    @endforeach
+                @endif
                 <div class="form-group">
                     <label for="">ФИО</label>
                     <input type="text" class="form-control" name="name" required value="{{$user->name}}">

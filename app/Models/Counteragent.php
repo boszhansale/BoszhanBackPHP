@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 
 /**
  * App\Models\Counteragent
@@ -67,6 +68,25 @@ class Counteragent extends Model
     function counteragentUsers():HasMany
     {
         return  $this->hasMany(CounteragentUser::class);
+    }
+    function stores():HasMany
+    {
+        return  $this->hasMany(Store::class);
+    }
+    function debt():float|int
+    {
+        return $this->orders()
+            ->where('orders.payment_status_id',2)
+            ->sum('orders.purchase_price')
+            -
+            $this->orders()
+            ->where('orders.payment_status_id',1)
+            ->sum('orders.purchase_price');
+    }
+
+    function orders():HasManyThrough
+    {
+        return  $this->hasManyThrough(Order::class,Store::class,'counteragent_id','store_id','','id');
     }
 
 

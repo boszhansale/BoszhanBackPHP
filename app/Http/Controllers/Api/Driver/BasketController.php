@@ -27,12 +27,11 @@ class BasketController extends Controller
     {
         foreach ($order->baskets as $basket) {
             $firstBasket = $basket->audits()->whereEvent('created')->first();
-
             if ($firstBasket) {
                 $newValue = $firstBasket->new_values;
-                if (isset($newValue->count) and isset($newValue->all_priceK)) {
-                    $basket->count = $newValue->count;
-                    $basket->all_price = $newValue->all_price;
+                if (isset($newValue['count']) and isset($newValue['all_price'])) {
+                    $basket->count = $newValue['count'];
+                    $basket->all_price = $newValue['all_price'];
                     $basket->save();
                 }
             }

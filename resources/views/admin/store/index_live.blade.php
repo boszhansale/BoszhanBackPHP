@@ -39,13 +39,14 @@
                 <tr>
                     <th>#</th>
                     <th>Название</th>
+                    <th>Контрагент</th>
                     <th>Телефон</th>
                     <th>ТП</th>
-                    <th>Контрагент</th>
                     <th>БИН</th>
                     <th>id_1c</th>
                     <th>скидка %</th>
                     <th>кол заявок</th>
+                    <th>долг</th>
                     <th></th>
                 </tr>
                 </thead>
@@ -58,14 +59,15 @@
                             <small>{{$store->address}}</small>
                         </th>
                         <td>
+                            {{$store->counteragent?->name}}
+                        </td>
+                        <td>
                             {{$store->phone}}
                         </td>
                         <td>
                             {{$store->salesrep?->name}}
                         </td>
-                        <td>
-                            {{$store->counteragent?->name}}
-                        </td>
+
 
                         <td>
                             {{$store->bin}}
@@ -80,6 +82,7 @@
                         <td>
                             {{$store->orders()->count()}}
                         </td>
+                        <td > {{$store->orders()->where('payment_status_id',2)->sum('purchase_price') - $store->orders()->where('payment_status_id',1)->sum('purchase_price')}}</td>
 
 
                         <td class="project-actions text-right">

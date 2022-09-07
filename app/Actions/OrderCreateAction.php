@@ -25,6 +25,7 @@ class OrderCreateAction
         $order->winning_name = $data['winning_name'] ?? null;
         $order->winning_phone = $data['winning_phone'] ?? null;
         $order->winning_status = $data['winning_status'] ?? null;
+        $order->salesrep_mobile_app_version = $data['salesrep_mobile_app_version'] ?? 1.6;
         $order->save();
 
         return $order;
