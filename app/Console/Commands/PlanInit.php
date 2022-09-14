@@ -2,18 +2,13 @@
 
 namespace App\Console\Commands;
 
-use App\Models\Basket;
 use App\Models\Brand;
 use App\Models\BrandPlanUser;
-use App\Models\Counteragent;
 use App\Models\PlanGroup;
 use App\Models\PlanGroupBrand;
 use App\Models\PlanGroupUser;
-use App\Models\Store;
 use App\Models\User;
-use Carbon\Carbon;
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\DB;
 
 class PlanInit extends Command
 {
@@ -38,23 +33,23 @@ class PlanInit extends Command
      */
     public function handle()
     {
-       $salesreps = User::join('user_roles','user_roles.user_id','users.id')
-           ->where('user_roles.role_id',1)
-           ->get('users.*');
+        $salesreps = User::join('user_roles', 'user_roles.user_id', 'users.id')
+            ->where('user_roles.role_id', 1)
+            ->get('users.*');
 
-       $brands = Brand::all();
-       $planGroups = PlanGroup::all();
+        $brands = Brand::all();
+        $planGroups = PlanGroup::all();
 
         foreach ($planGroups as $planGroup) {
             foreach ($brands as $brand) {
                 PlanGroupBrand::firstOrCreate(
                     [
                         'plan_group_id' => $planGroup->id,
-                        'brand_id'=> $brand->id,
+                        'brand_id' => $brand->id,
                     ],
                     [
                         'plan_group_id' => $planGroup->id,
-                        'brand_id'=> $brand->id,
+                        'brand_id' => $brand->id,
                     ]
 
                 );
@@ -63,11 +58,11 @@ class PlanInit extends Command
                 PlanGroupUser::firstOrCreate(
                     [
                         'plan_group_id' => PlanGroup::first()->id,
-                        'user_id' => $salesrep->id
+                        'user_id' => $salesrep->id,
                     ],
                     [
                         'plan_group_id' => PlanGroup::first()->id,
-                        'user_id' => $salesrep->id
+                        'user_id' => $salesrep->id,
                     ]
                 );
 
@@ -82,14 +77,10 @@ class PlanInit extends Command
                             'user_id' => $salesrep->id,
                         ]
                     );
-
                 }
             }
-
         }
 
-
-
-       return 0;
+        return 0;
     }
 }

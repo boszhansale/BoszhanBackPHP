@@ -2,17 +2,14 @@
 
 namespace App\Models;
 
-use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
-use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\HasOneThrough;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Illuminate\Support\Facades\Auth;
 use Laravel\Sanctum\HasApiTokens;
 
 /**
@@ -43,6 +40,7 @@ use Laravel\Sanctum\HasApiTokens;
  * @property-read int|null $stores_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\Laravel\Sanctum\PersonalAccessToken[] $tokens
  * @property-read int|null $tokens_count
+ *
  * @method static \Database\Factories\UserFactory factory(...$parameters)
  * @method static \Illuminate\Database\Eloquent\Builder|User newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|User newQuery()
@@ -61,6 +59,7 @@ use Laravel\Sanctum\HasApiTokens;
  * @method static \Illuminate\Database\Eloquent\Builder|User whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereWinningAccess($value)
  * @mixin \Eloquent
+ *
  * @property int|null $status
  * @property int|null $plan
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Counteragent[] $counteragents
@@ -69,11 +68,13 @@ use Laravel\Sanctum\HasApiTokens;
  * @property-read \App\Models\PlanGroupUser|null $planGroupUser
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\UserRole[] $userRoles
  * @property-read int|null $user_roles_count
+ *
  * @method static \Illuminate\Database\Query\Builder|User onlyTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder|User wherePlan($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereStatus($value)
  * @method static \Illuminate\Database\Query\Builder|User withTrashed()
  * @method static \Illuminate\Database\Query\Builder|User withoutTrashed()
+ *
  * @property string|null $lat
  * @property string|null $lng
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\BrandPlanUser[] $brandPlans
@@ -83,15 +84,16 @@ use Laravel\Sanctum\HasApiTokens;
  * @property-read int|null $drivers_count
  * @property-read \Illuminate\Database\Eloquent\Collection|User[] $salesreps
  * @property-read int|null $salesreps_count
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|User whereLat($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereLng($value)
+ *
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\UserPosition[] $userPositions
  * @property-read int|null $user_positions_count
  */
 class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable,SoftDeletes;
-
 
     protected $fillable = [
         'id',
@@ -104,23 +106,20 @@ class User extends Authenticatable
         'winning_access',
         'payout_access',
         'created_at',
-        'lat','lng',
+        'lat', 'lng',
         'inventory_number',
         'sim_number',
         'case',
-        'screen_security'
+        'screen_security',
     ];
-
 
     protected $hidden = [
         'password',
         'remember_token',
         'created_at',
         'updated_at',
-        'deleted_at'
+        'deleted_at',
     ];
-
-
 
     protected $casts = [
 
@@ -128,15 +127,22 @@ class User extends Authenticatable
 
     public function isAdmin()
     {
-        return $this->roles()->where('roles.id',3)->exists();
+        return $this->roles()->where('roles.id', 3)->exists();
     }
-    public function isDriver():bool
+
+    public function isDriver(): bool
     {
-        return $this->roles()->where('roles.id',2)->exists();
+        return $this->roles()->where('roles.id', 2)->exists();
     }
-    public function isSalesrep():bool
+
+    public function isSalesrep(): bool
     {
-        return $this->roles()->where('roles.id',1)->exists();
+        return $this->roles()->where('roles.id', 1)->exists();
+    }
+
+    public function isSupervisor(): bool
+    {
+        return $this->roles()->where('roles.id', 8)->exists();
     }
 
     public function counterparty()
@@ -144,78 +150,89 @@ class User extends Authenticatable
         return $this->hasOne(Counterparty::class);
     }
 
-    function driverOrders():HasMany
+    public function driverOrders(): HasMany
     {
-        return $this->hasMany(Order::class,'driver_id');
+        return $this->hasMany(Order::class, 'driver_id');
     }
-    function salesrepOrders():HasMany
+
+    public function salesrepOrders(): HasMany
     {
-        return $this->hasMany(Order::class,'salesrep_id');
+        return $this->hasMany(Order::class, 'salesrep_id');
     }
-    function roles():HasManyThrough
+
+    public function roles(): HasManyThrough
     {
-        return $this->hasManyThrough(Role::class,UserRole::class,'','id','','role_id');
+        return $this->hasManyThrough(Role::class, UserRole::class, '', 'id', '', 'role_id');
     }
-    function userRoles():HasMany
+
+    public function userRoles(): HasMany
     {
         return $this->hasMany(UserRole::class);
     }
 
-    function driver():HasOneThrough
+    public function driver(): HasOneThrough
     {
-        return  $this->hasOneThrough(User::class,DriverSalesrep::class,'salesrep_id','id','id','driver_id');
-    }
-    function drivers():HasManyThrough
-    {
-        return  $this->HasManyThrough(User::class,DriverSalesrep::class,'salesrep_id','id','id','driver_id');
+        return  $this->hasOneThrough(User::class, DriverSalesrep::class, 'salesrep_id', 'id', 'id', 'driver_id');
     }
 
-    function salesreps():HasManyThrough
+    public function drivers(): HasManyThrough
     {
-        return  $this->hasManyThrough(User::class,DriverSalesrep::class,'driver_id','id','id','salesrep_id');
+        return  $this->HasManyThrough(User::class, DriverSalesrep::class, 'salesrep_id', 'id', 'id', 'driver_id');
     }
 
-    function stores():HasMany
+    public function salesreps(): HasManyThrough
     {
-        return $this->hasMany(Store::class,'salesrep_id');
+        return  $this->hasManyThrough(User::class, DriverSalesrep::class, 'driver_id', 'id', 'id', 'salesrep_id');
     }
-    function counteragents():HasManyThrough
+
+    public function supervisorsSalesreps(): HasManyThrough
     {
-        return $this->hasManyThrough(Counteragent::class,CounteragentUser::class,'','id','','counteragent_id');
+        return  $this->hasManyThrough(User::class, SupervisorSalesrep::class, 'supervisor_id', 'id', 'id', 'salesrep_id');
+    }
+
+    public function stores(): HasMany
+    {
+        return $this->hasMany(Store::class, 'salesrep_id');
+    }
+
+    public function counteragents(): HasManyThrough
+    {
+        return $this->hasManyThrough(Counteragent::class, CounteragentUser::class, '', 'id', '', 'counteragent_id');
 //        return $this->hasManyThrough(Counteragent::class,CounteragentUser::class,'','id','user_id','counteragent_id');
     }
 
-
-    function planGroupUser():BelongsTo
+    public function planGroupUser(): BelongsTo
     {
-        return  $this->belongsTo(PlanGroupUser::class,'id','user_id');
+        return  $this->belongsTo(PlanGroupUser::class, 'id', 'user_id');
     }
 
-    function brandPlans():HasMany
+    public function brandPlans(): HasMany
     {
         return  $this->hasMany(BrandPlanUser::class);
     }
 
-    function counteragentExist($counteragentId)
+    public function counteragentExist($counteragentId)
     {
         return CounteragentUser::where('counteragent')->exists();
     }
 
-    function permissionExists($permission) : bool
+    public function permissionExists($permission): bool
     {
-       return Permission::join('role_permissions','role_permissions.permission_id','permissions.id')
-            ->join('user_roles','user_roles.role_id','role_permissions.role_id')
-            ->where('user_roles.user_id',$this->id)
-           ->where('permissions.name',$permission)
-            ->exists();
+        return Permission::join('role_permissions', 'role_permissions.permission_id', 'permissions.id')
+             ->join('user_roles', 'user_roles.role_id', 'role_permissions.role_id')
+             ->where('user_roles.user_id', $this->id)
+            ->where('permissions.name', $permission)
+             ->exists();
     }
 
-    function userPositions():HasMany
+    public function userPositions(): HasMany
     {
         return  $this->hasMany(UserPosition::class);
     }
-    function statusDescription(){
-        switch ($this->status){
+
+    public function statusDescription()
+    {
+        switch ($this->status) {
             case 1: return 'работает';
             case 2: return 'не работает';
         }

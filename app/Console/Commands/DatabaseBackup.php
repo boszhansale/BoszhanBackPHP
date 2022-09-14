@@ -3,8 +3,8 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
-use Symfony\Component\Process\Process;
 use Symfony\Component\Process\Exception\ProcessFailedException;
+use Symfony\Component\Process\Process;
 
 class DatabaseBackup extends Command
 {
@@ -13,7 +13,7 @@ class DatabaseBackup extends Command
      *
      * @var string
      */
-    protected $signature = "db:backup";
+    protected $signature = 'db:backup';
 
     /**
      * The console command description.
@@ -42,7 +42,7 @@ class DatabaseBackup extends Command
     public function handle()
     {
         $path = storage_path('app/public/database/');
-        $name = sprintf($path . 'backup_%s.sql', now()->format('YmdHis'));
+        $name = sprintf($path.'backup_%s.sql', now()->format('YmdHis'));
         //mysql
         $this->process = Process::fromShellCommandline(sprintf(
             'mysqldump -u%s -p%s %s > %s',

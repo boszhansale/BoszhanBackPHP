@@ -9,5 +9,5 @@ class MobileAppDownload extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['ip','mobile_app_id'];
+    protected $fillable = ['ip', 'mobile_app_id'];
 }

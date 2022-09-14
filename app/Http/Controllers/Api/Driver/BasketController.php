@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Api\Driver;
 
-use App\Actions\BasketUpdateAction;
 use App\Actions\OrderPriceAction;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\BasketUpdateRequest;
@@ -12,7 +11,7 @@ use Illuminate\Http\JsonResponse;
 
 class BasketController extends Controller
 {
-    function index(Order $order): JsonResponse
+    public function index(Order $order): JsonResponse
     {
         return response()->json($order->baskets()
             ->with('product')
@@ -23,7 +22,7 @@ class BasketController extends Controller
         );
     }
 
-    function initialState(Order $order): JsonResponse
+    public function initialState(Order $order): JsonResponse
     {
         foreach ($order->baskets as $basket) {
             $firstBasket = $basket->audits()->whereEvent('created')->first();
@@ -41,9 +40,8 @@ class BasketController extends Controller
         return response()->json(['message' => 'success']);
     }
 
-    function update(BasketUpdateRequest $request, Basket $basket)
+    public function update(BasketUpdateRequest $request, Basket $basket)
     {
-
         $basket->count = $request->get('count');
         $basket->all_price = $basket->count * $basket->price;
         $basket->save();
@@ -53,10 +51,10 @@ class BasketController extends Controller
         return response()->json($basket);
     }
 
-    function delete(Basket $basket)
+    public function delete(Basket $basket)
     {
         $basket->delete();
+
         return response()->json(['message' => 'Удалено']);
     }
-
 }

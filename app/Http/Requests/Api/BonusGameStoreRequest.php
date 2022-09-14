@@ -2,14 +2,11 @@
 
 namespace App\Http\Requests\Api;
 
-use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
-use Illuminate\Validation\ValidationException;
 
 class BonusGameStoreRequest extends FormRequest
 {
-
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -31,22 +28,22 @@ class BonusGameStoreRequest extends FormRequest
             'mobile_id' => 'required|string',
             'store_id' => 'integer|exists:stores,id',
             'win' => 'required|numeric',
-            'game_id' => 'required|unique:bonus_games'
+            'game_id' => 'required|unique:bonus_games',
         ];
     }
 
     public function messages()
     {
         return [
-            "mobile_id.required" => 'поле mobile_id обязательное',
-            "win.required" => 'поле сумма выигрыша обязательное'
+            'mobile_id.required' => 'поле mobile_id обязательное',
+            'win.required' => 'поле сумма выигрыша обязательное',
         ];
     }
 
-    public function failedValidation( $validator)
+    public function failedValidation($validator)
     {
         throw new HttpResponseException(
-            response()->json(['message' => $validator->errors()->first()],400)
+            response()->json(['message' => $validator->errors()->first()], 400)
         );
     }
 }

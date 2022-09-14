@@ -5,12 +5,10 @@ namespace App\Actions;
 use App\Models\Order;
 use App\Models\User;
 use Carbon\Carbon;
-use Illuminate\Support\Facades\Auth;
 
 class OrderCreateAction
 {
-
-    function execute(array $data,User $salesrep) : Order
+    public function execute(array $data, User $salesrep): Order
     {
         $driver = $salesrep->driver;
         $order = new Order();
@@ -31,12 +29,13 @@ class OrderCreateAction
         return $order;
     }
 
-    protected function getDeliveryDate($data):Carbon
+    protected function getDeliveryDate($data): Carbon
     {
-        if (isset($data['delivery_date'])){
-           return Carbon::parse($data['delivery_date']);
+        if (isset($data['delivery_date'])) {
+            return Carbon::parse($data['delivery_date']);
         }
-        $date  = Carbon::now();
+        $date = Carbon::now();
+
         return  match ($date->dayOfWeek) {
             5 => $date->addDays(3),
             6 => $date->addDays(2),

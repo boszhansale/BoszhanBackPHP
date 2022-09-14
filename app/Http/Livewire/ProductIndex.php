@@ -4,22 +4,23 @@ namespace App\Http\Livewire;
 
 use App\Models\Brand;
 use App\Models\Category;
-use App\Models\Order;
 use App\Models\Product;
-use App\Models\Status;
-use App\Models\User;
 use Livewire\Component;
 use Livewire\WithPagination;
+
 class ProductIndex extends Component
 {
-
     use WithPagination;
-    protected $paginationTheme = 'bootstrap';
-    public $search;
-    public $brand_id = 'all';
-    public $category_id = 'all';
-    public $categories = [];
 
+    protected $paginationTheme = 'bootstrap';
+
+    public $search;
+
+    public $brand_id = 'all';
+
+    public $category_id = 'all';
+
+    public $categories = [];
 
     public function mount()
     {
@@ -28,27 +29,27 @@ class ProductIndex extends Component
 
     public function render()
     {
-        return view('livewire.product-index',[
+        return view('livewire.product-index', [
             'brands' => Brand::all(),
-            'categories' =>   $this->categories,
+            'categories' => $this->categories,
             'products' => Product::select('products.*')
-                ->when($this->search,function ($q){
-                    return $q->where(function ($qq){
-                        return $qq->where('products.name','LIKE','%'.$this->search.'%')
-                            ->orWhere('products.article','LIKE','%'.$this->search.'%');
+                ->when($this->search, function ($q) {
+                    return $q->where(function ($qq) {
+                        return $qq->where('products.name', 'LIKE', '%'.$this->search.'%')
+                            ->orWhere('products.article', 'LIKE', '%'.$this->search.'%');
                     });
                 })
-                ->join('categories','categories.id','products.category_id')
-                ->when($this->brand_id != 'all',function ($q){
-                    return $q->where('categories.brand_id',$this->brand_id);
+                ->join('categories', 'categories.id', 'products.category_id')
+                ->when($this->brand_id != 'all', function ($q) {
+                    return $q->where('categories.brand_id', $this->brand_id);
                 })
-                ->when($this->category_id != 'all',function ($q){
-                    return $q->where('categories.id',$this->category_id);
+                ->when($this->category_id != 'all', function ($q) {
+                    return $q->where('categories.id', $this->category_id);
                 })
                 ->with('category')
 
-                ->orderBy('products.name')
-                ->paginate(25)
+                ->orderBy('products.article')
+                ->paginate(25),
         ]);
     }
 

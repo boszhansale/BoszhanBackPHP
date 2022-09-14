@@ -26,13 +26,11 @@ return new class extends Migration
             $table->foreignId('payment_type_id')->default(1)->constrained('payment_types')->cascadeOnDelete();
             $table->foreignId('payment_status_id')->default(2)->constrained('payment_statuses')->cascadeOnDelete();
 
-
             $table->boolean('payment_full')->nullable();
             $table->integer('payment_partial')->nullable();
 
-
-            $table->string('winning_name')->nullable()->default("");
-            $table->string('winning_phone')->nullable()->default("");
+            $table->string('winning_name')->nullable()->default('');
+            $table->string('winning_phone')->nullable()->default('');
             $table->smallInteger('winning_status')->default(1);
 
             $table->boolean('rnk_generate')->default(0);

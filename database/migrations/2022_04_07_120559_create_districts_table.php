@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('districts', function (Blueprint $table) {
             $table->id();
-                $table->foreignId('city_id')->constrained('cities')->cascadeOnDelete();
+            $table->foreignId('city_id')->constrained('cities')->cascadeOnDelete();
             $table->string('name');
             $table->softDeletes();
             $table->timestamps();

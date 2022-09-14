@@ -2,11 +2,7 @@
 
 namespace App\Console\Commands\Import;
 
-use App\Models\Brand;
-use App\Models\Counteragent;
 use App\Models\Product;
-use App\Models\Store;
-use App\Models\User;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
 
@@ -69,8 +65,6 @@ class ImportProduct extends Command
 //                    'price_type_id' => 4,
 //                ],
 //            ]);
-
-
         }
 
         return 0;

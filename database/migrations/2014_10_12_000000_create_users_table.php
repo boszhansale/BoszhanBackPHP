@@ -24,8 +24,8 @@ return new class extends Migration
             $table->boolean('winning_access')->default(0);
             $table->boolean('payout_access')->default(0);
             $table->smallInteger('status')->default(1);
-            $table->decimal('lat',11,8)->nullable();
-            $table->decimal('lng',11,8)->nullable();
+            $table->decimal('lat', 11, 8)->nullable();
+            $table->decimal('lng', 11, 8)->nullable();
             $table->rememberToken();
             $table->softDeletes();
             $table->timestamps();

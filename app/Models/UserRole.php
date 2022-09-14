@@ -4,7 +4,6 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
  * App\Models\UserRole
@@ -14,6 +13,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property int $user_id
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|UserRole newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|UserRole newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|UserRole query()
@@ -28,7 +28,5 @@ class UserRole extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['role_id','user_id'];
-
-
+    protected $fillable = ['role_id', 'user_id'];
 }

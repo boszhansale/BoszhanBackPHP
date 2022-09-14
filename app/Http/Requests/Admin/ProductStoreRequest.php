@@ -3,7 +3,6 @@
 namespace App\Http\Requests\Admin;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Http\Exceptions\HttpResponseException;
 
 class ProductStoreRequest extends FormRequest
 {
@@ -25,7 +24,7 @@ class ProductStoreRequest extends FormRequest
     public function rules()
     {
         return [
-
+            'article' => 'unique:products',
         ];
     }
 
@@ -34,6 +33,4 @@ class ProductStoreRequest extends FormRequest
         return [
         ];
     }
-
-
 }

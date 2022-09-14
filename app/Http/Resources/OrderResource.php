@@ -14,7 +14,6 @@ class OrderResource extends JsonResource
      */
     public function toArray($request)
     {
-
         return [
             'distance' => $this->distance,
             'id' => $this->id,
@@ -35,12 +34,12 @@ class OrderResource extends JsonResource
             'created_at' => $this->created_at,
             'purchase_price' => $this->purchase_price,
             'return_price' => $this->return_price,
-            'bonus_game_sum' => $this->bonusGames()->exists() ? $this->bonusGames()->sum('win'):0,
+            'bonus_game_sum' => $this->bonusGames()->exists() ? $this->bonusGames()->sum('win') : 0,
             'baskets' => $this->baskets()
-                ->with('product')
-                ->join('products','products.id','baskets.product_id')
+                ->with(['product', 'reasonRefund'])
+                ->join('products', 'products.id', 'baskets.product_id')
                 ->orderBy('baskets.type')
-                ->orderBy('products.measure','desc')
+                ->orderBy('products.measure', 'desc')
                 ->select('baskets.*')
                 ->get(),
         ];

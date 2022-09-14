@@ -20,7 +20,7 @@ return new class extends Migration
             $table->float('count');
             $table->float('price');
             $table->float('all_price');
-            $table->smallInteger('type');//return or payment
+            $table->smallInteger('type'); //return or payment
             //$table->smallInteger('measure');//кг or шт
 
             $table->softDeletes();

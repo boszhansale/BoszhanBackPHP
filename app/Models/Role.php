@@ -17,6 +17,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property string|null $deleted_at
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|Role newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Role newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Role query()
@@ -27,12 +28,14 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @method static \Illuminate\Database\Eloquent\Builder|Role whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Role whereUpdatedAt($value)
  * @mixin \Eloquent
+ *
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\User[] $users
  * @property-read int|null $users_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Permission[] $permissions
  * @property-read int|null $permissions_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\RolePermission[] $rolePermissions
  * @property-read int|null $role_permissions_count
+ *
  * @method static \Illuminate\Database\Query\Builder|Role onlyTrashed()
  * @method static \Illuminate\Database\Query\Builder|Role withTrashed()
  * @method static \Illuminate\Database\Query\Builder|Role withoutTrashed()
@@ -41,19 +44,21 @@ class Role extends Model
 {
     use HasFactory,SoftDeletes;
 
-    protected $hidden = ['created_at','deleted_at','updated_at','laravel_through_key'];
+    protected $hidden = ['created_at', 'deleted_at', 'updated_at', 'laravel_through_key'];
 
-    protected $fillable = ['name','description'];
+    protected $fillable = ['name', 'description'];
 
-    function users (): HasManyThrough
+    public function users(): HasManyThrough
     {
-        return  $this->hasManyThrough(User::class,UserRole::class,'role_id','id','','user_id');
+        return  $this->hasManyThrough(User::class, UserRole::class, 'role_id', 'id', '', 'user_id');
     }
-    function permissions (): HasManyThrough
+
+    public function permissions(): HasManyThrough
     {
-        return  $this->hasManyThrough(Permission::class,RolePermission::class,'role_id','id','','permission_id');
+        return  $this->hasManyThrough(Permission::class, RolePermission::class, 'role_id', 'id', '', 'permission_id');
     }
-    function rolePermissions (): HasMany
+
+    public function rolePermissions(): HasMany
     {
         return  $this->hasMany(RolePermission::class);
     }

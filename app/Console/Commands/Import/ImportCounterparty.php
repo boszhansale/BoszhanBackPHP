@@ -2,11 +2,7 @@
 
 namespace App\Console\Commands\Import;
 
-use App\Models\Counteragent;
 use App\Models\Counterparty;
-use App\Models\Role;
-use App\Models\User;
-use App\Models\UserRole;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
 
@@ -46,9 +42,6 @@ class ImportCounterparty extends Command
 
                 ]
             );
-
-
-
         }
 
         return 0;

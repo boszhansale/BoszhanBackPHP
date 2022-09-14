@@ -14,6 +14,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property string|null $code
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|ReasonRefund newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|ReasonRefund newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|ReasonRefund query()
@@ -29,6 +30,7 @@ class ReasonRefund extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['code','title','type'];
-    protected $hidden =['created_at','updated_at'];
+    protected $fillable = ['code', 'title', 'type'];
+
+    protected $hidden = ['created_at', 'updated_at'];
 }

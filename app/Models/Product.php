@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * App\Models\Product
@@ -23,6 +24,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property string|null $deleted_at
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|Product newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Product newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Product query()
@@ -40,6 +42,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @method static \Illuminate\Database\Eloquent\Builder|Product whereRemainder($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Product whereUpdatedAt($value)
  * @mixin \Eloquent
+ *
  * @property float|null $discount
  * @property int|null $hit
  * @property int|null $new
@@ -48,10 +51,12 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property-read int|null $images_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\ProductPriceType[] $prices
  * @property-read int|null $prices_count
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|Product whereDiscount($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Product whereHit($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Product whereNew($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Product whereRating($value)
+ *
  * @property int|null $action
  * @property int|null $discount_5
  * @property int|null $discount_10
@@ -60,17 +65,20 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Basket[] $baskets
  * @property-read int|null $baskets_count
  * @property-read \App\Models\Category $category
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|Product whereAction($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Product whereDiscount10($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Product whereDiscount15($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Product whereDiscount20($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Product whereDiscount5($value)
+ *
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\ProductCounteragentPrice[] $counteragentPrices
  * @property-read int|null $counteragent_prices_count
  */
 class Product extends Model
 {
     use HasFactory;
+    use SoftDeletes;
 
     //price = BC
     //off_price = BC+
@@ -85,6 +93,7 @@ class Product extends Model
         'barcode',
         'remainder',
         'enabled',
+        'purchase',
         'presale_id',
         'discount',
         'hit',
@@ -97,36 +106,35 @@ class Product extends Model
         'rating',
     ];
 
-    protected $hidden = ['created_at','deleted_at','updated_at'];
+    protected $hidden = ['created_at', 'deleted_at', 'updated_at'];
 
-    function prices():HasMany
+    public function prices(): HasMany
     {
-        return $this->hasMany(ProductPriceType::class,'product_id');
+        return $this->hasMany(ProductPriceType::class, 'product_id');
     }
 
-    function counteragentPrices():HasMany
+    public function counteragentPrices(): HasMany
     {
-        return $this->hasMany(ProductCounteragentPrice::class,'product_id');
+        return $this->hasMany(ProductCounteragentPrice::class, 'product_id');
     }
 
-    function baskets():HasMany
+    public function baskets(): HasMany
     {
         return $this->hasMany(Basket::class);
     }
 
-    function images():HasMany
+    public function images(): HasMany
     {
-        return $this->hasMany(ProductImage::class,'product_id');
-    }
-    function category() :BelongsTo
-    {
-        return  $this->belongsTo(Category::class,'category_id');
+        return $this->hasMany(ProductImage::class, 'product_id');
     }
 
-    function measureDescription():string
+    public function category(): BelongsTo
+    {
+        return  $this->belongsTo(Category::class, 'category_id');
+    }
+
+    public function measureDescription(): string
     {
         return $this->measure == 1 ? 'шт' : 'кг';
     }
-
-
 }

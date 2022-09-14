@@ -4,15 +4,10 @@ namespace App\Console\Commands\Export;
 
 use App\Actions\OldDbOrderCreateAction;
 use App\Actions\OldDbOrderUpdateAction;
-use App\Models\Brand;
-use App\Models\Counteragent;
 use App\Models\Order;
-use App\Models\Store;
-use App\Models\User;
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\DB;
-use Exception;
+
 class ExportOrder extends Command
 {
     /**
@@ -38,11 +33,9 @@ class ExportOrder extends Command
     {
 //        $query = DB::connection('old')->table('orders')->exists();
 
-
-        $orders = Order::where('db_export',0)->with(['store'])->get();
-        foreach ($orders as $order)
-        {
-            if (count($order->baskets) == 0){
+        $orders = Order::where('db_export', 0)->with(['store'])->get();
+        foreach ($orders as $order) {
+            if (count($order->baskets) == 0) {
                 continue;
             }
             $action = new OldDbOrderCreateAction();
@@ -51,7 +44,6 @@ class ExportOrder extends Command
 //            $action = new OldDbOrderUpdateAction();
 //            $action->execute($order);
         }
-
 
         return 0;
     }

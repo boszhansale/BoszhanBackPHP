@@ -1,55 +1,58 @@
-version: '3.6'
+version: "3.6"
 
 networks:
-    project_network:
+    laravel:
         driver: bridge
 services:
   nginx:
-    image: nginx:latest
+    image: nginx:1.17
     restart: unless-stopped
     tty: true
     volumes:
-      - ./:/var/www/boszhan
+      - ./:/var/www/backend
       - ./_docker/nginx/conf.d:/etc/nginx/conf.d
 #      - ./_docker/certbot/conf:/etc/letsencrypt
 #      - ./_docker/certbot/www:/var/www/certbot
     ports:
         - "80:80"
-#        - "443:443"
-    depends_on:
-      - app
-    container_name: project_nginx
+        - "443:443"
+    container_name: nginx
+    command: "/bin/sh -c 'while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g \"daemon off;\"'"
     networks:
-        - project_network
-
-#  cerbot:
+        - laravel
+    depends_on:
+        -   php
+#  certbot:
 #      image: certbot/certbot
+#      restart: unless-stopped
 #      volumes:
-#        - ./_docker/certbot/conf:/etc/letsencrypt
-#        - ./_docker/certbot/www:/var/www/certbot
-  app:
+#          - ./_docker/certbot/conf:/etc/letsencrypt
+#          - ./_docker/certbot/www:/var/www/certbot
+#      entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"
+  php:
     build:
       context: .
-      dockerfile: _docker/app/Dockerfile
+      dockerfile: ./_docker/php/Dockerfile
     restart: unless-stopped
     tty: true
     volumes:
-      - ./:/var/www/boszhan
-      - /home/dev/index:/home/dev/index
+      - ./:/var/www/backend
     depends_on:
       - mysql
       - redis
-    container_name: project_app
+    container_name: php
+    ports:
+        - "9000:9000"
     networks:
-        - project_network
+        - laravel
 
   mysql:
     image: mysql:8.0
     environment:
-      MYSQL_DATABASE: project
+      MYSQL_DATABASE: boszhan
       MYSQL_ROOT_PASSWORD: root
       MYSQL_USER: laravel
-      MYSQL_PASSWORD: laravel
+      MYSQL_PASSWORD: adgjmp96
     ports:
       - "3306:3306"
     command:
@@ -59,19 +62,81 @@ services:
       - --innodb_use_native_aio=0
     volumes:
 #      - ./init:/docker-entrypoint-initdb.d
-      - ./tmp/mysql:/var/lib/mysql
-    container_name: project_mysql
+      - ./tmp/db:/var/lib/mysql
+    container_name: mysql
     networks:
-        - project_network
+        - laravel
 
   redis:
       image: redis:7.0
-      container_name: project_redis
+      container_name: redis
       volumes:
           - ./tmp/redis:/data
       ports:
           - "6379:6379"
       networks:
-          - project_network
+          - laravel
+#  composer:
+#      build:
+#          context: .
+#          dockerfile: ./_docker/composer/Dockerfile
+#          args:
+#              - UID=${UID:-1000}
+#              - GID=${GID:-1000}
+#      container_name: composer
+#      volumes:
+#          - ./:/var/www/backend
+#      working_dir: /var/www/backend
+#      depends_on:
+#          - php
+#      user: laravel
+#      entrypoint: [ 'composer']
+#      networks:
+#          - laravel
+#  artisan:
+#      build:
+#          context: .
+#          dockerfile: ./_docker/php/Dockerfile
+#          args:
+#              - UID=${UID:-1000}
+#              - GID=${GID:-1000}
+#      container_name: artisan
+#      volumes:
+#          - ./:/var/www/backend:delegated
+#      depends_on:
+#          - mysql
+#      working_dir: /var/www/backend
+#      entrypoint: [ 'php', '/var/www/backend/artisan' ]
+#      networks:
+#          - laravel
 
+  cron:
+      build:
+          context: .
+          dockerfile: ./_docker/cron/DockerFile
+      container_name: cron
+      volumes:
+          - ./:/var/www/backend
 
+      networks:
+          - laravel
+#  mailhog:
+#      image: mailhog/mailhog:latest
+#      container_name: mailhog
+#      ports:
+#          - 1025:1025
+#          - 8025:8025
+#      networks:
+#          - laravel
+#
+#  npm:
+#      image: node:18
+#      container_name: npm
+#      volumes:
+#          - ./:/var/www/backend
+#      ports:
+#          - "3000:3000"
+#      working_dir: /var/www/backend
+#      entrypoint: ['npm']
+#      networks:
+#          - laravel

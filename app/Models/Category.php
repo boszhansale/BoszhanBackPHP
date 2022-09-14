@@ -16,6 +16,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property string|null $deleted_at
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|Category newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Category newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Category query()
@@ -27,17 +28,18 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @method static \Illuminate\Database\Eloquent\Builder|Category whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Category whereUpdatedAt($value)
  * @mixin \Eloquent
+ *
  * @property-read \App\Models\Brand $brand
  */
 class Category extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['id','name','brand_id','enabled'];
+    protected $fillable = ['id', 'name', 'brand_id', 'enabled'];
 
-    protected $hidden = ['deleted_at','updated_at','created_at'];
+    protected $hidden = ['deleted_at', 'updated_at', 'created_at'];
 
-    function brand():BelongsTo
+    public function brand(): BelongsTo
     {
         return  $this->belongsTo(Brand::class);
     }

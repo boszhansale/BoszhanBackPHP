@@ -16,6 +16,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property string|null $deleted_at
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|ProductPriceType newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|ProductPriceType newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|ProductPriceType query()
@@ -27,17 +28,18 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @method static \Illuminate\Database\Eloquent\Builder|ProductPriceType whereProductId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|ProductPriceType whereUpdatedAt($value)
  * @mixin \Eloquent
+ *
  * @property-read \App\Models\PriceType $priceType
  */
 class ProductPriceType extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['price','price_type_id','product_id'];
+    protected $fillable = ['price', 'price_type_id', 'product_id'];
 
-    protected $hidden = ['created_at','updated_at','deleted_at'];
+    protected $hidden = ['created_at', 'updated_at', 'deleted_at'];
 
-    function priceType() :BelongsTo
+    public function priceType(): BelongsTo
     {
         return  $this->belongsTo(PriceType::class);
     }

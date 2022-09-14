@@ -15,6 +15,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property string|null $deleted_at
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|OrderComment newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|OrderComment newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|OrderComment query()
@@ -31,5 +32,5 @@ class OrderComment extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['user_id','order_id','description'];
+    protected $fillable = ['user_id', 'order_id', 'description'];
 }

@@ -2,13 +2,8 @@
 
 namespace App\Console\Commands\Import;
 
-use App\Models\Brand;
-use App\Models\Counteragent;
-use App\Models\Store;
-use App\Models\User;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Artisan;
-use Illuminate\Support\Facades\DB;
 
 class ImportAll extends Command
 {

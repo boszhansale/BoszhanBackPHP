@@ -22,14 +22,11 @@ class BasketUpdateRequest extends FormRequest
      *
      * @return array
      */
-
-
-
     public function rules()
     {
         return [
-//            'type' => 'required|in:0,1',
-//            'product_id' => 'required|exists:products,id',
+            //            'type' => 'required|in:0,1',
+            //            'product_id' => 'required|exists:products,id',
             'count' => 'required',
         ];
     }
@@ -39,10 +36,11 @@ class BasketUpdateRequest extends FormRequest
         return [
         ];
     }
-    public function failedValidation( $validator)
+
+    public function failedValidation($validator)
     {
         throw new HttpResponseException(
-            response()->json(['message' => $validator->errors()->first()],400)
+            response()->json(['message' => $validator->errors()->first()], 400)
         );
     }
 }

@@ -124,6 +124,7 @@
                     </div>
                 </div>
             @endif
+
             @if($user->roles()->where('roles.id',2)->exists())
                 <div class="col-md-3">
                     <h6 class="">Торговые</h6>
@@ -137,6 +138,20 @@
                     </div>
                 </div>
             @endif
+            @if($user->roles()->where('roles.id',8)->exists())
+                <div class="col-md-3">
+                    <h6 class="">Торговые</h6>
+                    <div>
+                        @foreach($salesreps as $salesrep)
+                            <div class="form-check">
+                                <input type="checkbox" class="form-check-input" {{$user->supervisorsSalesreps()->where('users.id',$salesrep->id)->exists() ? 'checked' : ''}} name="supervisor_salesreps[]" value="{{$salesrep->id}}" id="supervisor_salesrep_{{$salesrep->id}}">
+                                <label class="form-check-label" for="supervisor_salesrep_{{$salesrep->id}}">{{$salesrep->name}}</label>
+                            </div>
+                        @endforeach
+                    </div>
+                </div>
+            @endif
+
 
         </div>
         <button type="submit" class="mt-5 mb-10 btn btn-primary col-3 ">Сохранить</button>

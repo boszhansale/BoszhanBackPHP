@@ -10,14 +10,14 @@ class SupervisorSalesrep extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['supervisor_id','salesrep_id'];
+    protected $fillable = ['supervisor_id', 'salesrep_id'];
 
-
-    function supervisor():BelongsTo
+    public function supervisor(): BelongsTo
     {
         return  $this->belongsTo(User::class);
     }
-    function salesrep():BelongsTo
+
+    public function salesrep(): BelongsTo
     {
         return  $this->belongsTo(User::class);
     }

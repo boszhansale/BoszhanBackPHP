@@ -12,16 +12,16 @@ class CategoryController extends Controller
     public function index(Brand $brand)
     {
         $categories = $brand->categories;
-        return  view('admin.category.index',compact('categories','brand'));
-    }
 
+        return  view('admin.category.index', compact('categories', 'brand'));
+    }
 
     public function create(Brand $brand)
     {
-        return  view('admin.category.create',compact('brand'));
+        return  view('admin.category.create', compact('brand'));
     }
 
-    public function store(Request $request,Brand $brand)
+    public function store(Request $request, Brand $brand)
     {
         $cat = new Category();
         $cat->name = $request->get('name');
@@ -29,13 +29,12 @@ class CategoryController extends Controller
         $cat->enabled = $request->has('enabled');
         $cat->save();
 
-        return redirect()->route('admin.category.index',$brand->id);
+        return redirect()->route('admin.category.index', $brand->id);
     }
-
 
     public function edit(Category $category)
     {
-        return view('admin.category.edit',compact('category'));
+        return view('admin.category.edit', compact('category'));
     }
 
     public function update(Request $request, Category $category)
@@ -43,14 +42,15 @@ class CategoryController extends Controller
         $category->name = $request->get('name');
         $category->enabled = $request->has('enabled');
         $category->save();
-        return redirect()->route('admin.category.index',$category->brand_id);
-    }
 
+        return redirect()->route('admin.category.index', $category->brand_id);
+    }
 
     public function delete(Category $category)
     {
         $brand_id = $category->brand_id;
         $category->delete();
-        return redirect()->route('admin.category.index',$brand_id);
+
+        return redirect()->route('admin.category.index', $brand_id);
     }
 }

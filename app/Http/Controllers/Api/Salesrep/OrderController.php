@@ -9,15 +9,7 @@ use App\Actions\OrderUpdateAction;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\OrderStoreRequest;
 use App\Http\Requests\Api\OrderUpdateRequest;
-use App\Models\Basket;
 use App\Models\Order;
-use App\Models\PaymentStatus;
-use App\Models\PaymentType;
-use App\Models\PlanGroupUser;
-use App\Models\PriceType;
-use App\Models\Product;
-use App\Models\Store;
-use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -25,94 +17,89 @@ use Illuminate\Support\Facades\Auth;
 
 class OrderController extends Controller
 {
-    function index(Request $request)
+    public function index(Request $request)
     {
         $orders = Auth::user()
             ->salesrepOrders()
-            ->join('stores','stores.id','orders.store_id')
-            ->when($request->has('store_id'),function ($q){
-                $q->where('orders.store_id',\request('store_id'));
+            ->join('stores', 'stores.id', 'orders.store_id')
+            ->when($request->has('store_id'), function ($q) {
+                $q->where('orders.store_id', \request('store_id'));
             })
-            ->when($request->has('counteragent_id'),function ($q){
-                $q->where('stores.counteragent_id',\request('counteragent_id'));
+            ->when($request->has('counteragent_id'), function ($q) {
+                $q->where('stores.counteragent_id', \request('counteragent_id'));
             })
-            ->when($request->has('start_date'),function ($q){
-                return $q->whereDate('orders.created_at','>=',\request('start_date'));
+            ->when($request->has('start_date'), function ($q) {
+                return $q->whereDate('orders.created_at', '>=', \request('start_date'));
             })
-            ->when($request->has('end_date'),function ($q){
-                return $q->whereDate('orders.created_at','<=',\request('end_date'));
+            ->when($request->has('end_date'), function ($q) {
+                return $q->whereDate('orders.created_at', '<=', \request('end_date'));
             })
-            ->when(!$request->has('start_date') and  !$request->has('end_date'),function ($q){
-                return $q->whereDate('orders.created_at','>=',Carbon::yesterday());
+            ->when(! $request->has('start_date') and ! $request->has('end_date'), function ($q) {
+                return $q->whereDate('orders.created_at', '>=', Carbon::yesterday());
             })
             ->select('orders.*')
-            ->with(['baskets' => function($q){
+            ->with(['baskets' => function ($q) {
                 $q->with('product');
-            },'store'])
+            }, 'store'])
             ->latest()
             ->get();
 
         return response()->json($orders);
     }
 
-    function store(OrderStoreRequest $request,OrderCreateAction $action,BasketCreateAction $basketCreateAction)
+    public function store(OrderStoreRequest $request, OrderCreateAction $action, BasketCreateAction $basketCreateAction)
     {
-
-        $order = $action->execute($request->validated(),Auth::user());
-        $baskets = $basketCreateAction->execute($request->get('baskets'),$order);
-
+        $order = $action->execute($request->validated(), Auth::user());
+        $baskets = $basketCreateAction->execute($request->get('baskets'), $order);
 
         return response()->json(OrderPriceAction::execute($order));
     }
 
-    function show($id):JsonResponse
+    public function show($id): JsonResponse
     {
-        $order = Order::with(['baskets','store','status','paymentType','paymentStatus','comments'])->findOrFail($id);
+        $order = Order::with(['baskets', 'store', 'status', 'paymentType', 'paymentStatus', 'comments'])->findOrFail($id);
+
         return response()->json($order);
     }
 
-    function update(OrderUpdateRequest $request,Order $order,OrderUpdateAction $action):JsonResponse
+    public function update(OrderUpdateRequest $request, Order $order, OrderUpdateAction $action): JsonResponse
     {
-        $order = $action->execute($request->validated(),$order);
+        $order = $action->execute($request->validated(), $order);
 //        $order->baskets()->delete();
-        return response()->json( $order);
+        return response()->json($order);
     }
 
-    function delete(Order $order)
+    public function delete(Order $order)
     {
         $order->delete();
 
         return response()->json(['message' => 'Успешно удалено']);
     }
 
-    function plan()
+    public function plan()
     {
         $user = Auth::user();
 
         $planGroupUser = $user->planGroupUser;
         $group = $planGroupUser->planGroup;
-        $planBrands = $user->brandPlans()->where('plan','>',0)->with('brand')->get();
+        $planBrands = $user->brandPlans()->where('plan', '>', 0)->with('brand')->get();
 
         $data['plan'] = $planGroupUser->plan;
         $data['completed'] = $planGroupUser->completed;
 
         $data['brands'] = [];
 
-
         foreach ($planBrands as $planBrand) {
             $item['plan'] = $planBrand->plan;
             $item['completed'] = $planBrand->completed;
             $item['brand'] = $planBrand->brand;
 
-            $data['brands'][]=$item;
+            $data['brands'][] = $item;
         }
 
         $data['group_name'] = $group->name;
 
-        $data['group_position'] =  $planGroupUser->position;
-
-
-
+        $data['group_position'] = $planGroupUser->position;
 
         $data['group_plan'] = $group->plan;
         $data['group_completed'] = $group->completed;
@@ -123,16 +110,13 @@ class OrderController extends Controller
             $item['completed'] = $planBrand->completed;
             $item['brand'] = $planBrand->brand;
 
-            $data['group_brands'][]=$item;
+            $data['group_brands'][] = $item;
         }
-
-
-
 
         return response()->json($data);
     }
 
-    function info(Request $request)
+    public function info(Request $request)
     {
         //юр лица кол заявок
         //юр лица кол возврат
@@ -143,7 +127,7 @@ class OrderController extends Controller
         $data['individual_orders'] = count($orders);
         $data['individual_purchase'] = 0;
         $data['individual_return'] = 0;
-        $data['individual_return_count'] =  $user->salesrepOrders()->individual()->today()->where('return_price','>',0)->count();
+        $data['individual_return_count'] = $user->salesrepOrders()->individual()->today()->where('return_price', '>', 0)->count();
         $data['individual_games'] = 0;
         $data['individual_games_wins'] = 0;
         foreach ($orders  as $order) {
@@ -158,7 +142,7 @@ class OrderController extends Controller
         $data['legal_entity_orders'] = count($orders);
         $data['legal_entity_purchase'] = 0;
         $data['legal_entity_return'] = 0;
-        $data['legal_entity_count_return'] = $user->salesrepOrders()->legalEntity()->today()->where('return_price','>',0)->count();
+        $data['legal_entity_count_return'] = $user->salesrepOrders()->legalEntity()->today()->where('return_price', '>', 0)->count();
         $data['legal_entity_games'] = 0;
         $data['legal_entity_games_wins'] = 0;
         foreach ($orders  as $order) {
@@ -167,10 +151,7 @@ class OrderController extends Controller
             $data['legal_entity_purchase'] += $order->purchase_price;
             $data['legal_entity_return'] += $order->return_price;
         }
+
         return \response()->json($data);
     }
-
-
-
-
 }

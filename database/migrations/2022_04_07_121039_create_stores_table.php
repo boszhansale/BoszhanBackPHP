@@ -27,8 +27,8 @@ return new class extends Migration
             $table->foreignId('district_id')->nullable()->constrained('districts')->cascadeOnDelete();
 
             $table->string('address')->nullable();
-            $table->decimal('lat',11,8)->nullable();
-            $table->decimal('lng',11,8)->nullable();
+            $table->decimal('lat', 11, 8)->nullable();
+            $table->decimal('lng', 11, 8)->nullable();
             $table->float('discount')->default(0);
             $table->softDeletes();
             $table->timestamps();

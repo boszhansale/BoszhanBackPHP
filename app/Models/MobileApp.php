@@ -16,6 +16,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property string $path
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|MobileApp newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|MobileApp newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|MobileApp query()
@@ -26,16 +27,18 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @method static \Illuminate\Database\Eloquent\Builder|MobileApp whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|MobileApp whereVersion($value)
  * @mixin \Eloquent
+ *
  * @property string|null $comment
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|MobileApp whereComment($value)
  */
 class MobileApp extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['type','version','path'];
+    protected $fillable = ['type', 'version', 'path'];
 
-    function typeDescription():string
+    public function typeDescription(): string
     {
         return $this->type == 1 ? 'Торговый' : 'Водительский';
     }
@@ -43,12 +46,12 @@ class MobileApp extends Model
     protected function version(): Attribute
     {
         return Attribute::make(
-            get: fn ($value) => (string)$value
+            get: fn ($value) => (string) $value
         );
     }
-    function downloads() :HasMany
+
+    public function downloads(): HasMany
     {
         return  $this->hasMany(MobileAppDownload::class);
     }
-
 }

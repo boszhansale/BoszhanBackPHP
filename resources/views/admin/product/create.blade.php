@@ -44,6 +44,15 @@
                     <input type="number" class="form-control" name="discount" value="0">
                 </div>
                 <div class="form-check">
+                    <input type="checkbox" checked class="form-check-input" name="purchase" value="1" id="purchase">
+                    <label class="form-check-label" for="purchase">Доступ к продажу</label>
+                </div>
+                <div class="form-check">
+                    <input type="checkbox" checked class="form-check-input" name="return" value="1" id="return">
+                    <label class="form-check-label" for="return">Доступ к возврату</label>
+                </div>
+                <br>
+                <div class="form-check">
                     <input type="checkbox" class="form-check-input" name="hit" value="1" id="product_hit">
                     <label class="form-check-label" for="product_hit">ярлык Хит</label>
                 </div>

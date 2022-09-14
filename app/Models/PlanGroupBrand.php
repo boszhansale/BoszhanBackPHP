@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use OwenIt\Auditing\Contracts\Auditable;
+
 /**
  * App\Models\PlanGroupBrand
  *
@@ -19,6 +20,7 @@ use OwenIt\Auditing\Contracts\Auditable;
  * @property-read \Illuminate\Database\Eloquent\Collection|\OwenIt\Auditing\Models\Audit[] $audits
  * @property-read int|null $audits_count
  * @property-read \App\Models\Brand $brand
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|PlanGroupBrand newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|PlanGroupBrand newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|PlanGroupBrand query()
@@ -35,10 +37,12 @@ class PlanGroupBrand extends Model implements Auditable
 {
     use HasFactory;
     use \OwenIt\Auditing\Auditable;
-    protected $fillable  = ['plan_group_id','brand_id','plan','completed'];
-    protected $hidden = ['created_at','updated_at'];
 
-    function brand():BelongsTo
+    protected $fillable = ['plan_group_id', 'brand_id', 'plan', 'completed'];
+
+    protected $hidden = ['created_at', 'updated_at'];
+
+    public function brand(): BelongsTo
     {
         return $this->belongsTo(Brand::class);
     }

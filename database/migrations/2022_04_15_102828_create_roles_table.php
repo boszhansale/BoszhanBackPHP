@@ -32,7 +32,7 @@ return new class extends Migration
             [
                 'name' => 'admin',
                 'description' => 'Админ',
-            ]
+            ],
         ]);
     }
 

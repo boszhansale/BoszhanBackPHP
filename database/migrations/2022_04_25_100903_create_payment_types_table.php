@@ -19,8 +19,6 @@ return new class extends Migration
             $table->timestamps();
         });
 
-
-
         \App\Models\PaymentType::insert([
             [
                 'name' => 'Наличный',
@@ -35,7 +33,6 @@ return new class extends Migration
                 'name' => 'Kaspi',
             ],
         ]);
-
     }
 
     /**

@@ -33,8 +33,6 @@ return new class extends Migration
             $table->boolean('discount_15')->default(0);
             $table->boolean('discount_20')->default(0);
 
-
-
             $table->bigInteger('rating')->nullable();
             $table->softDeletes();
             $table->timestamps();

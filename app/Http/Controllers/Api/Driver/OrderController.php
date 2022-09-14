@@ -10,15 +10,16 @@ use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+
 class OrderController extends Controller
 {
-    function index(Request $request): JsonResponse
+    public function index(Request $request): JsonResponse
     {
         $lat = Auth::user()->lat;
         $lng = Auth::user()->lng;
 
         $orders = Auth::user()->driverOrders()
-            ->when($lat or $lng, function ($q) use ($lng,$lat) {
+            ->when($lat or $lng, function ($q) use ($lng, $lat) {
                 return $q->selectRaw("ST_Distance_Sphere(point('$lng','$lat'),point(stores.lng,stores.lat)) AS distance, orders.*")
                     ->join('stores', 'stores.id', 'orders.store_id');
             })
@@ -40,7 +41,7 @@ class OrderController extends Controller
         return response()->json(OrderResource::collection($orders));
     }
 
-    function delivered(Request $request): JsonResponse
+    public function delivered(Request $request): JsonResponse
     {
         $orders = Auth::user()
             ->driverOrders()
@@ -62,13 +63,13 @@ class OrderController extends Controller
         return response()->json(OrderResource::collection($orders));
     }
 
-    function update(OrderUpdateRequest $request, Order $order)
+    public function update(OrderUpdateRequest $request, Order $order)
     {
         if ($request->has('status_id')) {
             $order->status_id = $request->get('status_id');
             if ($request->get('status_id') == Order::STATUS_DELIVERED) {
                 $order->delivered_date = now();
-                if ($order->payment_type_id == Order::PAYMENT_CASH OR $order->payment_type_id == Order::PAYMENT_KASPI){
+                if ($order->payment_type_id == Order::PAYMENT_CASH or $order->payment_type_id == Order::PAYMENT_KASPI) {
                     $order->payment_status_id = Order::PAYMENT_STATUS_PAID;
                 }
             }
@@ -111,7 +112,6 @@ class OrderController extends Controller
                 case Order::PAYMENT_DELAY:
                     $order->status_id = Order::STATUS_CONFIRMATION;
                     break;
-
             }
         }
         if ($request->has('winning_name')) {
@@ -124,7 +124,7 @@ class OrderController extends Controller
         if ($request->has('comment')) {
             $order->comments()->create([
                 'user_id' => Auth::id(),
-                'description' => $request->get('comment')
+                'description' => $request->get('comment'),
             ]);
         }
 
@@ -133,17 +133,14 @@ class OrderController extends Controller
 //            $basketUpdateAction->execute($request->get('baskets'), $order);
 //        }
 
-
         return response()->json(['message' => 'Успешно']);
-
-
     }
 
-    function info()
+    public function info()
     {
         $query = Auth::user()->driverOrders()
-            ->where('orders.status_id', 2);
-//            ->whereDate('orders.delivery_date',now());
+            ->where('orders.status_id', 3)
+            ->whereDate('orders.delivery_date', now());
 
         $data['full_name'] = Auth::user()->name;
 
@@ -176,9 +173,8 @@ class OrderController extends Controller
         return response()->json($data);
     }
 
-    function rnk(Order $order)
+    public function rnk(Order $order)
     {
-
         $price = $order->baskets()->where('type', 0)->sum('price');
         $all_price = $order->purchase_price;
         $return_price = $order->return_price;
@@ -199,6 +195,7 @@ class OrderController extends Controller
         }
 
         $qr_price = $all_price - $return_price;
+
         return view('pdf.rnk', compact('order', 'price', 'qr_price', 'all_price', 'count', 'recipient'));
         PDF::setOptions(['dpi' => 210, 'defaultFont' => 'sans-serif']);
 
@@ -207,16 +204,16 @@ class OrderController extends Controller
         return $pdf->download('rnk.pdf');
     }
 
-    function beforeRnk(Order $order)
+    public function beforeRnk(Order $order)
     {
-
         $price = $order->baskets()->where('type', 0)->sum('price');
         $all_price = $order->purchase_price;
-        $count = $order->baskets()->where('type', 0)->count();;
+        $count = $order->baskets()->where('type', 0)->count();
 
         $return_price = $order->baskets()->where('type', 1)->sum('price');
         $return_all_price = $order->return_price0;
         $return_count = $order->baskets()->where('type', 1)->count();
+
         return view('pdf.before_rnk', compact('order', 'price', 'all_price', 'count', 'return_price', 'return_count', 'return_all_price'));
         PDF::setOptions(['dpi' => 210, 'defaultFont' => 'sans-serif']);
 
@@ -225,9 +222,8 @@ class OrderController extends Controller
         return $pdf->download('before_rnk.pdf');
     }
 
-    function pko(Order $order)
+    public function pko(Order $order)
     {
-
         $all_price = $order->purchase_price;
         $counteragent = $order->store->counteragent;
 
@@ -254,13 +250,11 @@ class OrderController extends Controller
         return $pdf->download('pko.pdf');
     }
 
-    function vozvrat(Order $order)
+    public function vozvrat(Order $order)
     {
-
         $price = $order->baskets()->where('type', 1)->sum('price');
         $all_price = $order->return_price;
         $count = $order->baskets()->where('type', 1)->count();
-
 
         if ($order->store->counteragent) {
             $recipient[] = $order->store->counteragent;
@@ -284,8 +278,4 @@ class OrderController extends Controller
 
         return $pdf->download('vozvrat.pdf');
     }
-
 }
-
-
-

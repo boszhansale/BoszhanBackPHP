@@ -114,13 +114,13 @@ return [
         ],
     ],
     'emails' => [
-//        'agabek309@gmail.com',
+        //        'agabek309@gmail.com',
 
         'kovalenkoa@foodkz.kz',
         'khokhloval@foodkz.kz',
         'zakaz@foodkz.kz',
         'kutanovam@Foodkz.kz',
-        'karpenko@foodkz.kz'
-    ]
+        'karpenko@foodkz.kz',
+    ],
 
 ];

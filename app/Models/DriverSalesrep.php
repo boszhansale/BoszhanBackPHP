@@ -13,6 +13,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $salesrep_id
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|DriverSalesrep newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|DriverSalesrep newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|DriverSalesrep query()
@@ -27,5 +28,5 @@ class DriverSalesrep extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['id','driver_id','salesrep_id'];
+    protected $fillable = ['id', 'driver_id', 'salesrep_id'];
 }

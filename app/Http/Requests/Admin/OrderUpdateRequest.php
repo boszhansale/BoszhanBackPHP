@@ -3,7 +3,6 @@
 namespace App\Http\Requests\Admin;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Http\Exceptions\HttpResponseException;
 
 class OrderUpdateRequest extends FormRequest
 {
@@ -43,6 +42,4 @@ class OrderUpdateRequest extends FormRequest
         return [
         ];
     }
-
-
 }

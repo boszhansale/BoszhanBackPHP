@@ -13,7 +13,6 @@ use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
-
     //test method
     public function register(Request $request)
     {
@@ -25,47 +24,48 @@ class AuthController extends Controller
         ]);
         $token = $user->createToken('auth_token')->plainTextToken;
 
-
-
         return response()->json([
             'access_token' => $token,
             'token_type' => 'Bearer',
-            'user' => $user
+            'user' => $user,
         ]);
     }
-    public function login(LoginAuthRequest $request):JsonResponse
+
+    public function login(LoginAuthRequest $request): JsonResponse
     {
-        if (!Auth::attempt($request->only('login', 'password'))) {
+        if (! Auth::attempt($request->only('login', 'password'))) {
             return response()->json([
-                'message' => 'неверный пароль'
+                'message' => 'неверный пароль',
             ], 400);
         }
 
         $user = User::where('login', $request['login'])->firstOrFail();
-        if ($request->has('device_token')){
+        if ($request->has('device_token')) {
             $user->device_token = $request->get('device_token');
             $user->save();
         }
 
         $token = $user->createToken('auth_token')->plainTextToken;
+
         return response()->json([
             'access_token' => $token,
             'token_type' => 'Bearer',
             'user' => new UserResource($user),
         ]);
     }
-    public function logout():JsonResponse
+
+    public function logout(): JsonResponse
     {
         Auth::user()->tokens()->delete();
 
         return response()->json(['message' => 'вы вышли']);
     }
+
     public function profile()
     {
-
         return response()->json(new UserResource(Auth::user()));
-
     }
+
     public function position(Request $request)
     {
         Auth::user()->update([
@@ -80,12 +80,12 @@ class AuthController extends Controller
 
         return response()->json(Auth::user());
     }
+
     public function deviceToken(Request $request)
     {
         Auth::user()->update([
             'device_token' => $request->get('device_token'),
         ]);
-
 
         return response()->json(Auth::user());
     }

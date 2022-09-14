@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -28,6 +27,7 @@ use OwenIt\Auditing\Contracts\Auditable;
  * @property string|null $deleted_at
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|Store newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Store newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Store query()
@@ -46,25 +46,29 @@ use OwenIt\Auditing\Contracts\Auditable;
  * @method static \Illuminate\Database\Eloquent\Builder|Store whereSalesrepId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Store whereUpdatedAt($value)
  * @mixin \Eloquent
+ *
  * @property float|null $discount
  * @property-read \App\Models\Counteragent|null $counteragent
  * @property-read \App\Models\User $salesrep
+ *
  * @method static \Illuminate\Database\Query\Builder|Store onlyTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder|Store whereDiscount($value)
  * @method static \Illuminate\Database\Query\Builder|Store withTrashed()
  * @method static \Illuminate\Database\Query\Builder|Store withoutTrashed()
+ *
  * @property-read \Illuminate\Database\Eloquent\Collection|\OwenIt\Auditing\Models\Audit[] $audits
  * @property-read int|null $audits_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Order[] $orders
  * @property-read int|null $orders_count
  * @property int|null $driver_id
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|Store whereDriverId($value)
  */
-
 class Store extends Model implements Auditable
 {
     use HasFactory,SoftDeletes;
     use \OwenIt\Auditing\Auditable;
+
     protected $fillable = [
         'id',
         'salesrep_id',
@@ -79,20 +83,22 @@ class Store extends Model implements Auditable
         'lng',
         'discount',
         'created_at',
-        'export_1c'
+        'export_1c',
     ];
 
-    protected $hidden = ['created_at','updated_at','deleted_at'];
+    protected $hidden = ['created_at', 'updated_at', 'deleted_at'];
 
-    function counteragent():BelongsTo
+    public function counteragent(): BelongsTo
     {
         return  $this->belongsTo(Counteragent::class);
     }
-    function salesrep():BelongsTo
+
+    public function salesrep(): BelongsTo
     {
-        return $this->belongsTo(User::class,'salesrep_id');
+        return $this->belongsTo(User::class, 'salesrep_id');
     }
-    function orders():HasMany
+
+    public function orders(): HasMany
     {
         return $this->hasMany(Order::class);
     }
@@ -105,5 +111,4 @@ class Store extends Model implements Auditable
 //    }
 
     //300000000100113
-
 }

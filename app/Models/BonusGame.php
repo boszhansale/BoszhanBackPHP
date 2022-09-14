@@ -16,6 +16,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property string|null $deleted_at
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|BonusGame newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|BonusGame newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|BonusGame query()

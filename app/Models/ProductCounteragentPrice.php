@@ -15,6 +15,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property float $price
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|ProductCounteragentPrice newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|ProductCounteragentPrice newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|ProductCounteragentPrice query()
@@ -30,12 +31,12 @@ class ProductCounteragentPrice extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['product_id','counteragent_id','price'];
-    protected $hidden = ['created_at','updated_at'];
+    protected $fillable = ['product_id', 'counteragent_id', 'price'];
 
-    function counteragent():BelongsTo
+    protected $hidden = ['created_at', 'updated_at'];
+
+    public function counteragent(): BelongsTo
     {
         return  $this->belongsTo(Counteragent::class);
     }
-
 }

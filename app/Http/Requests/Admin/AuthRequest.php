@@ -3,7 +3,6 @@
 namespace App\Http\Requests\Admin;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Http\Exceptions\HttpResponseException;
 
 class AuthRequest extends FormRequest
 {
@@ -25,17 +24,15 @@ class AuthRequest extends FormRequest
     public function rules()
     {
         return [
-            'login' => ['required','exists:users'],
-            'password' => ['required','max:255']
+            'login' => ['required', 'exists:users'],
+            'password' => ['required', 'max:255'],
         ];
     }
 
     public function messages()
     {
         return [
-            'login.exists' => 'неверный логин'
+            'login.exists' => 'неверный логин',
         ];
     }
-
-
 }

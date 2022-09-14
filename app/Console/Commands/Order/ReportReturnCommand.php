@@ -22,25 +22,23 @@ class ReportReturnCommand extends Command
      */
     protected $description = 'Generate returns report by orders to xml';
 
-
     public function handle()
     {
-
         $orders = Order::select('orders.*')
             ->whereHas('salesrep.counterparty')
             ->whereDate('orders.created_at', now())
             ->where('orders.return_price', '>', 0)
-            ->with(["salesrep.counterparty", 'store'])
+            ->with(['salesrep.counterparty', 'store'])
             ->whereDoesntHave('report', function ($q) {
                 $q->where('type', 1);
             })
             ->get();
 
-        if (!$orders) {
+        if (! $orders) {
             $this->info('There is no orders to generate report for');
+
             return 0;
         }
-
 
         $todayDate = now()->format('Y-m-d');
 

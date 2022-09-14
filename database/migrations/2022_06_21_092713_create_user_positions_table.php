@@ -16,8 +16,8 @@ return new class extends Migration
         Schema::create('user_positions', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
-            $table->decimal('lat',11,8)->nullable();
-            $table->decimal('lng',11,8)->nullable();
+            $table->decimal('lat', 11, 8)->nullable();
+            $table->decimal('lng', 11, 8)->nullable();
             $table->timestamps();
         });
     }

@@ -4,7 +4,6 @@ namespace App\Console\Commands\Import;
 
 use App\Models\Counteragent;
 use App\Models\Store;
-use App\Models\User;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
 
@@ -45,13 +44,11 @@ class ImportStore extends Command
                     'bin' => $old->bin,
                     'id_1c' => $old->id_onec,
                     'address' => $old->address,
-//                    'lat' => $old->latitude,
-//                    'lng' => $old->longitude,
+                    //                    'lat' => $old->latitude,
+                    //                    'lng' => $old->longitude,
                     'created_at' => $old->created_at,
                 ]
             );
-
-
         }
 
         return 0;

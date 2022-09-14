@@ -12,18 +12,15 @@ use Spatie\QueryBuilder\AllowedFilter;
 
 class CategoryController extends Controller
 {
-
     public function allCategory()
     {
-        
         $categories = Category::withoutGlobalScope(EnabledScope::class)->get();
+
         return view('admin.categories.index', compact('categories'));
     }
 
-
     public function index()
     {
-
         $categories = QueryBuilder::for(Category::class)
             ->allowedFilters(
                 AllowedFilter::partial('name'),
@@ -39,11 +36,12 @@ class CategoryController extends Controller
     public function create()
     {
         $categories = Category::all();
+
         return view('admin.categories.create2', compact('categories'));
     }
 
     /**
-     * @param Request $request
+     * @param  Request  $request
      * @return mixed
      */
     public function store(Request $request, Category $category)
@@ -53,19 +51,17 @@ class CategoryController extends Controller
         $category->save();
 
         return redirect('admin/category/all');
-
     }
 
     public function edit(Category $category)
     {
         return view('admin.categories.edit', [
-            'category' => $category
+            'category' => $category,
         ]);
     }
 
     public function update(Request $request, Category $category)
     {
-
         $category->name = $request->input('name');
         $category->name_1c = $request->input('name');
         $category->brand_id = $request->input('brand_id');
@@ -81,5 +77,4 @@ class CategoryController extends Controller
 
         return redirect()->back()->withSuccess('Категория успешно удалена');
     }
-
 }

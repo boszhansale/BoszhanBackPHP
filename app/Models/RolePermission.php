@@ -5,7 +5,6 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
  * App\Models\RolePermission
@@ -17,6 +16,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \App\Models\Permission $permission
  * @property-read \App\Models\Role $role
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|RolePermission newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|RolePermission newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|RolePermission query()
@@ -31,13 +31,14 @@ class RolePermission extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['role_id','permission_id'];
+    protected $fillable = ['role_id', 'permission_id'];
 
-    function permission():BelongsTo
+    public function permission(): BelongsTo
     {
         return  $this->belongsTo(Permission::class);
     }
-    function role():BelongsTo
+
+    public function role(): BelongsTo
     {
         return $this->belongsTo(Role::class);
     }

@@ -2,17 +2,10 @@
 
 namespace App\Console\Commands\Export;
 
-use App\Actions\OldDbOrderCreateAction;
-use App\Actions\OldDbOrderUpdateAction;
-use App\Models\Brand;
 use App\Models\Counteragent;
-use App\Models\Order;
-use App\Models\Store;
-use App\Models\User;
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\DB;
-use Exception;
+
 class ExportCounteragent extends Command
 {
     /**
@@ -38,15 +31,13 @@ class ExportCounteragent extends Command
     {
 //        $query = DB::connection('old')->table('orders')->exists();
 
-
         $counteragents = Counteragent::all();
-        foreach ($counteragents as $counteragent)
-        {
+        foreach ($counteragents as $counteragent) {
             $oldCounteragent = DB::connection('old')->table('counteragents')
-                ->where('id',$counteragent->id)
+                ->where('id', $counteragent->id)
                 ->exists();
 
-            if (!$oldCounteragent){
+            if (! $oldCounteragent) {
                 DB::connection('old')->table('counteragents')->insert([
                     'id' => $counteragent->id,
                     'name_1c' => $counteragent->name,
@@ -57,7 +48,6 @@ class ExportCounteragent extends Command
                 ]);
             }
         }
-
 
         return 0;
     }

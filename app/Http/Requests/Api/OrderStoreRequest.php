@@ -22,9 +22,6 @@ class OrderStoreRequest extends FormRequest
      *
      * @return array
      */
-
-
-
     public function rules()
     {
         return [
@@ -42,7 +39,7 @@ class OrderStoreRequest extends FormRequest
             'delivery_date' => 'date',
             'salesrep_mobile_app_version' => '',
 
-            'baskets'=>'required|array|min:1',
+            'baskets' => 'required|array|min:1',
             'baskets.*.type' => 'required|in:0,1',
             'baskets.*.product_id' => 'required|exists:products,id',
             'baskets.*.reason_refund_id' => 'exists:reason_refunds,id',
@@ -56,10 +53,11 @@ class OrderStoreRequest extends FormRequest
         return [
         ];
     }
-    public function failedValidation( $validator)
+
+    public function failedValidation($validator)
     {
         throw new HttpResponseException(
-            response()->json(['message' => $validator->errors()->first()],400)
+            response()->json(['message' => $validator->errors()->first()], 400)
         );
     }
 }

@@ -16,6 +16,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property string|null $deleted_at
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|Counterparty newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Counterparty newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Counterparty query()
@@ -50,5 +51,4 @@ class Counterparty extends Model
 
         return strval($last->id_1c + 1);
     }
-
 }

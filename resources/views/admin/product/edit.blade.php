@@ -52,40 +52,52 @@
                     <input type="number" class="form-control" name="discount" value="0">
                 </div>
                 <div class="form-check">
+                    <input type="checkbox" class="form-check-input" name="purchase"
+                           {{$product->purchase ? "checked":''}}   id="purchase">
+                    <label class="form-check-label" for="purchase">Доступ к продажу</label>
+                </div>
+                <div class="form-check">
+                    <input type="checkbox" class="form-check-input" name="return"
+                           {{$product->return ? "checked":''}}   id="return">
+                    <label class="form-check-label" for="return">Доступ к возврату</label>
+                </div>
+
+                <br>
+                <div class="form-check">
                     <input type="checkbox" class="form-check-input" name="hit"
-                           {{$product->hit ? "selected":''}}   id="product_hit">
+                           {{$product->hit ? "checked":''}}   id="product_hit">
                     <label class="form-check-label" for="product_hit">ярлык Хит</label>
                 </div>
                 <div class="form-check">
                     <input type="checkbox" class="form-check-input" name="new"
-                           {{$product->new ? "selected":''}}  id="product_new">
+                           {{$product->new ? "checked":''}}  id="product_new">
                     <label class="form-check-label" for="product_new">ярлык Новый</label>
                 </div>
 
                 <div class="form-check">
                     <input type="checkbox" class="form-check-input" name="action"
-                           {{$product->action ? "selected":''}}   value="1" id="product_action">
+                           {{$product->action ? "checked":''}}   value="1" id="product_action">
                     <label class="form-check-label" for="product_action">ярлык Акция</label>
                 </div>
                 <div class="form-check">
                     <input type="checkbox" class="form-check-input" name="discount_5"
-                           {{$product->discount_5 ? "selected":''}} value="1" id="product_discount_5">
+                           {{$product->discount_5 ? "checked":''}} value="1" id="product_discount_5">
                     <label class="form-check-label" for="product_discount_5"> ярлык Скидка 5%</label>
                 </div>
                 <div class="form-check">
                     <input type="checkbox" class="form-check-input" name="discount_10"
-                           {{$product->discount_10 ? "selected":''}} value="1" id="product_discount_10">
+                           {{$product->discount_10 ? "checked":''}} value="1" id="product_discount_10">
                     <label class="form-check-label" for="product_discount_10"> ярлык Скидка 10%</label>
                 </div>
 
                 <div class="form-check">
                     <input type="checkbox" class="form-check-input" name="discount_15"
-                           {{$product->discount_15 ? "selected":''}} value="1" id="product_discount_15">
+                           {{$product->discount_15 ? "checked":''}} value="1" id="product_discount_15">
                     <label class="form-check-label" for="product_discount_15"> ярлык Скидка 15%</label>
                 </div>
                 <div class="form-check">
                     <input type="checkbox" class="form-check-input" name="discount_20"
-                           {{$product->discount_20 ? "selected":''}} value="1" id="product_discount_20">
+                           {{$product->discount_20 ? "checked":''}} value="1" id="product_discount_20">
                     <label class="form-check-label" for="product_discount_20"> ярлык Скидка 20%</label>
                 </div>
                 <div class="form-group">

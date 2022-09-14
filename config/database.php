@@ -64,12 +64,12 @@ return [
         ],
 
         'old' => [
-            'driver'    => env('OLD_DB_CONNECTION'),
-            'host'      => env('OLD_DB_HOST'),
-            'port'      => env('OLD_DB_PORT'),
-            'database'  => env('OLD_DB_DATABASE'),
-            'username'  => env('OLD_DB_USERNAME'),
-            'password'  => env('OLD_DB_PASSWORD'),
+            'driver' => env('OLD_DB_CONNECTION'),
+            'host' => env('OLD_DB_HOST'),
+            'port' => env('OLD_DB_PORT'),
+            'database' => env('OLD_DB_DATABASE'),
+            'username' => env('OLD_DB_USERNAME'),
+            'password' => env('OLD_DB_PASSWORD'),
             'charset' => 'utf8mb4',
             'collation' => 'utf8mb4_unicode_ci',
             'prefix' => '',
@@ -110,7 +110,6 @@ return [
             // 'trust_server_certificate' => env('DB_TRUST_SERVER_CERTIFICATE', 'true'),
         ],
 
-
         'mssql' => [
             'driver' => 'sqlsrv',
             'url' => env('DATABASE_URL'),
@@ -125,8 +124,6 @@ return [
             'encrypt' => env('MSSQL_ENCRYPT', 'yes'),
             'trust_server_certificate' => env('MSSQL_TRUST_SERVER_CERTIFICATE', 'true'),
         ],
-
-
 
     ],
 
@@ -156,7 +153,7 @@ return [
 
     'redis' => [
 
-        'client' => env('REDIS_CLIENT', 'phpredis'),
+        'client' => env('REDIS_CLIENT', 'predis'),
 
         'options' => [
             'cluster' => env('REDIS_CLUSTER', 'redis'),

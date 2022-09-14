@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\ProductStoreRequest;
-use App\Models\Brand;
 use App\Models\Category;
 use App\Models\Counteragent;
 use App\Models\PriceType;
@@ -12,33 +11,33 @@ use App\Models\Product;
 use App\Models\ProductCounteragentPrice;
 use App\Models\ProductImage;
 use App\Models\ProductPriceType;
-use App\Models\User;
-use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\View\View;
 
 class ProductController extends Controller
 {
-    function index()
+    public function index()
     {
         $products = Product::with('category')->get();
-        return view('admin.product.index',compact('products'));
+
+        return view('admin.product.index', compact('products'));
     }
-    function create()
+
+    public function create()
     {
-        $categories = Category::orderBy('brand_id')->where('enabled',1)->with('brand')->get();
+        $categories = Category::orderBy('brand_id')->where('enabled', 1)->with('brand')->get();
         $priceTypes = PriceType::all();
         $counteragents = Counteragent::orderBy('name')->get();
-        return view('admin.product.create',compact('categories','priceTypes','counteragents'));
+
+        return view('admin.product.create', compact('categories', 'priceTypes', 'counteragents'));
     }
-    function show(Product $product)
+
+    public function show(Product $product)
     {
-        return view('admin.product.show',compact('product'));
+        return view('admin.product.show', compact('product'));
     }
-    function store(ProductStoreRequest $request)
+
+    public function store(ProductStoreRequest $request)
     {
         $product = new Product();
         $product->category_id = $request->get('category_id');
@@ -51,6 +50,8 @@ class ProductController extends Controller
         $product->hit = $request->has('hit');
         $product->new = $request->has('new');
         $product->action = $request->has('action');
+        $product->purchase = $request->has('purchase');
+        $product->return = $request->has('return');
         $product->discount_5 = $request->has('discount_5');
         $product->discount_10 = $request->has('discount_10');
         $product->discount_15 = $request->has('discount_15');
@@ -58,61 +59,64 @@ class ProductController extends Controller
 
         $product->save();
 
-
         foreach ($request->get('counteragent_prices') as $item) {
-            if ($item['price'] != 0){
-                ProductCounteragentPrice::updateOrCreate(
-                    [
-                        'product_id' => $product->id,
-                        'counteragent_id' => $item['counteragent_id']
-                    ],
-                    [
-                        'product_id' => $product->id,
-                        'counteragent_id' => $item['counteragent_id'],
-                        'price' => $item['price']
-                    ]
-                );
+            if (! isset($item['price'])) {
+                continue;
             }
+            if ($item['price'] == 0) {
+                continue;
+            }
+            ProductCounteragentPrice::updateOrCreate(
+                [
+                    'product_id' => $product->id,
+                    'counteragent_id' => $item['counteragent_id'],
+                ],
+                [
+                    'product_id' => $product->id,
+                    'counteragent_id' => $item['counteragent_id'],
+                    'price' => $item['price'],
+                ]
+            );
         }
 
         foreach ($request->get('price_types') as $item) {
             ProductPriceType::updateOrCreate(
                 [
                     'product_id' => $product->id,
-                    'price_type_id' => $item['price_type_id']
+                    'price_type_id' => $item['price_type_id'],
                 ],
                 [
                     'product_id' => $product->id,
                     'price_type_id' => $item['price_type_id'],
-                    'price' => $item['price']
+                    'price' => $item['price'],
                 ]
             );
         }
-        if ($request->file('images')){
+        if ($request->file('images')) {
             foreach ($request->file('images') as $image) {
                 $productImage = new ProductImage();
                 $productImage->product_id = $product->id;
                 $productImage->name = $image->getClientOriginalName();
-                $productImage->path =  Storage::disk('public')->put("images",$image);
+                $productImage->path = Storage::disk('public')->put('images', $image);
                 $productImage->save();
             }
         }
 
-
-
-
         return redirect()->route('admin.product.index');
-
     }
-    function edit(Product $product)
+
+    public function edit(Product $product)
     {
         $priceTypes = PriceType::all();
-        $categories = Category::orderBy('brand_id')->where('enabled',1)->with('brand')->get();
+        $categories = Category::orderBy('brand_id')->where('enabled', 1)->with('brand')->get();
         $counteragents = Counteragent::orderBy('name')->get();
-        return view('admin.product.edit',compact('product','priceTypes','categories','counteragents'));
+
+        return view('admin.product.edit', compact('product', 'priceTypes', 'categories', 'counteragents'));
     }
-    function update(Request $request,Product $product)
+
+    public function update(Request $request, Product $product)
     {
+        $product->category_id = $request->get('category_id');
         $product->name = $request->get('name');
         $product->article = $request->get('article');
         $product->id_1c = $request->get('id_1c');
@@ -123,63 +127,63 @@ class ProductController extends Controller
         $product->hit = $request->has('hit');
         $product->new = $request->has('new');
         $product->action = $request->has('action');
+        $product->purchase = $request->has('purchase');
+        $product->return = $request->has('return');
         $product->discount_5 = $request->has('discount_5');
         $product->discount_10 = $request->has('discount_10');
         $product->discount_15 = $request->has('discount_15');
         $product->discount_20 = $request->has('discount_20');
         $product->save();
 
-
         foreach ($request->get('price_types') as $item) {
             ProductPriceType::updateOrCreate(
                 [
                     'product_id' => $product->id,
-                    'price_type_id' => $item['price_type_id']
+                    'price_type_id' => $item['price_type_id'],
                 ],
                 [
                     'product_id' => $product->id,
                     'price_type_id' => $item['price_type_id'],
-                    'price' => $item['price']
+                    'price' => $item['price'],
                 ]
             );
         }
-        $product->counteragentPrices()->where('price',0)->delete();
-        if ($request->has('counteragent_prices'))
-        {
+        $product->counteragentPrices()->where('price', 0)->delete();
+        if ($request->has('counteragent_prices')) {
             foreach ($request->get('counteragent_prices') as $item) {
-                if ($item['price'] != 0){
-                    ProductCounteragentPrice::updateOrCreate(
-                        [
-                            'product_id' => $product->id,
-                            'counteragent_id' => $item['counteragent_id']
-                        ],
-                        [
-                            'product_id' => $product->id,
-                            'counteragent_id' => $item['counteragent_id'],
-                            'price' => $item['price']
-                        ]
-                    );
+                if (! isset($item['price'])) {
+                    continue;
                 }
-
+                if ($item['price'] == 0) {
+                    continue;
+                }
+                ProductCounteragentPrice::updateOrCreate(
+                    [
+                        'product_id' => $product->id,
+                        'counteragent_id' => $item['counteragent_id'],
+                    ],
+                    [
+                        'product_id' => $product->id,
+                        'counteragent_id' => $item['counteragent_id'],
+                        'price' => $item['price'],
+                    ]
+                );
             }
         }
-        if ($request->file('images')){
-
+        if ($request->file('images')) {
             foreach ($request->file('images') as $image) {
                 $productImage = new ProductImage();
                 $productImage->product_id = $product->id;
                 $productImage->name = $image->getClientOriginalName();
-                $productImage->path =  Storage::disk('public')->put("images",$image);
+                $productImage->path = Storage::disk('public')->put('images', $image);
                 $productImage->save();
             }
         }
 
-
-
         return redirect()->route('admin.product.index');
-
     }
-    function delete(Product $product)
+
+    public function delete(Product $product)
     {
         foreach ($product->images as $image) {
             Storage::disk('public')->delete($image->path);
@@ -189,26 +193,30 @@ class ProductController extends Controller
 
         return redirect()->back();
     }
-    function deleteImage(ProductImage $productImage)
-    {
 
+    public function deleteImage(ProductImage $productImage)
+    {
         Storage::disk('public')->delete($productImage->getRawOriginal('path'));
 
         $productImage->delete();
 
         return redirect()->back();
     }
-    function counteragentPriceStore(Request $request,Product $product){
+
+    public function counteragentPriceStore(Request $request, Product $product)
+    {
         $product->counteragentPrices()->updateOrCreate([
             'counteragent_id' => $request->get('counteragent_id'),
-        ],[
+        ], [
             'counteragent_id' => $request->get('counteragent_id'),
-            'price' => $request->get('price')
+            'price' => $request->get('price'),
         ]);
 
         return back();
     }
-    function counteragentPriceDelete(ProductCounteragentPrice $counteragentPrice){
+
+    public function counteragentPriceDelete(ProductCounteragentPrice $counteragentPrice)
+    {
         $counteragentPrice->delete();
 
         return back();

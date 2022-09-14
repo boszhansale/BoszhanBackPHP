@@ -4,29 +4,28 @@ namespace App\Console\Commands\Order;
 
 use App\Models\Order;
 use App\Models\OrderReport;
-use App\Models\Store;
 use Illuminate\Console\Command;
 
 class ReportCommand extends Command
 {
     protected $signature = 'order:report';
-    protected $description = 'Generate order report by orders to xml';
 
+    protected $description = 'Generate order report by orders to xml';
 
     public function handle()
     {
-
         $orders = Order::select('orders.*')
             ->whereHas('salesrep.counterparty')
-            ->whereDate('created_at',now())
-            ->with(["salesrep.counterparty", 'store'])
+            ->whereDate('created_at', now())
+            ->with(['salesrep.counterparty', 'store'])
             ->whereDoesntHave('report', function ($q) {
                 $q->where('type', 0);
             })
             ->get();
 
-        if (!$orders) {
+        if (! $orders) {
             $this->info('There is no orders to generate report for');
+
             return 0;
         }
         $todayDate = now()->format('Y-m-d');
@@ -36,7 +35,6 @@ class ReportCommand extends Command
         $ordersCount = count($orders);
 
         foreach ($orders as $order) {
-
             $path = OrderReport::generate($order, $todayDate);
             $reportsCount++;
 

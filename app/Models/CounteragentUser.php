@@ -13,6 +13,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $user_id
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|CounteragentUser newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|CounteragentUser newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|CounteragentUser query()
@@ -27,5 +28,5 @@ class CounteragentUser extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['user_id','counteragent_id'];
+    protected $fillable = ['user_id', 'counteragent_id'];
 }

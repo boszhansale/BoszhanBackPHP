@@ -14,6 +14,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property float|null $lng
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|UserPosition newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|UserPosition newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|UserPosition query()
@@ -29,8 +30,7 @@ class UserPosition extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['user_id','lat','lng'];
-
+    protected $fillable = ['user_id', 'lat', 'lng'];
 
     protected $casts = [
         'lat' => 'float',

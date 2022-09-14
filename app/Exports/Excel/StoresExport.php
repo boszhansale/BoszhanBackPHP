@@ -2,21 +2,17 @@
 
 namespace App\Exports\Excel;
 
-use App\Models\Store;
 use Illuminate\Contracts\View\View;
 use Maatwebsite\Excel\Concerns\FromView;
-use Maatwebsite\Excel\Concerns\WithMapping;
 use Maatwebsite\Excel\Concerns\WithColumnFormatting;
 use PhpOffice\PhpSpreadsheet\Style\NumberFormat;
 
 class StoresExport implements FromView, WithColumnFormatting
 {
     /**
-    * @return \Illuminate\Support\Collection
-    */
-
-
-    public $stores ;
+     * @return \Illuminate\Support\Collection
+     */
+    public $stores;
 
     public function __construct($stores)
     {
@@ -25,12 +21,11 @@ class StoresExport implements FromView, WithColumnFormatting
 
     public function view(): View
     {
-
-
         return view('exports.excel.store', [
-            'stores' => $this->stores
+            'stores' => $this->stores,
         ]);
     }
+
     public function columnFormats(): array
     {
         return [

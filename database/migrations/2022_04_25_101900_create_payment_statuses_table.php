@@ -28,7 +28,7 @@ return new class extends Migration
             ],
             [
                 'name' => 'Не оплачено',
-            ]
+            ],
         ]);
     }
 

@@ -25,9 +25,8 @@ return new class extends Migration
             [
                 'name' => 'A',
                 'description' => 'Цена для магазинов',
-            ]
+            ],
         ]);
-
     }
 
     /**

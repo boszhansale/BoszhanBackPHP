@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -17,6 +16,7 @@ use Storage;
  * @property string $path
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|ProductImage newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|ProductImage newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|ProductImage query()
@@ -32,8 +32,7 @@ class ProductImage extends Model
 {
     use HasFactory;
 
-    protected $fillable =  ['product_id','path','name'];
-
+    protected $fillable = ['product_id', 'path', 'name'];
 
     protected function path(): Attribute
     {

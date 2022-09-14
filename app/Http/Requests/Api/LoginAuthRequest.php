@@ -25,22 +25,22 @@ class LoginAuthRequest extends FormRequest
     public function rules()
     {
         return [
-            'login' => ['required','exists:users'],
-            'password' => ['required','max:255']
+            'login' => ['required', 'exists:users'],
+            'password' => ['required', 'max:255'],
         ];
     }
 
     public function messages()
     {
         return [
-            'login.exists' => 'неверный логин'
+            'login.exists' => 'неверный логин',
         ];
     }
 
-    public function failedValidation( $validator)
+    public function failedValidation($validator)
     {
         throw new HttpResponseException(
-            response()->json(['message' => $validator->errors()->first()],400)
+            response()->json(['message' => $validator->errors()->first()], 400)
         );
     }
 }

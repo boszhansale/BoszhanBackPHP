@@ -21,7 +21,7 @@ return new class extends Migration
             $table->timestamps();
         });
 
-        Schema::table('baskets',function (Blueprint $table){
+        Schema::table('baskets', function (Blueprint $table) {
             $table->foreignId('reason_refund_id')->nullable()->constrained('reason_refunds')->cascadeOnDelete();
             $table->text('comment')->nullable();
         });

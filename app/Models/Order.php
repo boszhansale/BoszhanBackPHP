@@ -10,7 +10,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
-
 use OwenIt\Auditing\Contracts\Auditable;
 
 /**
@@ -53,6 +52,7 @@ use OwenIt\Auditing\Contracts\Auditable;
  * @property-read \App\Models\User $salesrep
  * @property-read \App\Models\Status $status
  * @property-read \App\Models\Store $store
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|Order individual()
  * @method static \Illuminate\Database\Eloquent\Builder|Order legalEntity()
  * @method static \Illuminate\Database\Eloquent\Builder|Order newModelQuery()
@@ -86,161 +86,185 @@ use OwenIt\Auditing\Contracts\Auditable;
  * @method static \Illuminate\Database\Query\Builder|Order withoutTrashed()
  * @mixin \Eloquent
  */
-class Order extends Model  implements Auditable
+class Order extends Model implements Auditable
 {
     use HasFactory,SoftDeletes;
     use \OwenIt\Auditing\Auditable;
 
     protected $fillable = [
-        'id','salesrep_id','driver_id','store_id','status_id','mobile_id',
-        'payment_type_id','payment_status_id','payment_full','payment_partial',
-        'winning_name','winning_phone','winning_status',
+        'id', 'salesrep_id', 'driver_id', 'store_id', 'status_id', 'mobile_id',
+        'payment_type_id', 'payment_status_id', 'payment_full', 'payment_partial',
+        'winning_name', 'winning_phone', 'winning_status',
         'rnk_generate',
-        'delivery_date','delivered_date',
-        'purchase_price','return_price',
-        'salesrep_mobile_app_version'
+        'delivery_date', 'delivered_date',
+        'purchase_price', 'return_price',
+        'salesrep_mobile_app_version',
     ];
 
-    protected $hidden = ['updated_at','deleted_at','rnk_generate'];
+    protected $hidden = ['updated_at', 'deleted_at', 'rnk_generate'];
 
     const STATUS_READY_FOR_DELIVERY = 1;
+
     const STATUS_ON_DELIVERY = 2;
+
     const STATUS_DELIVERED = 3;
+
     const STATUS_REJECT = 4;
+
     const STATUS_CONFIRMATION = 5;
+
     const STATUS_CONFIRMED = 6;
 
     const PAYMENT_CASH = 1;
+
     const PAYMENT_CARD = 2;
+
     const PAYMENT_DELAY = 3;
+
     const PAYMENT_KASPI = 4;
 
     // счет опланчен
     const PAYMENT_STATUS_PAID = 1;
+
     const PAYMENT_STATUS_NO_PAID = 2;
+
     const PAYMENT_STATUS_REJECT = 3;
 
     const PAYMENT_WINNING_STATUS_NO_PAID = 1;
+
     const PAYMENT_WINNING_STATUS_PAID = 2;
 
     const BASKET_PRODUCT_TYPE_FOR_PURCHASE = 0;
+
     const BASKET_PRODUCT_TYPE_FOR_RETURN = 1;
 
+    public function driver(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'driver_id');
+    }
 
-    function driver():BelongsTo
+    public function salesrep(): BelongsTo
     {
-        return $this->belongsTo(User::class,'driver_id');
+        return $this->belongsTo(User::class, 'salesrep_id');
     }
-    function salesrep():BelongsTo
-    {
-        return $this->belongsTo(User::class,'salesrep_id');
-    }
-    function store():BelongsTo
+
+    public function store(): BelongsTo
     {
         return $this->belongsTo(Store::class);
     }
-    function status():BelongsTo
+
+    public function status(): BelongsTo
     {
         return $this->belongsTo(Status::class);
     }
-    function paymentType():BelongsTo
+
+    public function paymentType(): BelongsTo
     {
         return $this->belongsTo(PaymentType::class);
     }
-    function paymentStatus():BelongsTo
+
+    public function paymentStatus(): BelongsTo
     {
         return $this->belongsTo(PaymentStatus::class);
     }
-    function bonusGames():HasMany
+
+    public function bonusGames(): HasMany
     {
         return $this->hasMany(BonusGame::class, 'mobile_id', 'mobile_id');
     }
-    function baskets():HasMany
+
+    public function baskets(): HasMany
     {
         return $this->hasMany(Basket::class);
     }
-    function comments():HasMany
+
+    public function comments(): HasMany
     {
         return $this->hasMany(OrderComment::class);
     }
 
-    function report() :HasOne
+    public function report(): HasOne
     {
         return $this->hasOne(OrderReport::class);
     }
 
     public function scopeToday($query)
     {
-        return $query->whereDate('orders.created_at',Carbon::today());
+        return $query->whereDate('orders.created_at', Carbon::today());
     }
+
     //Физ лицо
     public function scopeIndividual($query)
     {
-        return $query->join('stores','stores.id','orders.store_id')->whereNull('stores.counteragent_id');
+        return $query->join('stores', 'stores.id', 'orders.store_id')->whereNull('stores.counteragent_id');
     }
+
     //Юр лицо
     public function scopeLegalEntity($query)
     {
-        return $query->join('stores','stores.id','orders.store_id')->whereNotNull('stores.counteragent_id');
+        return $query->join('stores', 'stores.id', 'orders.store_id')->whereNotNull('stores.counteragent_id');
     }
-
-
-
 
     protected function winningName(): Attribute
     {
         return Attribute::make(
-            set: fn ($value) => $value ?? "",
+            set: fn ($value) => $value ?? '',
         );
     }
+
     protected function winningPhone(): Attribute
     {
         return Attribute::make(
-            set: fn ($value) => $value ?? "",
+            set: fn ($value) => $value ?? '',
         );
     }
+
     protected function winningStatus(): Attribute
     {
         return Attribute::make(
             set: fn ($value) => $value ?? 1,
         );
     }
+
     protected function paymentStatusId(): Attribute
     {
         return Attribute::make(
             set: fn ($value) => $value ?? 2,
         );
     }
+
     protected function paymentTypeId(): Attribute
     {
         return Attribute::make(
             set: fn ($value) => $value ?? 1,
         );
     }
+
     protected function paymentFull(): Attribute
     {
         return Attribute::make(
             set: fn ($value) => $value ?? null,
         );
     }
+
     protected function createdAt(): Attribute
     {
         return Attribute::make(
-            get: fn ($value) => Carbon::parse($value)->format('d.m.Y H:i') ,
+            get: fn ($value) => Carbon::parse($value)->format('d.m.Y H:i'),
         );
     }
+
     protected function deliveryDate(): Attribute
     {
         return Attribute::make(
             get: fn ($value) => Carbon::parse($value)->format('d.m.Y'),
         );
     }
+
     protected function deliveredDate(): Attribute
     {
         return Attribute::make(
             get: fn ($value) => Carbon::parse($value)->format('d.m.Y'),
         );
     }
-
-
 }

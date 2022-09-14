@@ -2,52 +2,48 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Actions\ProductGetPriceAction;
 use App\Http\Controllers\Controller;
 use App\Models\Basket;
 use App\Models\Counteragent;
 use App\Models\CounteragentUser;
-use App\Models\DriverSalesrep;
 use App\Models\Order;
 use App\Models\PriceType;
 use App\Models\Product;
-use App\Models\Role;
 use App\Models\Store;
 use App\Models\User;
-use App\Models\UserRole;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;
 
 class StoreController extends Controller
 {
-    function index()
+    public function index()
     {
         $stores = Store::paginate(50);
-        return view('admin.store.index',compact('stores'));
+
+        return view('admin.store.index', compact('stores'));
     }
-    function create()
+
+    public function create()
     {
-        $salesreps = User::join('user_roles','user_roles.user_id','users.id')
-            ->where('user_roles.role_id',1)
+        $salesreps = User::join('user_roles', 'user_roles.user_id', 'users.id')
+            ->where('user_roles.role_id', 1)
             ->select('users.*')
             ->orderBy('name')
 
             ->get();
-        $drivers = User::join('user_roles','user_roles.user_id','users.id')
-            ->where('user_roles.role_id',2)
+        $drivers = User::join('user_roles', 'user_roles.user_id', 'users.id')
+            ->where('user_roles.role_id', 2)
             ->select('users.*')
             ->orderBy('name')
 
             ->get();
         $counteragents = Counteragent::all();
 
-        return view('admin.store.create',compact('salesreps','drivers','counteragents'));
+        return view('admin.store.create', compact('salesreps', 'drivers', 'counteragents'));
     }
-    function store(Request $request)
+
+    public function store(Request $request)
     {
         $store = new Store();
         $store->name = $request->get('name');
@@ -65,28 +61,27 @@ class StoreController extends Controller
 
         $store->save();
 
-
-
         return redirect()->route('admin.store.index');
-
     }
-    function edit(Store $store)
+
+    public function edit(Store $store)
     {
-        $salesreps = User::join('user_roles','user_roles.user_id','users.id')
-            ->where('user_roles.role_id',1)
+        $salesreps = User::join('user_roles', 'user_roles.user_id', 'users.id')
+            ->where('user_roles.role_id', 1)
             ->select('users.*')
             ->orderBy('name')
             ->get();
-        $drivers = User::join('user_roles','user_roles.user_id','users.id')
-            ->where('user_roles.role_id',2)
+        $drivers = User::join('user_roles', 'user_roles.user_id', 'users.id')
+            ->where('user_roles.role_id', 2)
             ->select('users.*')
             ->orderBy('name')
             ->get();
         $counteragents = Counteragent::all();
 
-        return view('admin.store.edit',compact('salesreps','drivers','store','counteragents'));
+        return view('admin.store.edit', compact('salesreps', 'drivers', 'store', 'counteragents'));
     }
-    function update(Request $request,Store $store)
+
+    public function update(Request $request, Store $store)
     {
         $store->name = $request->get('name');
         $store->id_1c = $request->get('id_1c');
@@ -106,9 +101,9 @@ class StoreController extends Controller
         $store->save();
 
         return redirect()->back();
-
     }
-    function show(Request $request,Store $store)
+
+    public function show(Request $request, Store $store)
     {
 //        $orders = Order::limit(400)->offset(1600)->get();
 //        foreach ($orders as $order) {
@@ -163,38 +158,40 @@ class StoreController extends Controller
         $purchasePrices = $store->orders()->sum('purchase_price');
         $returnPrices = $store->orders()->sum('return_price');
 
-
-        return view('admin.store.show',compact('store','orders','purchasePrices','returnPrices'));
+        return view('admin.store.show', compact('store', 'orders', 'purchasePrices', 'returnPrices'));
     }
-    function delete(Store $store)
+
+    public function delete(Store $store)
     {
-
-
         $store->delete();
 
         return redirect()->back();
     }
-    function order(Store $store)
+
+    public function order(Store $store)
     {
-        return response()->view('admin.store.order',compact('store'));
+        return response()->view('admin.store.order', compact('store'));
     }
-    function move():View
+
+    public function move(): View
     {
         return view('admin.store.move');
     }
-    function moving(Request $request):RedirectResponse
+
+    public function moving(Request $request): RedirectResponse
     {
         Store::whereSalesrepId($request->get('from_salesrep_id'))->update(['salesrep_id' => $request->get('to_salesrep_id')]);
 
-        CounteragentUser::where('user_id',$request->get('from_salesrep_id'))
+        CounteragentUser::where('user_id', $request->get('from_salesrep_id'))
             ->update(['user_id' => $request->get('to_salesrep_id')]);
-        return to_route('admin.user.show',$request->get('to_salesrep_id'));
+
+        return to_route('admin.user.show', $request->get('to_salesrep_id'));
     }
 
-    protected function discount($price,$discount):float|int
+    protected function discount($price, $discount): float|int
     {
-        $discountPrice = ( $price / 100) * $discount;
+        $discountPrice = ($price / 100) * $discount;
+
         return $price - $discountPrice;
     }
-
 }

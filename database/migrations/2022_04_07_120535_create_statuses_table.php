@@ -2,7 +2,6 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
@@ -22,33 +21,32 @@ return new class extends Migration
             $table->timestamps();
         });
 
-      \App\Models\Status::insert([
-          [
-              'name' => 'ready_for_delivery',
-              'description'=> 'Готово к отправке'
-          ],
-          [
-              'name' => 'on_delivery',
-              'description'=> 'Доставляется'
-          ],
-          [
-              'name' => 'delivered',
-              'description'=> 'Доставлено'
-          ],
-          [
-              'name' => 'reject',
-              'description'=> 'Неизвестно || Отказ'
-          ],
-          [
-              'name' => 'confirmation',
-              'description'=> 'На подтверждение'
-          ],
-          [
-              'name' => 'confirmed',
-              'description'=> 'Подтвержден'
-          ],
-      ]);
-
+        \App\Models\Status::insert([
+            [
+                'name' => 'ready_for_delivery',
+                'description' => 'Готово к отправке',
+            ],
+            [
+                'name' => 'on_delivery',
+                'description' => 'Доставляется',
+            ],
+            [
+                'name' => 'delivered',
+                'description' => 'Доставлено',
+            ],
+            [
+                'name' => 'reject',
+                'description' => 'Неизвестно || Отказ',
+            ],
+            [
+                'name' => 'confirmation',
+                'description' => 'На подтверждение',
+            ],
+            [
+                'name' => 'confirmed',
+                'description' => 'Подтвержден',
+            ],
+        ]);
     }
 
     /**

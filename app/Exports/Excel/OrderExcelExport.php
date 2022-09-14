@@ -3,17 +3,15 @@
 namespace App\Exports\Excel;
 
 use App\Models\Order;
-use App\Models\Store;
 use Illuminate\Contracts\View\View;
 use Maatwebsite\Excel\Concerns\FromView;
 
 class OrderExcelExport implements FromView
 {
     /**
-    * @return \Illuminate\Support\Collection
-    */
-
-    public Order $order ;
+     * @return \Illuminate\Support\Collection
+     */
+    public Order $order;
 
     public function __construct(Order $order)
     {
@@ -24,7 +22,7 @@ class OrderExcelExport implements FromView
     {
         return view('exports.excel.order', [
             'order' => $this->order,
-            'store' => $this->order->store
+            'store' => $this->order->store,
         ]);
     }
 }

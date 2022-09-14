@@ -2,21 +2,9 @@
 
 namespace App\Console\Commands\Export;
 
-use App\Actions\OldDbOrderCreateAction;
-use App\Exports\Excel\StoresExport;
-use App\Mail\SendStoreExcel;
-use App\Models\Brand;
-use App\Models\Counteragent;
-use App\Models\Order;
-use App\Models\Product;
 use App\Models\Store;
-use App\Models\User;
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\DB;
-use Exception;
-use Illuminate\Support\Facades\Mail;
-use Maatwebsite\Excel\Facades\Excel;
 
 class ExportStoreOldDB extends Command
 {
@@ -38,15 +26,11 @@ class ExportStoreOldDB extends Command
      * Execute the console command.
      *
      * @return int
-     *
      */
-
     public function handle()
     {
-
 //        $oldDB = DB::connection('old')->table('products')->get();
         $stores = Store::limit(1000)->get();
-
 
         foreach ($stores as $store) {
             DB::connection('old')->table('stores')->updateOrInsert([
@@ -60,11 +44,8 @@ class ExportStoreOldDB extends Command
                 'longitude' => $store->lng,
                 'id_onec' => $store->id_1c,
             ]);
-
         }
 
         return 0;
-
-
     }
 }

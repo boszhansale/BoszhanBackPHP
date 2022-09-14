@@ -5,31 +5,35 @@ namespace App\Http\Livewire;
 use App\Models\Order;
 use App\Models\Status;
 use App\Models\User;
-use Illuminate\Database\Eloquent\Builder;
 use Livewire\Component;
 use Livewire\WithPagination;
 
 class OrderIndex extends Component
 {
-
     use WithPagination;
 
     protected $paginationTheme = 'bootstrap';
 
     public $search;
+
     public $salesrep_id;
+
     public $driver_id;
+
     public $status_id;
+
     public $start_date;
+
     public $end_date;
-
-
 
     public function render()
     {
         $query = Order::with(['store', 'salesrep', 'driver'])
-            ->when($this->search,function ($q){
-                return $q->where('orders.id', 'LIKE', $this->search . '%');
+            ->when($this->search, function ($q) {
+                return $q->where('orders.id', 'LIKE', $this->search.'%');
+            })
+            ->when(\Auth::user()->isSupervisor(), function ($q) {
+                return $q->whereIn('orders.salesrep_id', \Auth::user()->supervisorsSalesreps()->pluck('users.id')->toArray());
             })
             ->when($this->status_id, function ($q) {
                 return $q->where('orders.status_id', $this->status_id);
@@ -48,8 +52,6 @@ class OrderIndex extends Component
             })
             ->latest();
 
-
-
         return view('admin.order.index_live', [
             'drivers' => User::join('user_roles', 'user_roles.user_id', 'users.id')
                 ->where('role_id', 2)
@@ -66,9 +68,8 @@ class OrderIndex extends Component
             'order_purchase_price' => $query->clone()->sum('purchase_price'),
             'order_return_price' => $query->clone()->sum('return_price'),
             'order_return_count' => $query->clone()
-                ->where('orders.return_price','>',0)
+                ->where('orders.return_price', '>', 0)
                 ->count(),
-
 
         ]);
     }

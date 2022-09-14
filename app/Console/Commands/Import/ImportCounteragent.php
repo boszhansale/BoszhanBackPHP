@@ -5,7 +5,6 @@ namespace App\Console\Commands\Import;
 use App\Models\Counteragent;
 use App\Models\Role;
 use App\Models\User;
-use App\Models\UserRole;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
 
@@ -57,8 +56,6 @@ class ImportCounteragent extends Command
 //                $cu[] = $item;
 //            }
 //            $counteragent->counteragentUsers()->createMany($cu);
-
-
         }
 
         return 0;

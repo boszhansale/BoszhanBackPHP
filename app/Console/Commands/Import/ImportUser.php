@@ -5,7 +5,6 @@ namespace App\Console\Commands\Import;
 use App\Models\DriverSalesrep;
 use App\Models\User;
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\DB;
 
 class ImportUser extends Command
@@ -51,9 +50,7 @@ class ImportUser extends Command
                 ['role_id' => $oldUser->role],
                 ['role_id' => $oldUser->role]
             );
-
         }
-
 
         $realinships = DB::connection('old')->table('driver_store_representatives')->get();
 
@@ -63,11 +60,10 @@ class ImportUser extends Command
                 [
                     'id' => $realinship->id,
                     'driver_id' => $realinship->driver_id,
-                    'salesrep_id' => $realinship->store_representative_id
+                    'salesrep_id' => $realinship->store_representative_id,
                 ]
             );
         }
-
 
         return 0;
     }

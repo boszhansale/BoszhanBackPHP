@@ -5,9 +5,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use OwenIt\Auditing\Contracts\Auditable;
+
 /**
  * App\Models\Basket
  *
@@ -22,6 +22,7 @@ use OwenIt\Auditing\Contracts\Auditable;
  * @property string|null $deleted_at
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|Basket newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Basket newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Basket query()
@@ -37,6 +38,7 @@ use OwenIt\Auditing\Contracts\Auditable;
  * @method static \Illuminate\Database\Eloquent\Builder|Basket whereType($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Basket whereUpdatedAt($value)
  * @mixin \Eloquent
+ *
  * @property-read \Illuminate\Database\Eloquent\Collection|\OwenIt\Auditing\Models\Audit[] $audits
  * @property-read int|null $audits_count
  * @property-read \App\Models\Order $order
@@ -44,33 +46,34 @@ use OwenIt\Auditing\Contracts\Auditable;
  * @property int|null $reason_refund_id
  * @property string|null $comment
  * @property-read \App\Models\ReasonRefund|null $reasonRefund
+ *
  * @method static \Illuminate\Database\Query\Builder|Basket onlyTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder|Basket whereComment($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Basket whereReasonRefundId($value)
  * @method static \Illuminate\Database\Query\Builder|Basket withTrashed()
  * @method static \Illuminate\Database\Query\Builder|Basket withoutTrashed()
  */
-
-class Basket extends Model  implements Auditable
+class Basket extends Model implements Auditable
 {
     use \OwenIt\Auditing\Auditable;
     use SoftDeletes;
     use HasFactory;
 
-    protected $fillable = ['product_id','type','price','count','all_price','reason_refund_id','comment'];
+    protected $fillable = ['product_id', 'type', 'price', 'count', 'all_price', 'reason_refund_id', 'comment'];
 
-    protected $hidden = ['created_at','updated_at','deleted_at'];
+    protected $hidden = ['created_at', 'updated_at', 'deleted_at'];
 
-
-    function product():BelongsTo
+    public function product(): BelongsTo
     {
         return  $this->belongsTo(Product::class);
     }
-    function order():BelongsTo
+
+    public function order(): BelongsTo
     {
         return  $this->belongsTo(Order::class);
     }
-    function reasonRefund():BelongsTo
+
+    public function reasonRefund(): BelongsTo
     {
         return  $this->belongsTo(ReasonRefund::class);
     }
