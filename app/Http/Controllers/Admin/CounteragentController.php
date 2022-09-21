@@ -8,6 +8,7 @@ use App\Models\Counteragent;
 use App\Models\PaymentType;
 use App\Models\PriceType;
 use App\Models\Product;
+use App\Models\Store;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
@@ -87,6 +88,7 @@ class CounteragentController extends Controller
         $counteragent->enabled = $request->has('enabled');
         $counteragent->delivery_time = $request->get('delivery_time');
         $counteragent->save();
+        Store::whereCounteragentId($counteragent->id)->update(['enabled' => $request->has('enabled')]);
 
         if ($request->has('salesreps')) {
             $counteragent->counteragentUsers()->delete();

@@ -58,7 +58,7 @@ class StoreController extends Controller
         $store->lat = $request->get('lat');
         $store->lng = $request->get('lng');
         $store->discount = $request->get('discount');
-
+        $store->enabled = $request->has('enabled');
         $store->save();
 
         return redirect()->route('admin.store.index');
@@ -97,7 +97,7 @@ class StoreController extends Controller
         $store->lat = $request->get('lat');
         $store->lng = $request->get('lng');
         $store->discount = $request->get('discount');
-
+        $store->enabled = $request->has('enabled');
         $store->save();
 
         return redirect()->back();

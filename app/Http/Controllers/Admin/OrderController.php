@@ -11,6 +11,7 @@ use App\Models\PaymentType;
 use App\Models\Status;
 use App\Models\User;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\View\View;
 use Maatwebsite\Excel\Facades\Excel;
@@ -93,5 +94,24 @@ class OrderController extends Controller
         dump('отправлен');
 
         return redirect()->back();
+    }
+
+    public function driverMove()
+    {
+        return \view('admin.order.driver_move');
+    }
+
+    public function driverMoving(Request $request)
+    {
+        Order::whereIn('id',$request->get('orders'))
+            ->where('driver_id',$request->get('from_driver_id'))
+            ->update(['driver_id' => $request->get('to_driver_id')]);
+
+        return redirect()->route('admin.user.show',$request->get('to_driver_id'));
+    }
+
+    public function statistic()
+    {
+        return \view('admin.order.statistic');
     }
 }

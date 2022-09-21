@@ -112,6 +112,14 @@
         </p>
     </a>
 </li>
+<li class="nav-item">
+    <a href="{{route('admin.order.driver-move')}}" class="nav-link">
+        <i class="nav-icon fas fa-align-justify"></i>
+        <p>
+             Перенос Заявок водителя
+        </p>
+    </a>
+</li>
 
 
 <li class="nav-item">
@@ -119,6 +127,14 @@
         <i class="nav-icon fas fa-align-justify"></i>
         <p>
              Роли и права доступа
+        </p>
+    </a>
+</li>
+<li class="nav-item">
+    <a href="{{route('admin.order.statistic')}}" class="nav-link">
+        <i class="nav-icon fas fa-align-justify"></i>
+        <p>
+             Статистика
         </p>
     </a>
 </li>
