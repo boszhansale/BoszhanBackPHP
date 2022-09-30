@@ -1,8 +1,8 @@
 <?php
 
-use App\Http\Controllers\AuthController;
+
 use App\Http\Controllers\Cashier\MainController;
-use Illuminate\Support\Facades\Route;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -14,8 +14,7 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
-Route::get('/',[AuthController::class,'login'])->name('login');
-Route::post('/',[AuthController::class,'auth'])->name('auth');
-Route::get('logout',[AuthController::class,'logout'])->name('logout');
 
-
+Route::get('/', [MainController::class, 'index'])->name('main');
+Route::get('show/{counteragent}', [MainController::class, 'show'])->name('show');
+Route::get('order/{counteragent}', [MainController::class, 'order'])->name('order');

@@ -2,6 +2,7 @@
 @section('content')
     <form class="product-edit" action="{{route('admin.user.store')}}" method="post" enctype="multipart/form-data">
         @csrf
+        <input type="hidden" name="role_id" value="{{$roleId}}">
         @if ($errors->any())
             @foreach ($errors->all() as $error)
                 <div>{{$error}}</div>
@@ -39,6 +40,7 @@
                     <input type="text" class="form-control" name="counterparty" value="население ">
                 </div>
                 @endif
+                @if($roleId == 1 OR $roleId == 2)
 
                 <div class="form-group">
                     <label for="">Инвентарный номер планшета</label>
@@ -50,15 +52,25 @@
                 </div>
 
 
-                <div class="form-check">
-                    <input type="checkbox" class="form-check-input" name="case" value="1" id="case">
-                    <label class="form-check-label" for="case">Чехол планшета</label>
-                </div>
-                <div class="form-check">
-                    <input type="checkbox" class="form-check-input" name="screen_security" value="1" id="screen_security">
-                    <label class="form-check-label" for="screen_security">Пленка защиты</label>
-                </div>
+                    <div class="form-check">
+                        <input type="checkbox" class="form-check-input" name="case" value="1" id="case">
+                        <label class="form-check-label" for="case">Чехол планшета</label>
+                    </div>
+                    <div class="form-check">
+                        <input type="checkbox" class="form-check-input" name="screen_security" value="1" id="screen_security">
+                        <label class="form-check-label" for="screen_security">Пленка защиты</label>
+                    </div>
+                    <div class="form-check">
+                        <input type="checkbox" class="form-check-input" name="winning_access" value="1" id="winning_access">
+                        <label class="form-check-label" for="winning_access">winning_access</label>
+                    </div>
 
+                    <div class="form-check">
+                        <input type="checkbox" class="form-check-input" name="payout_access" value="1" id="payout_access">
+                        <label class="form-check-label" for="payout_access">payout_access</label>
+                    </div>
+
+                @endif
 
                 <div class="row">
                     @if($roleId == 1)
@@ -88,25 +100,8 @@
                 </div>
 
 
-                <div class="form-check">
-                    <input type="checkbox" class="form-check-input" name="winning_access" value="1" id="winning_access">
-                    <label class="form-check-label" for="winning_access">winning_access</label>
-                </div>
 
-                <div class="form-check">
-                    <input type="checkbox" class="form-check-input" name="payout_access" value="1" id="payout_access">
-                    <label class="form-check-label" for="payout_access">payout_access</label>
-                </div>
 
-                <h6 class="mt-5">Роль</h6>
-                <div>
-                   @foreach($roles as $role)
-                       <div class="form-check">
-                           <input {{$roleId == $role->id ? 'checked':''}}  type="checkbox" class="form-check-input" name="roles[]" value="{{$role->id}}" id="role_{{$role->id}}">
-                           <label class="form-check-label" for="role_{{$role->id}}">{{$role->description}}</label>
-                       </div>
-                   @endforeach
-               </div>
 
             </div>
             @if($roleId == 2)

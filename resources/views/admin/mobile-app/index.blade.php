@@ -8,7 +8,7 @@
 @section('content')
 
     <div class="row">
-        <div class="col-md-6">
+        <div class="col-md-12">
            <div class="card">
                <div class="card-header">Торговый</div>
                <div class="card-body">
@@ -16,10 +16,10 @@
                        <thead>
                        <tr>
                            <th>Версия</th>
+                           <th>Статус</th>
                            <th>загружено</th>
                            <th>Дата</th>
                            <th>Коммент</th>
-                           <th>Скачать</th>
                            <th></th>
                        </tr>
                        </thead>
@@ -30,6 +30,9 @@
                                    {{$mobileApp->version}}
                                </th>
                                <th>
+                                   {{$mobileApp->statusDescription()}}
+                               </th>
+                               <th>
                                    {{$mobileApp->downloads()->count()}}
                                </th>
                                <th>
@@ -38,15 +41,16 @@
                                <th>
                                    {{$mobileApp->comment}}
                                </th>
-                               <th>
-                                   <a target="_blank" href="{{route('admin.mobile-app.download',$mobileApp->id)}}">Скачать</a>
-                               </th>
 
                                <td class="project-actions text-right">
-
+                                   <a class="btn btn-primary btn-sm" href="{{route('admin.mobile-app.edit',$mobileApp->id)}}">
+                                       <i class="fas fa-edit"> </i>
+                                   </a>
+                                   <a class="btn btn-link btn-sm" target="_blank" href="{{route('admin.mobile-app.download',$mobileApp->id)}}">
+                                       <i class="fas fa-download"></i>
+                                   </a>
                                    <a  class="btn btn-danger btn-sm" href="{{route('admin.mobile-app.delete',$mobileApp->id)}}" onclick="return confirm('Удалить?')">
                                        <i class="fas fa-trash"></i>
-                                       удалить
                                    </a>
                                </td>
                            </tr>
@@ -56,7 +60,7 @@
                </div>
            </div>
         </div>
-        <div class="col-md-6">
+        <div class="col-md-12">
             <div class="card">
                 <div class="card-header">Водительский</div>
                 <div class="card-body">
@@ -64,10 +68,10 @@
                         <thead>
                         <tr>
                             <th>Версия</th>
+                            <th>Статус</th>
                             <th>загружено</th>
                             <th>Дата</th>
                             <th>Коммент</th>
-                            <th>Скачать</th>
                             <th></th>
                         </tr>
                         </thead>
@@ -78,6 +82,9 @@
                                     {{$mobileApp->version}}
                                 </th>
                                 <th>
+                                    {{$mobileApp->statusDescription()}}
+                                </th>
+                                <th>
                                     {{$mobileApp->downloads()->count()}}
                                 </th>
                                 <th>
@@ -86,15 +93,17 @@
                                 <th>
                                     {{$mobileApp->comment}}
                                 </th>
-                                <th>
-                                    <a target="_blank" href="{{route('admin.mobile-app.download',$mobileApp->id)}}">Скачать</a>
-                                </th>
 
                                 <td class="project-actions text-right">
+                                    <a class="btn btn-primary btn-sm" href="{{route('admin.mobile-app.edit',$mobileApp->id)}}">
+                                        <i class="fas fa-edit"> </i>
+                                    </a>
+                                    <a class="btn btn-link btn-sm" taget="_blank" href="{{route('admin.mobile-app.download',$mobileApp->id)}}">
+                                        <i class="fas fa-download"></i>
+                                    </a>
 
                                     <a  class="btn btn-danger btn-sm" href="{{route('admin.mobile-app.delete',$mobileApp->id)}}" onclick="return confirm('Удалить?')">
                                         <i class="fas fa-trash"></i>
-                                        удалить
                                     </a>
                                 </td>
                             </tr>

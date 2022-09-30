@@ -31,9 +31,8 @@ class UserIndex extends Component
                             ->orWhere('users.id', 'LIKE', '%'.$this->search.'%');
                     });
                 })
-                ->join('user_roles', 'user_roles.user_id', 'users.id')
                 ->when($this->roleId, function ($q) {
-                    return $q->where('user_roles.role_id', $this->roleId);
+                    return $q->where('users.role_id', $this->roleId);
                 })
                 ->groupBy('users.id')
                 ->orderBy('users.status')

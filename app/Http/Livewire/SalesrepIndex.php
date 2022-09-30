@@ -30,8 +30,7 @@ class SalesrepIndex extends Component
                             ->orWhere('users.id', 'LIKE', '%'.$this->search.'%');
                     });
                 })
-                ->join('user_roles', 'user_roles.user_id', 'users.id')
-                ->where('user_roles.role_id', 1)
+                ->where('users.role_id', 1)
                 ->groupBy('users.id')
                 ->orderBy('status', 'asc')
                 ->orderBy('id', 'desc')

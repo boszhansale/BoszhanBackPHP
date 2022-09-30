@@ -60,9 +60,7 @@
                         <th>{{$user->name}}</th>
                         <th>{{$user->id_1c}}</th>
                         <th>
-                            @foreach($user->roles as $role)
-                                <small>{{$role->description}}</small>
-                            @endforeach
+                            <small>{{$user->role->description}}</small>
                         </th>
                         <th>
                             @if($user->status == 1)

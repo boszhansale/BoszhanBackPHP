@@ -1,8 +1,7 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\AuthRequest;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
@@ -12,34 +11,39 @@ class AuthController extends Controller
 {
     public function login()
     {
+
         if (Auth::check()) {
-            if (Auth::user()->permissionExists('admin_panel')) {
-                return to_route('admin.main');
-            }
+            return match (Auth::user()->role->name) {
+                'admin' => to_route('admin.main'),
+                'cashier' => to_route('cashier.main'),
+                'default' => to_route('login')
+            };
         }
 
-        return view('admin.login');
+        return view('login');
     }
 
     public function auth(AuthRequest $request)
     {
+
         $user = User::whereLogin($request->get('login'))->first();
+
         if (! Hash::check($request->get('password'), $user->password)) {
             return  back()->withErrors('Неправильный пароль');
         }
-        if (! $user->permissionExists('admin_panel')) {
-            return  back()->withErrors('У вас нет доступа');
-        }
 
-        Auth::login($user, $request->has('remember'));
-
-        return to_route('admin.main');
+        Auth::login($user, 1);
+        return match (Auth::user()->role->name) {
+            'admin' => to_route('admin.main'),
+            'cashier' => to_route('cashier.main'),
+            default => to_route('login'),
+        };
     }
 
     public function logout()
     {
         Auth::logout();
 
-        return to_route('admin.login');
+        return to_route('login');
     }
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Livewire;
+namespace App\Http\Livewire\Cashier;
 
 use App\Models\Counteragent;
 use Livewire\Component;
@@ -16,7 +16,7 @@ class CounteragentIndex extends Component
 
     public function render()
     {
-        return view('admin.counteragent.index_live', [
+        return view('cashier.counteragent.index_live', [
             'counteragents' => Counteragent::when($this->search, function ($q) {
                 return $q->where(function ($qq) {
                     return $qq->where('name', 'LIKE', "%$this->search%")

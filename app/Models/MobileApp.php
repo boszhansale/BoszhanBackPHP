@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * App\Models\MobileApp
  *
  * @property int $id
+ * @property int $status
  * @property int $type
  * @property float $version
  * @property string $path
@@ -41,6 +42,16 @@ class MobileApp extends Model
     public function typeDescription(): string
     {
         return $this->type == 1 ? 'Торговый' : 'Водительский';
+    }
+
+    public function statusDescription(): string
+    {
+        return match ($this->status) {
+            1 => 'новая',
+            2 => 'Тестируется',
+            3 => 'В продакшн',
+            default => '',
+        };
     }
 
     protected function version(): Attribute

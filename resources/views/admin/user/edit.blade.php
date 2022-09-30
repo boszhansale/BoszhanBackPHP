@@ -55,7 +55,7 @@
 
 
                 <div class="row">
-                    @if($user->roles()->where('roles.id',1)->exists())
+                    @if($user->role_id == 1)
                         <div class="form-group col-md-8">
                             <label for="">группа</label>
                             <select name="plan_group_id" class="form-control" required>
@@ -89,18 +89,9 @@
                     <input type="checkbox" class="form-check-input {{$user->payout_access ? 'checked' : ''}}" name="payout_access" value="1" id="payout_access">
                     <label class="form-check-label" for="payout_access">payout_access</label>
                 </div>
-                <h6 class="mt-5">Роль</h6>
-                <div>
-                    @foreach($roles as $role)
-                        <div class="form-check">
-                            <input type="checkbox" class="form-check-input" {{$user->roles()->where('roles.id',$role->id)->exists() ? 'checked' : ''}} name="roles[]" value="{{$role->id}}" id="role_{{$role->id}}">
-                            <label class="form-check-label" for="role_{{$role->id}}">{{$role->description}}</label>
-                        </div>
-                    @endforeach
-                </div>
 
             </div>
-            @if($user->roles()->where('roles.id',1)->exists())
+            @if($user->role_id == 1)
                 <div class="col-md-3">
                     <h6 class="">Водитель</h6>
                     <div>
@@ -125,7 +116,7 @@
                 </div>
             @endif
 
-            @if($user->roles()->where('roles.id',2)->exists())
+            @if($user->role_id == 2)
                 <div class="col-md-3">
                     <h6 class="">Торговые</h6>
                     <div>
@@ -138,7 +129,7 @@
                     </div>
                 </div>
             @endif
-            @if($user->roles()->where('roles.id',8)->exists())
+            @if($user->role_id == 8)
                 <div class="col-md-3">
                     <h6 class="">Торговые</h6>
                     <div>

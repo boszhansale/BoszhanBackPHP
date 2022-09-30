@@ -13,12 +13,10 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('mobile_apps', function (Blueprint $table) {
+        Schema::create('store_salesreps', function (Blueprint $table) {
             $table->id();
-            $table->smallInteger('type');
-            $table->smallInteger('status')->default(1);
-            $table->float('version');
-            $table->string('path');
+            $table->foreignId('store_id')->constrained('stores')->cascadeOnDelete();
+            $table->foreignId('salesrep_id')->constrained('users')->cascadeOnDelete();
             $table->timestamps();
         });
     }
@@ -30,6 +28,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('mobile_apps');
+        Schema::dropIfExists('store_salesreps');
     }
 };

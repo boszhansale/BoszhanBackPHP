@@ -50,11 +50,9 @@
                             <td>{{$user->id_1c}}</td>
                         </tr>
                         <tr>
-                            <th>Роли</th>
+                            <th>Роль</th>
                             <td>
-                                @foreach($user->roles as $role)
-                                    {{$role->description}}
-                                @endforeach
+                                {{$user->role->description}}
                             </td>
                         </tr>
                         <tr>

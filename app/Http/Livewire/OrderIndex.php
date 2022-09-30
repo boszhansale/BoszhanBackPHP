@@ -53,12 +53,14 @@ class OrderIndex extends Component
             ->latest();
 
         return view('admin.order.index_live', [
-            'drivers' => User::join('user_roles', 'user_roles.user_id', 'users.id')
+            'drivers' => User::query()
                 ->where('role_id', 2)
+                ->where('users.status', 1)
                 ->orderBy('users.name')
                 ->get('users.*'),
-            'salesreps' => User::join('user_roles', 'user_roles.user_id', 'users.id')
+            'salesreps' => User::query()
                 ->where('role_id', 1)
+                ->where('status', 1)
                 ->orderBy('users.name')
                 ->get('users.*'),
             'statuses' => Status::all(),

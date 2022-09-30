@@ -11,8 +11,8 @@ class MobileAppController extends Controller
 {
     public function index()
     {
-        $driverApps = MobileApp::where('type', 2)->latest()->limit(6)->get();
-        $salesrepApps = MobileApp::where('type', 1)->latest()->limit(6)->get();
+        $driverApps = MobileApp::where('type', 2)->latest()->limit(5)->get();
+        $salesrepApps = MobileApp::where('type', 1)->latest()->limit(5)->get();
 
         return view('admin.mobile-app.index', compact('driverApps', 'salesrepApps'));
     }
@@ -34,6 +34,24 @@ class MobileAppController extends Controller
         $mobileApp->version = $request->get('version');
         $mobileApp->comment = $request->get('comment');
         $mobileApp->path = Storage::disk('public')->putFileAs($path, $request->file('app'), $name);
+        $mobileApp->save();
+
+        return redirect()->route('admin.mobile-app.index');
+    }
+
+
+    public function edit(MobileApp $mobileApp)
+    {
+
+        return view('admin.mobile-app.edit', compact('mobileApp'));
+    }
+
+    public function update(Request $request,MobileApp $mobileApp)
+    {
+
+        $mobileApp->version = $request->get('version');
+        $mobileApp->comment = $request->get('comment');
+        $mobileApp->status = $request->get('status');
         $mobileApp->save();
 
         return redirect()->route('admin.mobile-app.index');

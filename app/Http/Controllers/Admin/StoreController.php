@@ -26,19 +26,19 @@ class StoreController extends Controller
 
     public function create()
     {
-        $salesreps = User::join('user_roles', 'user_roles.user_id', 'users.id')
-            ->where('user_roles.role_id', 1)
+        $salesreps = User::query()
+            ->where('users.role_id', 1)
+            ->where('users.status', 1)
             ->select('users.*')
-            ->orderBy('name')
-
+            ->orderBy('users.name')
             ->get();
-        $drivers = User::join('user_roles', 'user_roles.user_id', 'users.id')
-            ->where('user_roles.role_id', 2)
+        $drivers = User::query()
+            ->where('users.role_id', 2)
+            ->where('users.status', 1)
             ->select('users.*')
-            ->orderBy('name')
-
+            ->orderBy('users.name')
             ->get();
-        $counteragents = Counteragent::all();
+        $counteragents = Counteragent::orderBy('name')->get();
 
         return view('admin.store.create', compact('salesreps', 'drivers', 'counteragents'));
     }
@@ -66,15 +66,17 @@ class StoreController extends Controller
 
     public function edit(Store $store)
     {
-        $salesreps = User::join('user_roles', 'user_roles.user_id', 'users.id')
-            ->where('user_roles.role_id', 1)
+        $salesreps = User::query()
+            ->where('users.role_id', 1)
+            ->where('users.status', 1)
             ->select('users.*')
-            ->orderBy('name')
+            ->orderBy('users.name')
             ->get();
-        $drivers = User::join('user_roles', 'user_roles.user_id', 'users.id')
-            ->where('user_roles.role_id', 2)
+        $drivers = User::query()
+            ->where('users.role_id', 2)
+            ->where('users.status', 1)
             ->select('users.*')
-            ->orderBy('name')
+            ->orderBy('users.name')
             ->get();
         $counteragents = Counteragent::all();
 

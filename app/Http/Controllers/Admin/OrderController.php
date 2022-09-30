@@ -27,13 +27,15 @@ class OrderController extends Controller
 
     public function edit(Order $order): View
     {
-        $salesreps = User::join('user_roles', 'user_roles.user_id', 'users.id')
-            ->where('user_roles.role_id', 1)
+        $salesreps = User::query()
+            ->where('users.role_id', 1)
+            ->where('users.status', 1)
             ->select('users.*')
             ->orderBy('users.name')
             ->get();
-        $drivers = User::join('user_roles', 'user_roles.user_id', 'users.id')
-            ->where('user_roles.role_id', 2)
+        $drivers = User::query()
+            ->where('users.role_id', 2)
+            ->where('users.status', 1)
             ->select('users.*')
             ->orderBy('users.name')
             ->get();
@@ -113,5 +115,9 @@ class OrderController extends Controller
     public function statistic()
     {
         return \view('admin.order.statistic');
+    }
+    public function history(Order $order)
+    {
+        return \view('admin.order.history',compact('order'));
     }
 }

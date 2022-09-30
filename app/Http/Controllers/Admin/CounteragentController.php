@@ -26,9 +26,10 @@ class CounteragentController extends Controller
     {
         $paymentTypes = PaymentType::all();
         $priceTypes = PriceType::all();
-        $salesreps = User::join('user_roles', 'user_roles.user_id', 'users.id')
+        $salesreps = User::query()
+            ->where('users.role_id', 1)
+            ->where('users.status', 1)
             ->select('users.*')
-            ->where('user_roles.role_id', 1)
             ->orderBy('users.name')
             ->get();
 
@@ -68,9 +69,10 @@ class CounteragentController extends Controller
     {
         $paymentTypes = PaymentType::all();
         $priceTypes = PriceType::all();
-        $salesreps = User::join('user_roles', 'user_roles.user_id', 'users.id')
+        $salesreps = User::query()
+            ->where('users.role_id', 1)
+            ->where('users.status', 1)
             ->select('users.*')
-            ->where('user_roles.role_id', 1)
             ->orderBy('users.name')
             ->get();
 

@@ -60,13 +60,15 @@ class UserController extends Controller
     public function create($roleId)
     {
         $roles = Role::all();
-        $salesreps = User::join('user_roles', 'user_roles.user_id', 'users.id')
-            ->where('user_roles.role_id', 1)
+        $salesreps = User::query()
+            ->where('users.role_id', 1)
+            ->where('users.status',1)
             ->select('users.*')
             ->orderBy('users.name')
             ->get();
-        $drivers = User::join('user_roles', 'user_roles.user_id', 'users.id')
-            ->where('user_roles.role_id', 2)
+        $drivers = User::query()
+            ->where('users.role_id', 2)
+            ->where('users.status',1)
             ->select('users.*')
             ->orderBy('users.name')
             ->get();
@@ -85,6 +87,7 @@ class UserController extends Controller
         $user->login = $request->get('login');
         $user->phone = $request->get('phone');
         $user->id_1c = $request->get('id_1c');
+        $user->role_id = $request->get('role_id');
         $user->winning_access = $request->has('winning_access');
         $user->payout_access = $request->has('payout_access');
         $user->password = Hash::make($request->get('password'));
@@ -139,28 +142,28 @@ class UserController extends Controller
                 ]);
             }
         }
-        if ($request->has('roles')) {
-            foreach ($request->get('roles') as $role_id) {
-                UserRole::updateOrCreate(
-                    [
-                        'user_id' => $user->id,
-                        'role_id' => $role_id,
-                    ],
-                    [
-                        'user_id' => $user->id,
-                        'role_id' => $role_id,
-                    ]
-                );
-
-                if ($role_id == 1) {
-                    PlanGroupUser::create([
-                        'plan_group_id' => $request->get('plan_group_id'),
-                        'plan' => $request->get('plan'),
-                        'user_id' => $user->id,
-                    ]);
-                }
-            }
-        }
+//        if ($request->has('roles')) {
+//            foreach ($request->get('roles') as $role_id) {
+//                UserRole::updateOrCreate(
+//                    [
+//                        'user_id' => $user->id,
+//                        'role_id' => $role_id,
+//                    ],
+//                    [
+//                        'user_id' => $user->id,
+//                        'role_id' => $role_id,
+//                    ]
+//                );
+//
+//                if ($role_id == 1) {
+//                    PlanGroupUser::create([
+//                        'plan_group_id' => $request->get('plan_group_id'),
+//                        'plan' => $request->get('plan'),
+//                        'user_id' => $user->id,
+//                    ]);
+//                }
+//            }
+//        }
 
         if ($request->has('brand_plans')) {
             foreach ($request->get('brand_plans') as $item) {
@@ -177,13 +180,15 @@ class UserController extends Controller
     public function edit(User $user)
     {
         $roles = Role::all();
-        $salesreps = User::join('user_roles', 'user_roles.user_id', 'users.id')
-            ->where('user_roles.role_id', 1)
+        $salesreps = User::query()
+            ->where('users.role_id', 1)
+            ->where('users.status',1)
             ->select('users.*')
             ->orderBy('users.name')
             ->get();
-        $drivers = User::join('user_roles', 'user_roles.user_id', 'users.id')
-            ->where('user_roles.role_id', 2)
+        $drivers = User::query()
+            ->where('users.role_id', 2)
+            ->where('users.status',1)
             ->select('users.*')
             ->orderBy('users.name')
             ->get();

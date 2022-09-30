@@ -76,6 +76,7 @@
                     <th>процент Возврат</th>
                     <th>Дата создание</th>
                     <th>Дата доставки</th>
+                    <th>Дата закрытие</th>
                     <th>тип оплаты</th>
                     <th>статус оплаты</th>
                     <th>версия</th>
@@ -139,6 +140,7 @@
                         @endif
                         <td>{{$order->created_at}}</td>
                         <td>{{$order->delivery_date}}</td>
+                        <td>{{$order->delivered_date}}</td>
                         <td>{{$order->paymentType->name}}</td>
                         <td>{{$order->paymentStatus->name}}</td>
                         <td>{{$order->salesrep_mobile_app_version}}</td>

@@ -52,14 +52,20 @@ class ListController extends Controller
 
     public function mobileApp(Request $request)
     {
-        $app = MobileApp::whereType($request->get('type'))->orderBy('version', 'desc')->firstOrFail();
+        $app = MobileApp::whereType($request->get('type'))
+            ->where('status',3)
+            ->orderBy('version', 'desc')
+            ->firstOrFail();
 
         return response()->json($app);
     }
 
     public function mobileAppDownload(Request $request)
     {
-        $app = MobileApp::whereType($request->get('type'))->orderBy('version', 'desc')->firstOrFail();
+        $app = MobileApp::whereType($request->get('type'))
+            ->where('status',3)
+            ->orderBy('version', 'desc')
+            ->firstOrFail();
         MobileAppDownload::updateOrCreate([
             'ip' => $request->ip(),
             'mobile_app_id' => $app->id,
