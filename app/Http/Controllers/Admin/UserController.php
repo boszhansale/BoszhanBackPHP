@@ -142,6 +142,8 @@ class UserController extends Controller
                 ]);
             }
         }
+
+
 //        if ($request->has('roles')) {
 //            foreach ($request->get('roles') as $role_id) {
 //                UserRole::updateOrCreate(
@@ -164,6 +166,14 @@ class UserController extends Controller
 //                }
 //            }
 //        }
+
+            if ($user->role_id == 1) {
+                PlanGroupUser::create([
+                    'plan_group_id' => $request->get('plan_group_id'),
+                    'plan' => $request->get('plan'),
+                    'user_id' => $user->id,
+                ]);
+            }
 
         if ($request->has('brand_plans')) {
             foreach ($request->get('brand_plans') as $item) {
@@ -295,6 +305,19 @@ class UserController extends Controller
                     );
                 }
             }
+        }
+
+        if ($user->role_id == 1) {
+            PlanGroupUser::updateOrCreate(
+                [
+                    'user_id' => $user->id,
+                ],
+                [
+                    'plan_group_id' => $request->get('plan_group_id'),
+                    'plan' => $request->get('plan'),
+                    'user_id' => $user->id,
+                ]
+            );
         }
 
 //        if ($request->file('images')){

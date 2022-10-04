@@ -20,12 +20,15 @@ class MainController extends Controller
     }
     public function show(Counteragent $counteragent)
     {
-
-        return \view('cashier.counteragent.show',compact('counteragent'));
+        $orders = Order::query()
+            ->join('stores','stores.id','orders.store_id')
+            ->where('stores.counteragent_id',$counteragent->id)
+            ->whereIn('payment_status_id',[2,3])
+            ->where('status_id',3)
+            ->orderBy('orders.id')
+            ->select('orders.*')
+            ->get();
+        return \view('cashier.counteragent.show',compact('counteragent','orders'));
     }
-    public function order(Counteragent $counteragent)
-    {
 
-        return \view('cashier.counteragent.order',compact('counteragent'));
-    }
 }

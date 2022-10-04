@@ -16,7 +16,7 @@ class AuthController extends Controller
             return match (Auth::user()->role->name) {
                 'admin' => to_route('admin.main'),
                 'cashier' => to_route('cashier.main'),
-                'default' => to_route('login')
+                default => to_route('login')
             };
         }
 

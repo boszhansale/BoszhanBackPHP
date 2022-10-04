@@ -78,8 +78,8 @@ class StoreController extends Controller
             ->select('users.*')
             ->orderBy('users.name')
             ->get();
-        $counteragents = Counteragent::all();
 
+        $counteragents = Counteragent::all();
         return view('admin.store.edit', compact('salesreps', 'drivers', 'store', 'counteragents'));
     }
 
@@ -101,6 +101,18 @@ class StoreController extends Controller
         $store->discount = $request->get('discount');
         $store->enabled = $request->has('enabled');
         $store->save();
+
+        if ($request->has('salesreps')) {
+            foreach ($request->get('salesreps') as $userId)
+            {
+                $store->salesreps()->updateOrCreate(
+                    ['salesrep_id' => $userId, 'store_id' => $store->id],
+                    ['salesrep_id' => $userId, 'store_id' => $store->id],
+                );
+            }
+        }else{
+            $store->salesreps()->delete();
+        }
 
         return redirect()->back();
     }

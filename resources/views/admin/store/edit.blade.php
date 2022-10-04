@@ -74,6 +74,17 @@
                     </select>
                 </div>
             </div>
+            <div class="col-md-6">
+                <h6 class="">Доступ </h6>
+                <div>
+                    @foreach($salesreps as $user)
+                        <div class="form-check">
+                            <input type="checkbox" {{$store->salesreps()->where('salesrep_id',$user->id)->exists() ? "checked" : ''}}  class="form-check-input" name="salesreps[]" value="{{$user->id}}" id="salesrep_{{$user->id}}">
+                            <label class="form-check-label" for="salesrep_{{$user->id}}">{{$user->name}}</label>
+                        </div>
+                    @endforeach
+                </div>
+            </div>
         </div>
         <button type="submit" class="mt-5 mb-10 btn btn-primary col-3 ">Сохранить</button>
     </form>

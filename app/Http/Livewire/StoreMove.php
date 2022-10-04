@@ -18,14 +18,18 @@ class StoreMove extends Component
     public function render()
     {
         return view('livewire.store-move', [
-            'from_salesreps' => User::join('user_roles', 'user_roles.user_id', 'users.id')
+            'from_salesreps' => User::query()
+                ->where('users.role_id',1)
+                ->where('users.status',1)
                 ->join('stores', 'stores.salesrep_id', 'users.id')
                  ->orderBy('users.name')
                 ->selectRaw('users.*,COUNT(stores.id) store_count')
                 ->groupBy('users.id')
                 ->having('store_count', '>=', 1)
-                 ->get(),
-            'to_salesreps' => User::join('user_roles', 'user_roles.user_id', 'users.id')
+                ->get(),
+            'to_salesreps' => User::query()
+                ->where('role_id', 1)
+                ->where('status', 1)
                 ->orderBy('users.name')
                  ->get('users.*'),
 

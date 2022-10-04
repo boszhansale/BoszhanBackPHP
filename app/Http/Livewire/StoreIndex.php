@@ -27,9 +27,10 @@ class StoreIndex extends Component
     public function render()
     {
         return view('admin.store.index_live', [
-            'salesreps' => User::join('user_roles', 'user_roles.user_id', 'users.id')
+            'salesreps' => User::query()
+                ->where('users.role_id',1)
+                ->where('users.status',1)
                 ->orderBy('users.name')
-                ->groupBy('users.id')
                  ->get('users.*'),
             'counteragents' => Counteragent::orderBy('name')->get(),
             'stores' => Store::when($this->search, function ($q) {
