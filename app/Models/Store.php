@@ -97,6 +97,10 @@ class Store extends Model implements Auditable
     {
         return $this->belongsTo(User::class, 'salesrep_id');
     }
+    public function driver(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'driver_id');
+    }
     public function salesreps(): HasMany
     {
         return $this->hasMany(StoreSalesrep::class);

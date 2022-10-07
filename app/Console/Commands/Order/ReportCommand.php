@@ -8,19 +8,32 @@ use Illuminate\Console\Command;
 
 class ReportCommand extends Command
 {
-    protected $signature = 'order:report';
+    protected $signature = 'order:report {order_id?}';
 
     protected $description = 'Generate order report by orders to xml';
 
     public function handle()
     {
-        $orders = Order::select('orders.*')
+        $order_id = $this->argument('order_id');
+        if ($order_id){
+            OrderReport::where('order_id',$order_id)->where('type',0)->delete();
+        }
+
+
+        $orders = Order::query()
+            ->select('orders.*')
+            ->when($order_id,function ($q) use ($order_id) {
+                return $q->where('orders.id',$order_id);
+            },function ($q){
+                return $q ->whereDate('created_at', now());
+            })
             ->whereHas('salesrep.counterparty')
-            ->whereDate('created_at', now())
+
             ->with(['salesrep.counterparty', 'store'])
             ->whereDoesntHave('report', function ($q) {
                 $q->where('type', 0);
             })
+
             ->get();
 
         if (! $orders) {

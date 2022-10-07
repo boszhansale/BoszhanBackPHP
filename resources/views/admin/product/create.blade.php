@@ -36,6 +36,22 @@
                     <input type="text" class="form-control" name="barcode" >
                 </div>
                 <div class="form-group">
+                    <label for="">barcode 1</label>
+                    <input type="text" class="form-control" name="barcode_1" >
+                </div>
+                <div class="form-group">
+                    <label for="">barcode 2</label>
+                    <input type="text" class="form-control" name="barcode_2" >
+                </div>
+                <div class="form-group">
+                    <label for="">barcode 3</label>
+                    <input type="text" class="form-control" name="barcode_3" >
+                </div>
+                <div class="form-group">
+                    <label for="">barcode 4</label>
+                    <input type="text" class="form-control" name="barcode_4" >
+                </div>
+                <div class="form-group">
                     <label for="">остаток</label>
                     <input type="number" class="form-control" name="remainder" >
                 </div>

@@ -13,7 +13,7 @@ class ReportReturnCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'order:report-return';
+    protected $signature = 'order:report-return {order_id?}';
 
     /**
      * The console command description.
@@ -24,9 +24,21 @@ class ReportReturnCommand extends Command
 
     public function handle()
     {
-        $orders = Order::select('orders.*')
+        $order_id = $this->argument('order_id');
+        if ($order_id){
+            OrderReport::where('order_id',$order_id)->where('type',1)->delete();
+        }
+
+
+        $orders = Order::query()
+            ->select('orders.*')
+            ->when($order_id,function ($q) use ($order_id) {
+                return $q->where('orders.id',$order_id);
+            },function ($q){
+                return $q->whereDate('orders.created_at', now());
+            })
             ->whereHas('salesrep.counterparty')
-            ->whereDate('orders.created_at', now())
+
             ->where('orders.return_price', '>', 0)
             ->with(['salesrep.counterparty', 'store'])
             ->whereDoesntHave('report', function ($q) {

@@ -26,14 +26,9 @@ class StoreIndex extends Component
 
     public function render()
     {
-        return view('admin.store.index_live', [
-            'salesreps' => User::query()
-                ->where('users.role_id',1)
-                ->where('users.status',1)
-                ->orderBy('users.name')
-                 ->get('users.*'),
-            'counteragents' => Counteragent::orderBy('name')->get(),
-            'stores' => Store::when($this->search, function ($q) {
+        $q = Store::query()
+            ->leftJoin('store_salesreps','store_salesreps.store_id','stores.id')
+            ->when($this->search, function ($q) {
                 return $q->where(function ($qq) {
                     return $qq->where('name', 'LIKE', "%$this->search%")
                         ->orWhere('phone', 'LIKE', "%$this->search%")
@@ -41,7 +36,10 @@ class StoreIndex extends Component
                 });
             })
             ->when($this->salesrepId, function ($q) {
-                return $q->where('salesrep_id', $this->salesrepId);
+                return $q->where(function ($qq){
+                    return $qq->where('stores.salesrep_id', $this->salesrepId)
+                        ->orWhere('store_salesreps.salesrep_id', $this->salesrepId);
+                });
             })
             ->when($this->counteragentId, function ($q) {
                 return $q->where('counteragent_id', $this->counteragentId);
@@ -52,23 +50,18 @@ class StoreIndex extends Component
             ->when($this->end_date, function ($query) {
                 return $query->whereDate('stores.created_at', '<=', $this->end_date);
             })
-            ->orderBy('stores.id', 'desc')
-            ->paginate(50),
-            'store_count' => Store::when($this->search, function ($q) {
-                return $q->where(function ($qq) {
-                    return $qq->where('name', 'LIKE', "%$this->search%")
-                        ->orWhere('phone', 'LIKE', "%$this->search%")
-                        ->orWhere('address', 'LIKE', "%$this->search%");
-                });
-            })
-            ->when($this->salesrepId, function ($q) {
-                return $q->where('salesrep_id', $this->salesrepId);
-            })
-            ->when($this->counteragentId, function ($q) {
-                return $q->where('counteragent_id', $this->counteragentId);
-            })
-            ->orderBy('stores.id', 'desc')
-            ->count(),
+            ->groupBy('stores.id')
+            ->orderBy('stores.id', 'desc');
+
+        return view('admin.store.index_live', [
+            'salesreps' => User::query()
+                ->where('users.role_id',1)
+                ->where('users.status',1)
+                ->orderBy('users.name')
+                 ->get('users.*'),
+            'counteragents' => Counteragent::orderBy('name')->get(),
+            'stores' => $q->clone()->select('stores.*')->paginate(50),
+            'store_count' => $q->clone()->count(),
 
         ]);
     }

@@ -46,12 +46,19 @@ class ProductController extends Controller
         $product->id_1c = $request->get('id_1c');
         $product->measure = $request->get('measure');
         $product->barcode = $request->get('barcode');
+
+        $product->barcode_1 = $request->get('barcode_1');
+        $product->barcode_2 = $request->get('barcode_2');
+        $product->barcode_3 = $request->get('barcode_3');
+        $product->barcode_4 = $request->get('barcode_4');
+
         $product->remainder = $request->get('remainder');
         $product->hit = $request->has('hit');
         $product->new = $request->has('new');
         $product->action = $request->has('action');
         $product->purchase = $request->has('purchase');
         $product->return = $request->has('return');
+
         $product->discount_5 = $request->has('discount_5');
         $product->discount_10 = $request->has('discount_10');
         $product->discount_15 = $request->has('discount_15');
@@ -122,8 +129,15 @@ class ProductController extends Controller
         $product->id_1c = $request->get('id_1c');
         $product->measure = $request->get('measure');
         $product->barcode = $request->get('barcode');
+
+        $product->barcode_1 = $request->get('barcode_1');
+        $product->barcode_2 = $request->get('barcode_2');
+        $product->barcode_3 = $request->get('barcode_3');
+        $product->barcode_4 = $request->get('barcode_4');
+
         $product->remainder = $request->get('remainder');
         $product->discount = $request->get('discount');
+
         $product->hit = $request->has('hit');
         $product->new = $request->has('new');
         $product->action = $request->has('action');
@@ -133,6 +147,7 @@ class ProductController extends Controller
         $product->discount_10 = $request->has('discount_10');
         $product->discount_15 = $request->has('discount_15');
         $product->discount_20 = $request->has('discount_20');
+
         $product->save();
 
         foreach ($request->get('price_types') as $item) {

@@ -51,7 +51,7 @@
                         <tr>
                             <td>количество заявок</td>
                             <td>
-                                <a href="{{route('cashier.order',$counteragent->id)}}">{{$counteragent->orders()->count()}}</a>
+                                <a href="{{route('cashier.order.counteragent',$counteragent->id)}}">{{$counteragent->orders()->count()}}</a>
                             </td>
                         </tr>
                     </table>
