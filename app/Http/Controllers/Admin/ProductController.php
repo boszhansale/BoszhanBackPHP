@@ -8,6 +8,7 @@ use App\Models\Category;
 use App\Models\Counteragent;
 use App\Models\PriceType;
 use App\Models\Product;
+use App\Models\ProductBarcode;
 use App\Models\ProductCounteragentPrice;
 use App\Models\ProductImage;
 use App\Models\ProductPriceType;
@@ -46,12 +47,15 @@ class ProductController extends Controller
         $product->id_1c = $request->get('id_1c');
         $product->measure = $request->get('measure');
         $product->barcode = $request->get('barcode');
+
+
         $product->remainder = $request->get('remainder');
         $product->hit = $request->has('hit');
         $product->new = $request->has('new');
         $product->action = $request->has('action');
         $product->purchase = $request->has('purchase');
         $product->return = $request->has('return');
+
         $product->discount_5 = $request->has('discount_5');
         $product->discount_10 = $request->has('discount_10');
         $product->discount_15 = $request->has('discount_15');
@@ -122,8 +126,11 @@ class ProductController extends Controller
         $product->id_1c = $request->get('id_1c');
         $product->measure = $request->get('measure');
         $product->barcode = $request->get('barcode');
+
+
         $product->remainder = $request->get('remainder');
         $product->discount = $request->get('discount');
+
         $product->hit = $request->has('hit');
         $product->new = $request->has('new');
         $product->action = $request->has('action');
@@ -133,6 +140,7 @@ class ProductController extends Controller
         $product->discount_10 = $request->has('discount_10');
         $product->discount_15 = $request->has('discount_15');
         $product->discount_20 = $request->has('discount_20');
+
         $product->save();
 
         foreach ($request->get('price_types') as $item) {
@@ -220,5 +228,19 @@ class ProductController extends Controller
         $counteragentPrice->delete();
 
         return back();
+    }
+
+    public function barcodeCreate(Request $request,Product $product)
+    {
+        $product->barcodes()->create(
+            ['barcode' => $request->get('barcode')]
+        );
+
+        return redirect()->back();
+    }
+    public function barcodeDelete(ProductBarcode $productBarcode)
+    {
+        $productBarcode->delete();
+        return redirect()->back();
     }
 }

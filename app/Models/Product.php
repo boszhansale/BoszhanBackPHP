@@ -128,6 +128,11 @@ class Product extends Model
         return $this->hasMany(ProductImage::class, 'product_id');
     }
 
+    public function barcodes(): HasMany
+    {
+        return $this->hasMany(ProductBarcode::class);
+    }
+
     public function category(): BelongsTo
     {
         return  $this->belongsTo(Category::class, 'category_id');

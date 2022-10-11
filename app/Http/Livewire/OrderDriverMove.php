@@ -18,15 +18,15 @@ class OrderDriverMove extends Component
     public function render()
     {
         return view('admin.order.driver_move_live', [
-            'fromDrivers' => User::join('user_roles', 'user_roles.user_id', 'users.id')
-                ->where('user_roles.role_id',2)
+            'fromDrivers' => User::query()
+                ->where('users.role_id',2)
                 ->where('users.status',1)
                 ->orderBy('users.name')
                 ->groupBy('users.id')
                 ->get('users.*'),
 
-            'toDrivers' => User::join('user_roles', 'user_roles.user_id', 'users.id')
-                ->where('user_roles.role_id',2)
+            'toDrivers' => User::query()
+                ->where('users.role_id',2)
                 ->where('users.status',1)
                 ->orderBy('users.name')
                 ->get('users.*'),

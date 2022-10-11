@@ -31,10 +31,16 @@
                         @endforeach
                     </select>
                 </div>
+
                 <div class="form-group">
                     <label for="">barcode</label>
                     <input type="text" class="form-control" name="barcode" >
                 </div>
+
+
+
+
+
                 <div class="form-group">
                     <label for="">остаток</label>
                     <input type="number" class="form-control" name="remainder" >

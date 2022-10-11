@@ -5,7 +5,7 @@
         @csrf
         @method('PUT')
         <div class="row">
-            <div class="col-md-4">
+            <div class="col-md-5">
                 <div class="form-group">
                     <label for="">Название</label>
                     <input type="text" class="form-control" name="name" value="{{$product->name}}">
@@ -37,10 +37,7 @@
                     </select>
                 </div>
 
-                <div class="form-group">
-                    <label for="">barcode</label>
-                    <input type="text" class="form-control" name="barcode" value="{{$product->barcode}}">
-                </div>
+
                 <div class="form-group">
                     <label for="">остаток</label>
                     <input type="number" class="form-control" name="remainder" value="{{$product->remainder}}">
@@ -117,7 +114,33 @@
                 </div>
 
             </div>
-            <div class="col-md-3">
+            <div class="col-md-2">
+                <div class="form-group">
+                    <label for="">barcode</label>
+                    <input type="text" class="form-control" name="barcode" value="{{$product->barcode}}">
+                </div>
+
+                @foreach($product->barcodes as $barcode)
+                    <div class="form-group">
+                        <label for="">barcode {{$loop->iteration}}</label>
+                        <div class="input-group">
+                            <input type="text" class="form-control" name="barcodes[{{$loop->index}}]"value="{{$barcode->barcode}}">
+                            <div class="input-group-append">
+                                <a href="{{route('admin.product.barcode.delete',$barcode->id)}}" class="input-group-text btn-danger" >
+                                    <i class="fas fa-trash"></i>
+                                </a>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                @endforeach
+                <button type="button" class="btn btn-default mt-3" data-toggle="modal" data-target="#modal-barcode">
+                    добавить поле
+                </button>
+            </div>
+            <div class="col-md-5">
                 @foreach($priceTypes as $k => $priceType)
                     <div>
                         <label for="">
@@ -133,8 +156,7 @@
                         @endif
                     </div>
                 @endforeach
-            </div>
-            <div class="col-md-5">
+                <br>
                 <div class="row">
                     <h5>Цены для Контрагентов</h5>
 
@@ -148,9 +170,11 @@
                                 <input type="hidden" name="counteragent_prices[{{$k}}][counteragent_id]"
                                        value="{{$counteragentPrice->counteragent_id}}">
                                 <div class="row">
-                                    <input class="form-control col-6" type="number" name="counteragent_prices[{{$k}}][price]"
+                                    <input class="form-control col-6" type="number"
+                                           name="counteragent_prices[{{$k}}][price]"
                                            value="{{$counteragentPrice->price}}">
-                                    <a href="{{route('admin.product.counteragentPriceDelete',$counteragentPrice->id)}}" class="btn btn-danger">удалить</a>
+                                    <a href="{{route('admin.product.counteragentPriceDelete',$counteragentPrice->id)}}"
+                                       class="btn btn-danger">удалить</a>
                                 </div>
                             </div>
                         @endforeach
@@ -165,6 +189,7 @@
 
         <button type="submit" class="mt-5 mb-10 btn btn-primary col-3 ">Сохранить</button>
     </form>
+
     <div class="modal fade" id="modal-default" aria-hidden="true" style="display: none;">
         <div class="modal-dialog">
             <form action="{{route('admin.product.counteragentPriceStore',$product->id)}}" method="post">
@@ -200,5 +225,32 @@
         <!-- /.modal-dialog -->
     </div>
 
+    <div class="modal fade" id="modal-barcode" aria-hidden="true" style="display: none;">
+        <div class="modal-dialog">
+            <form action="{{route('admin.product.barcode.store',$product->id)}}" method="post">
+                @csrf
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <div class="form-group">
+                                <label for="">Barcode</label>
+                                <input type="text" class="form-control" name="barcode">
+                            </div>
+                        </div>
+                        <div class="modal-footer justify-content-between">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">отмена</button>
+                            <button type="submit" class="btn btn-primary">сохранить</button>
+                        </div>
+                    </div>
+            </form>
+
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
 
 @endsection

@@ -40,6 +40,9 @@ Route::prefix('product')->name('product.')->group(function () {
 
     Route::post('counteragent-price/{product}', [ProductController::class, 'counteragentPriceStore'])->name('counteragentPriceStore');
     Route::get('counteragent-price/{counteragentPrice}', [ProductController::class, 'counteragentPriceDelete'])->name('counteragentPriceDelete');
+
+    Route::post('barcode/store/{product}',[ProductController::class,'barcodeCreate'])->name('barcode.store');
+    Route::get('barcode/delete/{productBarcode}',[ProductController::class,'barcodeDelete'])->name('barcode.delete');
 });
 
 Route::prefix('user')->name('user.')->group(function () {

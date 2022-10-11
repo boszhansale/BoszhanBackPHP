@@ -21,6 +21,8 @@ return new class extends Migration
             $table->smallInteger('measure');
             $table->string('name');
             $table->string('barcode')->nullable();
+
+
             $table->float('remainder')->nullable();
             $table->boolean('enabled')->default(1);
             $table->string('presale_id')->nullable();
