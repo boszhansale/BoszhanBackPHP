@@ -34,15 +34,19 @@ class OrderController extends Controller
             ->when($request->has('end_date'), function ($q) {
                 return $q->whereDate('orders.created_at', '<=', \request('end_date'));
             })
-            ->when(! $request->has('start_date') and ! $request->has('end_date'), function ($q) {
+            ->when(!$request->has('start_date') and !$request->has('end_date'), function ($q) {
                 return $q->whereDate('orders.created_at', '>=', Carbon::yesterday());
             })
             ->select('orders.*')
-            ->with(['baskets' => function ($q) {
-                $q->with('product');
-            }, 'store'])
+            ->with([
+                'baskets' => function ($q) {
+                    $q->with('product');
+                },
+                'store'
+            ])
             ->latest()
             ->get();
+    
 
         return response()->json($orders);
     }
@@ -57,7 +61,9 @@ class OrderController extends Controller
 
     public function show($id): JsonResponse
     {
-        $order = Order::with(['baskets', 'store', 'status', 'paymentType', 'paymentStatus', 'comments'])->findOrFail($id);
+        $order = Order::with(['baskets', 'store', 'status', 'paymentType', 'paymentStatus', 'comments'])->findOrFail(
+            $id
+        );
 
         return response()->json($order);
     }
@@ -127,10 +133,14 @@ class OrderController extends Controller
         $data['individual_orders'] = count($orders);
         $data['individual_purchase'] = 0;
         $data['individual_return'] = 0;
-        $data['individual_return_count'] = $user->salesrepOrders()->individual()->today()->where('return_price', '>', 0)->count();
+        $data['individual_return_count'] = $user->salesrepOrders()->individual()->today()->where(
+            'return_price',
+            '>',
+            0
+        )->count();
         $data['individual_games'] = 0;
         $data['individual_games_wins'] = 0;
-        foreach ($orders  as $order) {
+        foreach ($orders as $order) {
             $data['individual_games'] += $order->bonusGames()->count();
             $data['individual_games_wins'] += $order->bonusGames()->sum('win');
             $data['individual_purchase'] += $order->purchase_price;
@@ -142,10 +152,14 @@ class OrderController extends Controller
         $data['legal_entity_orders'] = count($orders);
         $data['legal_entity_purchase'] = 0;
         $data['legal_entity_return'] = 0;
-        $data['legal_entity_count_return'] = $user->salesrepOrders()->legalEntity()->today()->where('return_price', '>', 0)->count();
+        $data['legal_entity_count_return'] = $user->salesrepOrders()->legalEntity()->today()->where(
+            'return_price',
+            '>',
+            0
+        )->count();
         $data['legal_entity_games'] = 0;
         $data['legal_entity_games_wins'] = 0;
-        foreach ($orders  as $order) {
+        foreach ($orders as $order) {
             $data['legal_entity_games'] += $order->bonusGames()->count();
             $data['legal_entity_games_wins'] += $order->bonusGames()->sum('win');
             $data['legal_entity_purchase'] += $order->purchase_price;
