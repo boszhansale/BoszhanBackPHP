@@ -10,33 +10,37 @@
                 </div>
                 <div class="form-group">
                     <label for="">Телефон номер</label>
-                    <input type="text" class="form-control" name="phone" >
+                    <input type="text" class="form-control" name="phone">
                 </div>
                 <div class="form-group">
                     <label for="">id_1c</label>
-                    <input type="text" class="form-control" name="id_1c" >
+                    <input type="text" class="form-control" name="id_1c">
+                </div>
+                <div class="form-group">
+                    <label for="">id_edi</label>
+                    <input type="number" class="form-control" name="id_edi">
                 </div>
                 <div class="form-group">
                     <label for="">БИН</label>
-                    <input type="text" class="form-control" name="bin" >
+                    <input type="text" class="form-control" name="bin">
                 </div>
                 <div class="form-group">
                     <label for="">Адрес</label>
-                    <input type="text" class="form-control" name="address" >
+                    <input type="text" class="form-control" name="address">
                 </div>
                 <div class="row">
                     <div class="col form-group">
                         <label for="">lat</label>
-                        <input type="text" class="form-control" name="lat" >
+                        <input type="text" class="form-control" name="lat">
                     </div>
                     <div class="col form-group">
                         <label for="">lng</label>
-                        <input type="text" class="form-control" name="lng" >
+                        <input type="text" class="form-control" name="lng">
                     </div>
                 </div>
                 <div class="form-group">
                     <label for="">Скидка %</label>
-                    <input type="text" class="form-control" name="discount" value="0" >
+                    <input type="text" class="form-control" name="discount" value="0">
                 </div>
                 <div class="form-check">
                     <input type="checkbox" class="form-check-input" name="enabled" value="1" id="enabled" checked>
@@ -62,9 +66,9 @@
                 <div class="form-group">
                     <label for="">Водитель</label>
                     <select name="driver_id" class="form-control">
-                    <option value="null">----</option>
+                        <option value="null">----</option>
 
-                    @foreach($drivers as $driver)
+                        @foreach($drivers as $driver)
                             <option value="{{$driver->id}}">{{$driver->name}}</option>
                         @endforeach
                     </select>

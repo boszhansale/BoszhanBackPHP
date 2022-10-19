@@ -3,6 +3,7 @@
 namespace App\Actions;
 
 use App\Models\Order;
+use App\Models\Store;
 use App\Models\User;
 use Carbon\Carbon;
 
@@ -10,7 +11,13 @@ class OrderCreateAction
 {
     public function execute(array $data, User $salesrep): Order
     {
-        $driver = $salesrep->driver;
+        $store = Store::findOrFail($data['store_id']);
+        if ($store->driver) {
+            $driver = $store->driver;
+        } else {
+            $driver = $salesrep->driver;
+        }
+
         $order = new Order();
         $order->salesrep_id = $salesrep->id;
         $order->driver_id = $driver->id;
@@ -36,7 +43,7 @@ class OrderCreateAction
         }
         $date = Carbon::now();
 
-        return  match ($date->dayOfWeek) {
+        return match ($date->dayOfWeek) {
             5 => $date->addDays(3),
             6 => $date->addDays(2),
             default => Carbon::now()->addDay(),

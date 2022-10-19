@@ -10,15 +10,12 @@ use App\Models\Counterparty;
 use App\Models\DriverSalesrep;
 use App\Models\PlanGroup;
 use App\Models\PlanGroupUser;
-use App\Models\Product;
-use App\Models\ProductImage;
 use App\Models\Role;
 use App\Models\SupervisorSalesrep;
 use App\Models\User;
 use App\Models\UserRole;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;
 
 class UserController extends Controller
@@ -62,21 +59,24 @@ class UserController extends Controller
         $roles = Role::all();
         $salesreps = User::query()
             ->where('users.role_id', 1)
-            ->where('users.status',1)
+            ->where('users.status', 1)
             ->select('users.*')
             ->orderBy('users.name')
             ->get();
         $drivers = User::query()
             ->where('users.role_id', 2)
-            ->where('users.status',1)
+            ->where('users.status', 1)
             ->select('users.*')
             ->orderBy('users.name')
             ->get();
         $planGroups = PlanGroup::all();
         $brands = Brand::all();
-        $id_1c = User::latest()->firstOrFail()->id_1c + 1;
+        $id_1c = User::max('id_1c') + 1;
 
-        return view('admin.user.create', compact('roles', 'brands', 'id_1c', 'salesreps', 'drivers', 'planGroups', 'roleId'));
+        return view(
+            'admin.user.create',
+            compact('roles', 'brands', 'id_1c', 'salesreps', 'drivers', 'planGroups', 'roleId')
+        );
     }
 
     public function store(Request $request)
@@ -98,7 +98,7 @@ class UserController extends Controller
         $user->save();
 
         if ($request->has('counterparty')) {
-            $id_1c = (int) Counterparty::orderBy('id', 'desc')->firstOrFail()->id_1c;
+            $id_1c = (int)Counterparty::orderBy('id', 'desc')->firstOrFail()->id_1c;
             $c = new Counterparty();
             $c->name = $request->get('name');
             $c->user_id = $user->id;
@@ -167,13 +167,13 @@ class UserController extends Controller
 //            }
 //        }
 
-            if ($user->role_id == 1) {
-                PlanGroupUser::create([
-                    'plan_group_id' => $request->get('plan_group_id'),
-                    'plan' => $request->get('plan'),
-                    'user_id' => $user->id,
-                ]);
-            }
+        if ($user->role_id == 1) {
+            PlanGroupUser::create([
+                'plan_group_id' => $request->get('plan_group_id'),
+                'plan' => $request->get('plan'),
+                'user_id' => $user->id,
+            ]);
+        }
 
         if ($request->has('brand_plans')) {
             foreach ($request->get('brand_plans') as $item) {
@@ -192,13 +192,13 @@ class UserController extends Controller
         $roles = Role::all();
         $salesreps = User::query()
             ->where('users.role_id', 1)
-            ->where('users.status',1)
+            ->where('users.status', 1)
             ->select('users.*')
             ->orderBy('users.name')
             ->get();
         $drivers = User::query()
             ->where('users.role_id', 2)
-            ->where('users.status',1)
+            ->where('users.status', 1)
             ->select('users.*')
             ->orderBy('users.name')
             ->get();

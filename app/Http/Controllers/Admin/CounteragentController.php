@@ -45,6 +45,7 @@ class CounteragentController extends Controller
     {
         $counteragent = new Counteragent();
         $counteragent->name = $request->get('name');
+        $counteragent->group = $request->get('group');
         $counteragent->id_1c = $request->get('id_1c');
         $counteragent->bin = $request->get('bin');
         $counteragent->payment_type_id = $request->get('payment_type_id');
@@ -82,6 +83,7 @@ class CounteragentController extends Controller
     public function update(Request $request, Counteragent $counteragent)
     {
         $counteragent->name = $request->get('name');
+        $counteragent->group = $request->get('group');
         $counteragent->id_1c = $request->get('id_1c');
         $counteragent->bin = $request->get('bin');
         $counteragent->payment_type_id = $request->get('payment_type_id');

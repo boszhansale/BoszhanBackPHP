@@ -5,6 +5,14 @@
                 <div class="col-md-2">
                     <input wire:model="search" type="search" name="search" placeholder="поиск" class="form-control">
                 </div>
+                <div class="col-md-2">
+                    <select name="group" class="form-control" wire:model="group">
+                        <option value="">все группы</option>
+                        @foreach($groups as $group)
+                            <option value="{{$group}}">{{$group}}</option>
+                        @endforeach
+                    </select>
+                </div>
             </div>
         </div>
     </div>
@@ -46,15 +54,19 @@
                         <th>{{$counteragent->delivery_time}}</th>
 
                         <td class="project-actions text-right">
-                            <a class="btn btn-primary btn-sm" href="{{route('admin.counteragent.show',$counteragent->id)}}">
+                            <a class="btn btn-primary btn-sm"
+                               href="{{route('admin.counteragent.show',$counteragent->id)}}">
                                 <i class="fas fa-folder">
                                 </i>
                             </a>
-                            <a class="btn btn-info btn-sm" href="{{route('admin.counteragent.edit',$counteragent->id)}}">
+                            <a class="btn btn-info btn-sm"
+                               href="{{route('admin.counteragent.edit',$counteragent->id)}}">
                                 <i class="fas fa-pencil-alt">
                                 </i>
                             </a>
-                            <a  class="btn btn-danger btn-sm" href="{{route('admin.counteragent.delete',$counteragent->id)}}" onclick="return confirm('Are you sure?')">
+                            <a class="btn btn-danger btn-sm"
+                               href="{{route('admin.counteragent.delete',$counteragent->id)}}"
+                               onclick="return confirm('Are you sure?')">
                                 <i class="fas fa-trash"></i>
                             </a>
                         </td>

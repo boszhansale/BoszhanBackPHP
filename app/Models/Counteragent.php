@@ -14,6 +14,7 @@ use Illuminate\Database\Eloquent\Relations\HasManyThrough;
  * @property int $id
  * @property int $counteragent_group_id
  * @property string $name
+ * @property string $group
  * @property string|null $id_1c
  * @property string|null $bin
  * @property int $payment_type
@@ -32,6 +33,7 @@ use Illuminate\Database\Eloquent\Relations\HasManyThrough;
  * @method static \Illuminate\Database\Eloquent\Builder|Counteragent whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Counteragent whereId1c($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Counteragent whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Counteragent whereGroup($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Counteragent wherePaymentType($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Counteragent wherePriceTypeId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Counteragent whereUpdatedAt($value)
@@ -57,43 +59,54 @@ class Counteragent extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['id', 'name', 'id_1c', 'bin', 'payment_type_id', 'price_type_id', 'discount', 'enabled', 'created_at'];
+    protected $fillable = [
+        'id',
+        'name',
+        'group',
+        'id_1c',
+        'bin',
+        'payment_type_id',
+        'price_type_id',
+        'discount',
+        'enabled',
+        'created_at'
+    ];
 
     protected $hidden = ['deleted_at', 'created_at', 'updated_at', 'laravel_through_key'];
 
     public function priceType(): BelongsTo
     {
-        return  $this->belongsTo(PriceType::class);
+        return $this->belongsTo(PriceType::class);
     }
 
     public function paymentType(): BelongsTo
     {
-        return  $this->belongsTo(PaymentType::class);
+        return $this->belongsTo(PaymentType::class);
     }
 
     public function counteragentUsers(): HasMany
     {
-        return  $this->hasMany(CounteragentUser::class);
+        return $this->hasMany(CounteragentUser::class);
     }
 
     public function stores(): HasMany
     {
-        return  $this->hasMany(Store::class);
+        return $this->hasMany(Store::class);
     }
 
     public function debt(): float|int
     {
         return $this->orders()
-            ->where('orders.payment_status_id', 2)
-            ->sum('orders.purchase_price')
+                ->where('orders.payment_status_id', 2)
+                ->sum('orders.purchase_price')
             -
             $this->orders()
-            ->where('orders.payment_status_id', 1)
-            ->sum('orders.purchase_price');
+                ->where('orders.payment_status_id', 1)
+                ->sum('orders.purchase_price');
     }
 
     public function orders(): HasManyThrough
     {
-        return  $this->hasManyThrough(Order::class, Store::class, 'counteragent_id', 'store_id', '', 'id');
+        return $this->hasManyThrough(Order::class, Store::class, 'counteragent_id', 'store_id', '', 'id');
     }
 }

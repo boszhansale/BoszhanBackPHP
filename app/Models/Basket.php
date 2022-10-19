@@ -59,22 +59,28 @@ class Basket extends Model implements Auditable
     use SoftDeletes;
     use HasFactory;
 
+    const TYPE_PURCHASE = 0;
+    const TYPE_RETURN = 1;
+
+    //type 0 = purchase
+    //type 1 = return
+
     protected $fillable = ['product_id', 'type', 'price', 'count', 'all_price', 'reason_refund_id', 'comment'];
 
     protected $hidden = ['created_at', 'updated_at', 'deleted_at'];
 
     public function product(): BelongsTo
     {
-        return  $this->belongsTo(Product::class);
+        return $this->belongsTo(Product::class);
     }
 
     public function order(): BelongsTo
     {
-        return  $this->belongsTo(Order::class);
+        return $this->belongsTo(Order::class);
     }
 
     public function reasonRefund(): BelongsTo
     {
-        return  $this->belongsTo(ReasonRefund::class);
+        return $this->belongsTo(ReasonRefund::class);
     }
 }

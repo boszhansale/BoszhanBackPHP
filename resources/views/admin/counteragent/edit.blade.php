@@ -1,13 +1,18 @@
 @extends('admin.layouts.index')
 @section('content')
-    <form class="product-edit" action="{{route('admin.counteragent.update',$counteragent->id)}}" method="post" enctype="multipart/form-data">
+    <form class="product-edit" action="{{route('admin.counteragent.update',$counteragent->id)}}" method="post"
+          enctype="multipart/form-data">
         @csrf
         @method('PUT')
-        <div class="row"    >
+        <div class="row">
             <div class="col-md-6">
                 <div class="form-group">
                     <label for="">название</label>
                     <input type="text" class="form-control" name="name" required value="{{$counteragent->name}}">
+                </div>
+                <div class="form-group">
+                    <label for="">группа</label>
+                    <input type="text" class="form-control" name="group" value="{{$counteragent->group}}">
                 </div>
                 <div class="form-group">
                     <label for="">id_1c</label>
@@ -20,17 +25,19 @@
 
                 <div class="form-group">
                     <label for="">Скидка %</label>
-                    <input type="number" class="form-control" name="discount"  value="{{$counteragent->discount}}">
+                    <input type="number" class="form-control" name="discount" value="{{$counteragent->discount}}">
                 </div>
                 <div class="form-group">
                     <label for="delivery_time">доставить до</label>
-                    <input type="time" name="delivery_time" class="form-control" value="{{$counteragent->delivery_time}}">
+                    <input type="time" name="delivery_time" class="form-control"
+                           value="{{$counteragent->delivery_time}}">
                 </div>
                 <div class="form-group">
                     <label for="">Тип оплаты</label>
                     <select name="payment_type_id" required class="form-control">
                         @foreach($paymentTypes as $paymentType)
-                            <option {{$counteragent->payment_type_id == $paymentType->id ? 'selected':''}} value="{{$paymentType->id}}">{{$paymentType->name}}</option>
+                            <option
+                                {{$counteragent->payment_type_id == $paymentType->id ? 'selected':''}} value="{{$paymentType->id}}">{{$paymentType->name}}</option>
                         @endforeach
                     </select>
                 </div>
@@ -38,14 +45,16 @@
                     <label for="">цена</label>
                     <select name="price_type_id" required class="form-control">
                         @foreach($priceTypes as $priceType)
-                            <option {{$counteragent->price_type_id == $priceType->id ? 'selected':''}} value="{{$priceType->id}}">{{$priceType->name}}</option>
+                            <option
+                                {{$counteragent->price_type_id == $priceType->id ? 'selected':''}} value="{{$priceType->id}}">{{$priceType->name}}</option>
                         @endforeach
                     </select>
                 </div>
 
 
                 <div class="form-check">
-                    <input type="checkbox" class="form-check-input" name="enabled" value="1" id="enabled" {{$counteragent->enabled ? 'checked':''}} >
+                    <input type="checkbox" class="form-check-input" name="enabled" value="1"
+                           id="enabled" {{$counteragent->enabled ? 'checked':''}} >
                     <label class="form-check-label" for="enabled">активный</label>
                 </div>
 
@@ -56,7 +65,9 @@
                 <div>
                     @foreach($salesreps as $user)
                         <div class="form-check">
-                            <input type="checkbox" {{$user->counteragents()->where('counteragents.id',$counteragent->id)->exists() ? "checked" : ''}}  class="form-check-input" name="salesreps[]" value="{{$user->id}}" id="salesrep_{{$user->id}}">
+                            <input type="checkbox"
+                                   {{$user->counteragents()->where('counteragents.id',$counteragent->id)->exists() ? "checked" : ''}}  class="form-check-input"
+                                   name="salesreps[]" value="{{$user->id}}" id="salesrep_{{$user->id}}">
                             <label class="form-check-label" for="salesrep_{{$user->id}}">{{$user->name}}</label>
                         </div>
                     @endforeach

@@ -3,12 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Basket;
 use App\Models\Counteragent;
 use App\Models\CounteragentUser;
-use App\Models\Order;
-use App\Models\PriceType;
-use App\Models\Product;
 use App\Models\Store;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
@@ -48,6 +44,7 @@ class StoreController extends Controller
         $store = new Store();
         $store->name = $request->get('name');
         $store->id_1c = $request->get('id_1c');
+        $store->id_edi = $request->get('id_edi');
         $store->phone = $request->get('phone');
         $store->bin = $request->get('bin');
         $store->salesrep_id = $request->get('salesrep_id');
@@ -87,6 +84,7 @@ class StoreController extends Controller
     {
         $store->name = $request->get('name');
         $store->id_1c = $request->get('id_1c');
+        $store->id_edi = $request->get('id_edi');
         $store->phone = $request->get('phone');
         $store->bin = $request->get('bin');
         $store->salesrep_id = $request->get('salesrep_id');
@@ -103,14 +101,13 @@ class StoreController extends Controller
         $store->save();
 
         if ($request->has('salesreps')) {
-            foreach ($request->get('salesreps') as $userId)
-            {
+            foreach ($request->get('salesreps') as $userId) {
                 $store->salesreps()->updateOrCreate(
                     ['salesrep_id' => $userId, 'store_id' => $store->id],
                     ['salesrep_id' => $userId, 'store_id' => $store->id],
                 );
             }
-        }else{
+        } else {
             $store->salesreps()->delete();
         }
 
@@ -194,7 +191,9 @@ class StoreController extends Controller
 
     public function moving(Request $request): RedirectResponse
     {
-        Store::whereSalesrepId($request->get('from_salesrep_id'))->update(['salesrep_id' => $request->get('to_salesrep_id')]);
+        Store::whereSalesrepId($request->get('from_salesrep_id'))->update(
+            ['salesrep_id' => $request->get('to_salesrep_id')]
+        );
 
         CounteragentUser::where('user_id', $request->get('from_salesrep_id'))
             ->update(['user_id' => $request->get('to_salesrep_id')]);

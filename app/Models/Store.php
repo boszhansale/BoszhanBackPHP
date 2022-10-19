@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -21,6 +20,7 @@ use OwenIt\Auditing\Contracts\Auditable;
  * @property string|null $bin
  * @property string|null $id_1c
  * @property int|null $district_id
+ * @property int|null $id_edi
  * @property string $address
  * @property string|null $lat
  * @property string|null $lng
@@ -66,7 +66,7 @@ use OwenIt\Auditing\Contracts\Auditable;
  */
 class Store extends Model implements Auditable
 {
-    use HasFactory,SoftDeletes;
+    use HasFactory, SoftDeletes;
     use \OwenIt\Auditing\Auditable;
 
     protected $fillable = [
@@ -84,23 +84,26 @@ class Store extends Model implements Auditable
         'discount',
         'created_at',
         'export_1c',
+        'id_edi'
     ];
 
     protected $hidden = ['created_at', 'updated_at', 'deleted_at'];
 
     public function counteragent(): BelongsTo
     {
-        return  $this->belongsTo(Counteragent::class);
+        return $this->belongsTo(Counteragent::class);
     }
 
     public function salesrep(): BelongsTo
     {
         return $this->belongsTo(User::class, 'salesrep_id');
     }
+
     public function driver(): BelongsTo
     {
         return $this->belongsTo(User::class, 'driver_id');
     }
+
     public function salesreps(): HasMany
     {
         return $this->hasMany(StoreSalesrep::class);
