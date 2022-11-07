@@ -205,7 +205,7 @@ class User extends Authenticatable
 
     public function stores(): HasMany
     {
-        return $this->hasMany(Store::class, 'salesrep_id');
+        return $this->hasMany(Store::class, $this->isSalesrep() ? 'salesrep_id' : 'driver_id');
     }
 
     public function counteragents(): HasManyThrough

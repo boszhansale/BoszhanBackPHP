@@ -38,11 +38,15 @@ Route::prefix('product')->name('product.')->group(function () {
     Route::get('delete/{product}', [ProductController::class, 'delete'])->name('delete');
     Route::get('deleteImage/{productImage}', [ProductController::class, 'deleteImage'])->name('deleteImage');
 
-    Route::post('counteragent-price/{product}', [ProductController::class, 'counteragentPriceStore'])->name('counteragentPriceStore');
-    Route::get('counteragent-price/{counteragentPrice}', [ProductController::class, 'counteragentPriceDelete'])->name('counteragentPriceDelete');
+    Route::post('counteragent-price/{product}', [ProductController::class, 'counteragentPriceStore'])->name(
+        'counteragentPriceStore'
+    );
+    Route::get('counteragent-price/{counteragentPrice}', [ProductController::class, 'counteragentPriceDelete'])->name(
+        'counteragentPriceDelete'
+    );
 
-    Route::post('barcode/store/{product}',[ProductController::class,'barcodeCreate'])->name('barcode.store');
-    Route::get('barcode/delete/{productBarcode}',[ProductController::class,'barcodeDelete'])->name('barcode.delete');
+    Route::post('barcode/store/{product}', [ProductController::class, 'barcodeCreate'])->name('barcode.store');
+    Route::get('barcode/delete/{productBarcode}', [ProductController::class, 'barcodeDelete'])->name('barcode.delete');
 });
 
 Route::prefix('user')->name('user.')->group(function () {
@@ -67,8 +71,12 @@ Route::prefix('store')->name('store.')->group(function () {
     Route::put('update/{store}', [StoreController::class, 'update'])->name('update');
     Route::get('delete/{store}', [StoreController::class, 'delete'])->name('delete');
     Route::get('order/{store}', [StoreController::class, 'order'])->name('order');
-    Route::get('move', [StoreController::class, 'move'])->name('move');
-    Route::post('moving', [StoreController::class, 'moving'])->name('moving');
+
+    Route::get('salesrep-move', [StoreController::class, 'salesrepMove'])->name('salesrep-move');
+    Route::post('salesrep-moving', [StoreController::class, 'salesrepMoving'])->name('salesrep-moving');
+    
+    Route::get('driver-move', [StoreController::class, 'driverMove'])->name('driver-move');
+    Route::post('driver-moving', [StoreController::class, 'driverMoving'])->name('driver-moving');
 });
 Route::prefix('counteragent')->name('counteragent.')->group(function () {
     Route::get('/', [CounteragentController::class, 'index'])->name('index');
@@ -101,7 +109,9 @@ Route::prefix('mobile-app')->name('mobile-app.')->group(function () {
     Route::post('update/{mobileApp}', [MobileAppController::class, 'update'])->name('update');
 
     Route::get('delete/{mobileApp}', [MobileAppController::class, 'delete'])->name('delete');
-    Route::get('download/{mobileApp}', [MobileAppController::class, 'download'])->name('download')->withoutMiddleware('auth');
+    Route::get('download/{mobileApp}', [MobileAppController::class, 'download'])->name('download')->withoutMiddleware(
+        'auth'
+    );
 });
 Route::prefix('category')->name('category.')->group(function () {
     Route::get('/{brand}', [CategoryController::class, 'index'])->name('index');
@@ -133,10 +143,10 @@ Route::prefix('order')->name('order.')->group(function () {
     Route::get('recover/{order}', [OrderController::class, 'recover'])->name('recover');
     Route::get('export-excel/{order}', [OrderController::class, 'exportExcel'])->name('export-excel');
     Route::get('waybill/{order}', [OrderController::class, 'waybill'])->name('waybill');
-    Route::get('driver-move',[OrderController::class,'driverMove'])->name('driver-move');
-    Route::post('driver-moving',[OrderController::class,'driverMoving'])->name('driver-moving');
-    Route::get('statistic',[OrderController::class,'statistic'])->name('statistic');
-    Route::get('history/{order}',[OrderController::class,'history'])->name('history');
+    Route::get('driver-move', [OrderController::class, 'driverMove'])->name('driver-move');
+    Route::post('driver-moving', [OrderController::class, 'driverMoving'])->name('driver-moving');
+    Route::get('statistic', [OrderController::class, 'statistic'])->name('statistic');
+    Route::get('history/{order}', [OrderController::class, 'history'])->name('history');
 });
 Route::prefix('basket')->name('basket.')->group(function () {
     Route::get('create/{order}/{type}', [BasketController::class, 'create'])->name('create');

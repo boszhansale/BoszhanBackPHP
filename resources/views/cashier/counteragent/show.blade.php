@@ -61,13 +61,13 @@
     </div>
     <div class="card">
         <div class="card-header">
-        <div class="row justify-content-between">
-            <h4>История долга</h4>
+            <div class="row justify-content-between">
+                <h4>История баланса</h4>
 
-            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal-lg">
-                добавить
-            </button>
-        </div>
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal-lg">
+                    добавить
+                </button>
+            </div>
 
         </div>
         <div class="card-body">
@@ -78,8 +78,20 @@
                     <th>оплата</th>
                     <th>разница</th>
                     <th>коммент</th>
+                    <th>дата</th>
                 </tr>
                 </thead>
+                <tbody>
+                @foreach($operations as $operation)
+                    <tr>
+                        <td>{{$operation->debt}}</td>
+                        <td>{{$operation->balance}}</td>
+                        <td>{{$operation->balance}}</td>
+                        <td>{{$operation->comment}}</td>
+                        <td>{{$operation->created_at}}</td>
+                    </tr>
+                @endforeach
+                </tbody>
             </table>
         </div>
     </div>
@@ -87,7 +99,9 @@
     <div class="modal fade" id="modal-lg" aria-hidden="true" style="display: none;">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
-                <form action="">
+                <form action="{{route('cashier.add-balance')}}" method="post">
+                    @csrf
+                    <input type="hidden" name="counteragent_id" value="{{$counteragent->id}}">
                     <div class="modal-header">
                         {{$counteragent->name}}
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -96,21 +110,20 @@
                     </div>
                     <div class="modal-body">
                         <div class="form-group">
-                            <label for="">заявка</label>
-                            <select name="order_id" class="form-control">
-                                <option value="">выберите заявку</option>
-                                @foreach($orders as $order)
-                                    <option value="{{$order->id}}">
-                                        заявка №{{$order->id}} |
-                                        сумма {{$order->purchase_price}} |
-                                        дата {{\Carbon\Carbon::parse($order->created_at)->format('d.m.Y')}}
-                                    </option>
-                                @endforeach
-                            </select>
+                            <label for="">Долг : <span class="price">{{$counteragent->debt()}}</span> </label>
+                            <input type="hidden" name="debt" value="{{$counteragent->debt()}}">
                         </div>
                         <div class="form-group">
-                            <textarea name="comment" class="form-control" cols="20" rows="5" placeholder="описание"></textarea>
+                            <label for="">Сумма *</label>
+                            <input type="number" class="form-control" name="balance" required>
                         </div>
+
+
+                        <div class="form-group">
+                            <textarea name="comment" class="form-control" cols="20" rows="5"
+                                      placeholder="комментария"></textarea>
+                        </div>
+                        <h6>ответственный лицо: {{Auth::user()->name}}</h6>
                     </div>
                     <div class="modal-footer justify-content-between">
                         <button type="button" class="btn btn-default" data-dismiss="modal">отмена</button>

@@ -18,7 +18,7 @@ use App\Http\Controllers\Cashier\OrderController;
 
 Route::get('/', [MainController::class, 'index'])->name('main');
 Route::get('show/{counteragent}', [MainController::class, 'show'])->name('show');
-
+Route::post('add-balance', [MainController::class, 'addBalance'])->name('add-balance');
 Route::prefix('order')->name('order.')->group(function () {
     Route::get('counteragent/{counteragent}', [MainController::class, 'counteragent'])->name('counteragent');
     Route::get('/', [OrderController::class, 'index'])->name('index');
@@ -26,8 +26,8 @@ Route::prefix('order')->name('order.')->group(function () {
     Route::get('show/{order}', [OrderController::class, 'show'])->name('show');
     Route::get('export-excel/{order}', [OrderController::class, 'exportExcel'])->name('export-excel');
     Route::get('waybill/{order}', [OrderController::class, 'waybill'])->name('waybill');
-    Route::get('statistic',[OrderController::class,'statistic'])->name('statistic');
-    Route::get('history/{order}',[OrderController::class,'history'])->name('history');
+    Route::get('statistic', [OrderController::class, 'statistic'])->name('statistic');
+    Route::get('history/{order}', [OrderController::class, 'history'])->name('history');
 });
 
 

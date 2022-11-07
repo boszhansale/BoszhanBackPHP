@@ -11,16 +11,17 @@
                 <a href="{{route('admin.user.edit',$user->id)}}" class="btn btn-warning">изменить</a>
             @endif
             @if(Auth::user()->permissionExists('user_delete'))
-            <a  class="btn btn-danger" href="{{route('admin.user.delete',$user->id)}}" onclick="return confirm('Удалить?')">
-              удалит
-            </a>
+                <a class="btn btn-danger" href="{{route('admin.user.delete',$user->id)}}"
+                   onclick="return confirm('Удалить?')">
+                    удалит
+                </a>
             @endif
-           @if($user->isSalesrep())
+            @if($user->isSalesrep())
                 <a href="{{route('admin.user.order',[$user->id,1])}}" class="btn btn-primary">заявки торгового</a>
-           @endif
+            @endif
 
             @if($user->isDriver())
-                   <a href="{{route('admin.user.order',[$user->id,2])}}" class="btn btn-primary">заявки водителя</a>
+                <a href="{{route('admin.user.order',[$user->id,2])}}" class="btn btn-primary">заявки водителя</a>
             @endif
 
 
@@ -67,11 +68,13 @@
                                 @endif
                             </td>
                         </tr>
+                        <th>количество ТТ</th>
+                        <td>{{$user->stores()->count()}}</td>
                     </table>
                 </div>
             </div>
         </div>
-        @if($user->roles()->where('roles.id', 1)->exists())
+        @if($user->isSalesrep())
             <div class="col-md-4">
                 <div class="card">
                     <div class="card-body">
@@ -124,7 +127,7 @@
         @endif
     </div>
     <div class="row">
-        @if($user->roles()->where('roles.id', 1)->exists())
+        @if($user->isSalesrep())
             <div class="col-md-4">
                 <div class="card">
                     <div class="card-body">
@@ -134,15 +137,15 @@
                                 <td>{{$user->salesrepOrders()->count()}}</td>
                             </tr>
                             <tr>
-                                <th>Количество заявок за сегодня </th>
+                                <th>Количество заявок за сегодня</th>
                                 <td>{{$user->salesrepOrders()->whereDate('created_at',today())->count()}}</td>
                             </tr>
                             <tr>
-                                <th>Количество заявок за неделю </th>
+                                <th>Количество заявок за неделю</th>
                                 <td>{{$user->salesrepOrders()->whereDate('created_at','>=',now()->startOfWeek())->count()}}</td>
                             </tr>
                             <tr>
-                                <th>Количество заявок за месец </th>
+                                <th>Количество заявок за месец</th>
                                 <td>{{$user->salesrepOrders()->whereDate('created_at','>=',now()->startOfMonth())->count()}}</td>
                             </tr>
                         </table>
@@ -165,7 +168,7 @@
                 </div>
             </div>
         @endif
-        @if($user->roles()->where('roles.id', 2)->exists())
+        @if($user->isDriver())
             <div class="col-md-4">
                 <div class="card">
                     <div class="card-body">
@@ -175,21 +178,23 @@
                                 <td>{{$user->driverOrders()->count()}}</td>
                             </tr>
                             <tr>
-                                <th>Количество заявок за сегодня </th>
+                                <th>Количество заявок за сегодня</th>
                                 <td>{{$user->driverOrders()->whereDate('created_at',today())->count()}}</td>
                             </tr>
                             <tr>
-                                <th>Количество заявок за неделю </th>
+                                <th>Количество заявок за неделю</th>
                                 <td>{{$user->driverOrders()->whereDate('created_at','>=',now()->startOfWeek())->count()}}</td>
                             </tr>
                             <tr>
-                                <th>Количество заявок за месец </th>
+                                <th>Количество заявок за месец</th>
                                 <td>{{$user->driverOrders()->whereDate('created_at','>=',now()->startOfMonth())->count()}}</td>
                             </tr>
 
                             @foreach($user->salesreps as $salesrep)
                                 <tr>
-                                    <td>Кол. заявок  <b><a href="{{route('admin.user.show',$salesrep->id)}}">{{$salesrep->name}}</a></b></td>
+                                    <td>Кол. заявок <b><a
+                                                href="{{route('admin.user.show',$salesrep->id)}}">{{$salesrep->name}}</a></b>
+                                    </td>
                                     <td>{{$salesrep->salesrepOrders()->where('driver_id',$user->id)->count()}}</td>
                                 </tr>
                             @endforeach

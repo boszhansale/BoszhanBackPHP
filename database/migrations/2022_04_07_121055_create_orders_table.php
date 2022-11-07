@@ -4,8 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      *
@@ -44,6 +43,8 @@ return new class extends Migration
             $table->float('salesrep_mobile_app_version')->default('1.6');
             $table->boolean('export_1c')->default('0');
 
+            $table->text('error_message')->nullable();
+            $table->string('number')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });

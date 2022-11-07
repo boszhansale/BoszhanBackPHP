@@ -1,6 +1,6 @@
 <li class="nav-item">
     <a href="{{route('admin.main')}}" class="nav-link">
-        <i class="nav-icon fa fa-home" ></i>
+        <i class="nav-icon fa fa-home"></i>
 
         <p>
             Главная
@@ -8,14 +8,14 @@
     </a>
 </li>
 {{--@if(Auth::user()->permissionExists('product_index'))--}}
-    <li class="nav-item">
-        <a href="{{route('admin.product.index')}}" class="nav-link">
-            <i class="nav-icon fas fa-th"></i>
-            <p>
-                Продукты
-            </p>
-        </a>
-    </li>
+<li class="nav-item">
+    <a href="{{route('admin.product.index')}}" class="nav-link">
+        <i class="nav-icon fas fa-th"></i>
+        <p>
+            Продукты
+        </p>
+    </a>
+</li>
 {{--@endif--}}
 {{--@if(Auth::user()->permissionExists('user_index'))--}}
 <li class="nav-item">
@@ -99,16 +99,24 @@
     <a href="{{route('admin.mobile-app.index')}}" class="nav-link">
         <i class="nav-icon fas fa-mobile"></i>
         <p>
-             Версия Моб. прил.
+            Версия Моб. прил.
         </p>
     </a>
 </li>
 
 <li class="nav-item">
-    <a href="{{route('admin.store.move')}}" class="nav-link">
+    <a href="{{route('admin.store.salesrep-move')}}" class="nav-link">
         <i class="nav-icon fas fa-align-justify"></i>
         <p>
-             Перенос ТТ
+            Перенос ТТ Торговый
+        </p>
+    </a>
+</li>
+<li class="nav-item">
+    <a href="{{route('admin.store.driver-move')}}" class="nav-link">
+        <i class="nav-icon fas fa-align-justify"></i>
+        <p>
+            Перенос ТТ Водитель
         </p>
     </a>
 </li>
@@ -116,7 +124,7 @@
     <a href="{{route('admin.order.driver-move')}}" class="nav-link">
         <i class="nav-icon fas fa-align-justify"></i>
         <p>
-             Перенос Заявок водителя
+            Перенос Заявок водителя
         </p>
     </a>
 </li>
@@ -126,7 +134,7 @@
     <a href="{{route('admin.role.index')}}" class="nav-link">
         <i class="nav-icon fas fa-align-justify"></i>
         <p>
-             Роли и права доступа
+            Роли и права доступа
         </p>
     </a>
 </li>
@@ -134,7 +142,7 @@
     <a href="{{route('admin.order.statistic')}}" class="nav-link">
         <i class="nav-icon fas fa-align-justify"></i>
         <p>
-             Статистика
+            Статистика
         </p>
     </a>
 </li>

@@ -13,24 +13,26 @@ class BasketController extends Controller
 {
     public function index(Order $order): JsonResponse
     {
-        return response()->json($order->baskets()
-            ->with('product')
-            ->join('products', 'products.id', 'baskets.product_id')
-            ->orderBy('products.measure', 'desc')
-            ->select('baskets.*')
-            ->get()
+        return response()->json(
+            $order->baskets()
+                ->with('product')
+                ->join('products', 'products.id', 'baskets.product_id')
+                ->orderBy('products.measure', 'desc')
+                ->select('baskets.*')
+                ->get()
         );
     }
 
     public function initialState(Order $order): JsonResponse
     {
-        foreach ($order->baskets as $basket) {
+        foreach ($order->baskets()->withTrashed()->get() as $basket) {
             $firstBasket = $basket->audits()->whereEvent('created')->first();
             if ($firstBasket) {
                 $newValue = $firstBasket->new_values;
                 if (isset($newValue['count']) and isset($newValue['all_price'])) {
                     $basket->count = $newValue['count'];
                     $basket->all_price = $newValue['all_price'];
+                    $basket->deleted_at = null;
                     $basket->save();
                 }
             }

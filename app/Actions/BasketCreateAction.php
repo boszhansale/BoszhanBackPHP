@@ -22,15 +22,16 @@ class BasketCreateAction
         $baskets = collect();
         foreach ($data as $value) {
             $product = Product::find($value['product_id']);
-            if (! $product) {
+            if (!$product) {
                 continue;
             }
             $productPriceType = $product->prices()->where('price_type_id', $priceType->id)->first();
             $discount = $discount == 0 ? $product->discount : $discount;
 
-            if (! $productPriceType) {
+            if (!$productPriceType) {
                 continue;
             }
+            //возврат
             if ($value['type'] == 1) {
                 $basket = Basket::join('orders', 'orders.id', 'baskets.order_id')
                     ->where('orders.salesrep_id', $order->salesrep_id)
@@ -46,7 +47,10 @@ class BasketCreateAction
                     $value['price'] = $this->discount($productPriceType->price, $discount);
                 }
             } else {
-                $productCounteragentPrice = $counteragent ? $product->counteragentPrices()->where('counteragent_id', $counteragent->id)->first() : null;
+                $productCounteragentPrice = $counteragent ? $product->counteragentPrices()->where(
+                    'counteragent_id',
+                    $counteragent->id
+                )->first() : null;
 
                 if ($productCounteragentPrice) {
                     $value['price'] = $productCounteragentPrice->price;

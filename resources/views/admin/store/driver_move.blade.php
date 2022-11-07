@@ -3,5 +3,5 @@
 @section('content-header-title',"Перенос ТТ")
 
 @section('content')
-    <livewire:store-move />
+    <livewire:store-driver-move/>
 @endsection

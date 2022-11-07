@@ -184,21 +184,38 @@ class StoreController extends Controller
         return response()->view('admin.store.order', compact('store'));
     }
 
-    public function move(): View
+    public function salesrepMove(): View
     {
-        return view('admin.store.move');
+        return view('admin.store.salesrep_move');
     }
 
-    public function moving(Request $request): RedirectResponse
+    public function salesrepMoving(Request $request): RedirectResponse
     {
         Store::whereSalesrepId($request->get('from_salesrep_id'))->update(
             ['salesrep_id' => $request->get('to_salesrep_id')]
         );
 
         CounteragentUser::where('user_id', $request->get('from_salesrep_id'))
-            ->update(['user_id' => $request->get('to_salesrep_id')]);
+            ->update(
+                ['user_id' => $request->get('to_salesrep_id')]
+            );
 
         return to_route('admin.user.show', $request->get('to_salesrep_id'));
+    }
+
+    public function driverMove(): View
+    {
+        return view('admin.store.driver_move');
+    }
+
+    public function driverMoving(Request $request): RedirectResponse
+    {
+        Store::whereDriverId($request->get('from_driver_id'))->update(
+            ['driver_id' => $request->get('to_driver_id')]
+        );
+
+
+        return to_route('admin.user.show', $request->get('to_driver_id'));
     }
 
     protected function discount($price, $discount): float|int

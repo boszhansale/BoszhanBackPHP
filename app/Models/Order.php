@@ -31,7 +31,9 @@ use OwenIt\Auditing\Contracts\Auditable;
  * @property int $rnk_generate
  * @property int $db_export
  * @property string|null $delivery_date
+ * @property string|null $error_message
  * @property string|null $delivered_date
+ * @property string|null $number
  * @property float|null $purchase_price
  * @property float|null $return_price
  * @property \Illuminate\Support\Carbon|null $deleted_at
@@ -88,20 +90,38 @@ use OwenIt\Auditing\Contracts\Auditable;
  */
 class Order extends Model implements Auditable
 {
-    use HasFactory,SoftDeletes;
+    use HasFactory, SoftDeletes;
     use \OwenIt\Auditing\Auditable;
 
     protected $fillable = [
-        'id', 'salesrep_id', 'driver_id', 'store_id', 'status_id', 'mobile_id',
-        'payment_type_id', 'payment_status_id', 'payment_full', 'payment_partial',
-        'winning_name', 'winning_phone', 'winning_status',
+        'id',
+        'salesrep_id',
+        'driver_id',
+        'store_id',
+        'status_id',
+        'mobile_id',
+        'payment_type_id',
+        'payment_status_id',
+        'payment_full',
+        'payment_partial',
+        'winning_name',
+        'winning_phone',
+        'winning_status',
         'rnk_generate',
-        'delivery_date', 'delivered_date',
-        'purchase_price', 'return_price',
+        'delivery_date',
+        'delivered_date',
+        'purchase_price',
+        'return_price',
         'salesrep_mobile_app_version',
+        'error_message',
+        'number'
     ];
 
     protected $hidden = ['updated_at', 'deleted_at', 'rnk_generate'];
+
+    protected $casts = [
+        'error_message' => 'array'
+    ];
 
     const STATUS_READY_FOR_DELIVERY = 1;
 
@@ -208,63 +228,63 @@ class Order extends Model implements Auditable
     protected function winningName(): Attribute
     {
         return Attribute::make(
-            set: fn ($value) => $value ?? '',
+            set: fn($value) => $value ?? '',
         );
     }
 
     protected function winningPhone(): Attribute
     {
         return Attribute::make(
-            set: fn ($value) => $value ?? '',
+            set: fn($value) => $value ?? '',
         );
     }
 
     protected function winningStatus(): Attribute
     {
         return Attribute::make(
-            set: fn ($value) => $value ?? 1,
+            set: fn($value) => $value ?? 1,
         );
     }
 
     protected function paymentStatusId(): Attribute
     {
         return Attribute::make(
-            set: fn ($value) => $value ?? 2,
+            set: fn($value) => $value ?? 2,
         );
     }
 
     protected function paymentTypeId(): Attribute
     {
         return Attribute::make(
-            set: fn ($value) => $value ?? 1,
+            set: fn($value) => $value ?? 1,
         );
     }
 
     protected function paymentFull(): Attribute
     {
         return Attribute::make(
-            set: fn ($value) => $value ?? null,
+            set: fn($value) => $value ?? null,
         );
     }
 
     protected function createdAt(): Attribute
     {
         return Attribute::make(
-            get: fn ($value) => Carbon::parse($value)->format('d.m.Y H:i'),
+            get: fn($value) => Carbon::parse($value)->format('d.m.Y H:i'),
         );
     }
 
     protected function deliveryDate(): Attribute
     {
         return Attribute::make(
-            get: fn ($value) => Carbon::parse($value)->format('d.m.Y'),
+            get: fn($value) => Carbon::parse($value)->format('d.m.Y'),
         );
     }
 
     protected function deliveredDate(): Attribute
     {
         return Attribute::make(
-            get: fn ($value) => $value ? Carbon::parse($value)->format('d.m.Y'): null,
+            get: fn($value) => $value ? Carbon::parse($value)->format('d.m.Y') : null,
         );
     }
 }

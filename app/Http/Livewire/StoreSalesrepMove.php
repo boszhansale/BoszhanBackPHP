@@ -7,7 +7,7 @@ use App\Models\User;
 use Livewire\Component;
 use Livewire\WithPagination;
 
-class StoreMove extends Component
+class StoreSalesrepMove extends Component
 {
     use WithPagination;
 
@@ -17,12 +17,12 @@ class StoreMove extends Component
 
     public function render()
     {
-        return view('livewire.store-move', [
+        return view('admin.store.salesrep_move_live', [
             'from_salesreps' => User::query()
-                ->where('users.role_id',1)
-                ->where('users.status',1)
+                ->where('users.role_id', 1)
+                ->where('users.status', 1)
                 ->join('stores', 'stores.salesrep_id', 'users.id')
-                 ->orderBy('users.name')
+                ->orderBy('users.name')
                 ->selectRaw('users.*,COUNT(stores.id) store_count')
                 ->groupBy('users.id')
                 ->having('store_count', '>=', 1)
@@ -31,7 +31,7 @@ class StoreMove extends Component
                 ->where('role_id', 1)
                 ->where('status', 1)
                 ->orderBy('users.name')
-                 ->get('users.*'),
+                ->get('users.*'),
 
             'from_salesrep_stores_count' => Store::whereSalesrepId($this->from_salesrep_id)->count(),
             'to_salesrep_stores_count' => Store::whereSalesrepId($this->to_salesrep_id)->count(),
