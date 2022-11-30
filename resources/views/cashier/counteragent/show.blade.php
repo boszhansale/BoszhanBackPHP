@@ -86,7 +86,7 @@
                     <tr>
                         <td>{{$operation->debt}}</td>
                         <td>{{$operation->balance}}</td>
-                        <td>{{$operation->balance}}</td>
+                        <td>{{$operation->debt - $operation->balance}}</td>
                         <td>{{$operation->comment}}</td>
                         <td>{{$operation->created_at}}</td>
                     </tr>

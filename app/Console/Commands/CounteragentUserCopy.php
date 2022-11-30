@@ -2,13 +2,9 @@
 
 namespace App\Console\Commands;
 
-use App\Models\Basket;
-use App\Models\BrandPlanUser;
 use App\Models\CounteragentUser;
-use App\Models\PlanGroup;
-use App\Models\PlanGroupBrand;
-use App\Models\PlanGroupUser;
-use Carbon\Carbon;
+use App\Models\Store;
+use App\Models\StoreSalesrep;
 use Illuminate\Console\Command;
 
 class CounteragentUserCopy extends Command
@@ -36,17 +32,43 @@ class CounteragentUserCopy extends Command
     {
         $fromUserId = $this->argument('from');
         $toUserId = $this->argument('to');
+
         $counteragentUsers = CounteragentUser::whereUserId($fromUserId)->get();
+
+        
         foreach ($counteragentUsers as $counteragentUser) {
-            $new = CounteragentUser::firstOrCreate([
+            CounteragentUser::firstOrCreate([
                 'user_id' => $toUserId,
                 'counteragent_id' => $counteragentUser->counteragent_id
-            ],[
+            ], [
                 'user_id' => $toUserId,
                 'counteragent_id' => $counteragentUser->counteragent_id
             ]);
         }
-        $this->info('copy '.count($counteragentUsers));
+
+        $storeSalesreps = StoreSalesrep::whereSalesrepId($fromUserId)->get();
+        foreach ($storeSalesreps as $storeSalesrep) {
+            StoreSalesrep::firstOrCreate([
+                'salesrep_id' => $toUserId,
+                'store_id' => $storeSalesrep->store_id
+            ], [
+                'salesrep_id' => $toUserId,
+                'store_id' => $storeSalesrep->store_id
+            ]);
+        }
+
+        $stores = Store::whereSalesrepId($fromUserId)->get();
+        foreach ($stores as $store) {
+            StoreSalesrep::firstOrCreate([
+                'salesrep_id' => $toUserId,
+                'store_id' => $store->id
+            ], [
+                'salesrep_id' => $toUserId,
+                'store_id' => $store->id
+            ]);
+        }
+
+        $this->info('copy ' . count($counteragentUsers));
 
 
         return 0;

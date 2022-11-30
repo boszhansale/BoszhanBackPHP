@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Counteragent;
 use App\Models\CounteragentUser;
 use App\Models\Store;
+use App\Models\StoreSalesrep;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -194,11 +195,15 @@ class StoreController extends Controller
         Store::whereSalesrepId($request->get('from_salesrep_id'))->update(
             ['salesrep_id' => $request->get('to_salesrep_id')]
         );
+        StoreSalesrep::whereSalesrepId($request->get('from_salesrep_id'))->update(
+            ['salesrep_id' => $request->get('to_salesrep_id')]
+        );
 
         CounteragentUser::where('user_id', $request->get('from_salesrep_id'))
             ->update(
                 ['user_id' => $request->get('to_salesrep_id')]
             );
+
 
         return to_route('admin.user.show', $request->get('to_salesrep_id'));
     }
@@ -217,6 +222,21 @@ class StoreController extends Controller
 
         return to_route('admin.user.show', $request->get('to_driver_id'));
     }
+
+    public function position(Request $request, User $user): View
+    {
+
+        $positions = $user->stores()
+            ->when($request->has('date'), function ($q) {
+                return $q->whereDate('created_at', \request('date'));
+            })
+            ->whereNotNull(['lat', 'lng'])
+            ->selectRaw("REPLACE(stores.name,'\"',' ') as name,stores.id,stores.lat,stores.lng,  TIME(created_at) as time")
+            ->get();
+
+        return view('admin.store.position', compact('user', 'positions'));
+    }
+
 
     protected function discount($price, $discount): float|int
     {

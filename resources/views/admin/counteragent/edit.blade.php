@@ -22,7 +22,14 @@
                     <label for="">БИН</label>
                     <input type="text" class="form-control" name="bin" required value="{{$counteragent->bin}}">
                 </div>
-
+                <div class="form-group">
+                    <label for="">ИИК</label>
+                    <input type="text" class="form-control" name="iik" value="{{$counteragent->iik}}">
+                </div>
+                <div class="form-group">
+                    <label for="">БИК</label>
+                    <input type="text" class="form-control" name="bik" value="{{$counteragent->bik}}">
+                </div>
                 <div class="form-group">
                     <label for="">Скидка %</label>
                     <input type="number" class="form-control" name="discount" value="{{$counteragent->discount}}">

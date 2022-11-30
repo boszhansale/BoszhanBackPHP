@@ -19,9 +19,8 @@ class OrderController extends Controller
 {
     public function index()
     {
-        $query = Order::query();
 
-        return view('supervisor.order.index', compact('query'));
+        return view('supervisor.order.index');
     }
 
     public function edit(Order $order): View

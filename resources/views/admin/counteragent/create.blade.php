@@ -22,6 +22,14 @@
                         <label for="">БИН</label>
                         <input type="text" class="form-control" name="bin" required>
                     </div>
+                    <div class="form-group">
+                        <label for="">ИИК</label>
+                        <input type="text" class="form-control" name="iik">
+                    </div>
+                    <div class="form-group">
+                        <label for="">БИК</label>
+                        <input type="text" class="form-control" name="bik">
+                    </div>
 
                     <div class="form-group">
                         <label for="">Скидка %</label>

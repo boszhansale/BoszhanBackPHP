@@ -29,8 +29,11 @@ class StoreIndex extends Component
         $q = Store::query()
             ->join('users', 'users.id', 'stores.salesrep_id')
             ->join('supervisor_salesreps', 'supervisor_salesreps.salesrep_id', 'users.id')
+            ->leftJoin('store_salesreps', 'stores.id', 'store_salesreps.store_id')
             ->where('users.status', 1)
-            ->where('supervisor_salesreps.supervisor_id', \Auth::id())
+            ->when(\Auth::id() != 217, function ($q) {
+                $q->where('supervisor_salesreps.supervisor_id', \Auth::id());
+            })
             ->when($this->search, function ($q) {
                 return $q->where(function ($qq) {
                     return $qq->where('name', 'LIKE', "%$this->search%")

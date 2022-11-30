@@ -6,7 +6,6 @@ use App\Actions\OrderPriceAction;
 use App\Models\Order;
 use App\Models\Product;
 use App\Models\Store;
-use Exception;
 use Illuminate\Console\Command;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Storage;
@@ -16,53 +15,87 @@ class ParseXmlCommand extends Command
 {
     protected $signature = 'order:parse';
 
-    protected $description = 'parse xml';
+    protected $description = 'parse xml from ftp';
 
     public function handle()
     {
-        try {
-            $fileName = 'ORDER_20221012153708_709C63EE-4A11-11ED-882E-F96288FE69E5.xml';
-            $fileName = 'RETANN_20221020111213_C23008B8-5035-11ED-882E-F98ADC1C8D75.xml';
-            if ($fileName[0] == 'O') {
+        $files = Storage::disk('ftp')->files('inbox');
+        $this->info('all count ' . count($files));
+        $date = Carbon::now()->format('Ymd');
+        $matches = preg_grep("/(ORDER_|RETANN)($date)([0-9]{2})([0-9]{2}).*/", $files);
+        $this->info('parse count ' . count($matches));
+        $success = [];
+        foreach ($matches as $fileName) {
+
+
+//            $fileName = 'ORDER_20221012153708_709C63EE-4A11-11ED-882E-F96288FE69E5.xml';
+//            $fileName = 'RETANN_20221020111213_C23008B8-5035-11ED-882E-F98ADC1C8D75.xml';
+
+            if (strpos($fileName, 'ORDER')) {
                 $type = 0;
-            } elseif ($fileName[0] == 'R') {
+            } elseif (strpos($fileName, 'RETANN')) {
                 $type = 1;
             } else {
-                throw new Exception('filename type error');
+//                $this->error('filename type error');
+                continue;
             }
-            $xmlFile = Storage::disk('public')->get($fileName);
+
+            $this->info("scan $fileName" . ' time: ' . Carbon::now()->format('H:i:s'));
+
+
+            $xmlFile = Storage::disk('ftp')->get($fileName);
             if (!$xmlFile) {
-                throw new Exception('xml file not found');
+                $this->error('xml file not found');
+                continue;
             }
             $objectData = simplexml_load_string($xmlFile);
             $jsonFormatData = json_encode($objectData);
             $data = json_decode($jsonFormatData, true);
-
             //salesrep_id = 192
             $store = Store::where('id_edi', $data['HEAD']['DELIVERYPLACE'])->first();
             if (!$store) {
-                throw  new Exception('store not found');
+                $this->error('store not found: ' . $data['HEAD']['DELIVERYPLACE']);
+                continue;
             }
             $counteragent = $store->counteragent;
             if (!$counteragent) {
-                throw new Exception('counteragent not found');
+                $this->error('counteragent not found');
+                continue;
             }
             $driver = $store->driver;
             if (!$driver) {
-                throw new Exception('driver not found');
+                $this->error('driver not found');
+                continue;
             }
             $errorMessages = [];
 
-            $order = Order::create([
-                'salesrep_id' => 192,
-                'driver_id' => $driver->id,
-                'store_id' => $store->id,
-                'number' => $data['NUMBER'],
-                'delivery_date' => Carbon::parse($type == 0 ? $data['DELIVERYDATE'] : $data['RETURNDATE']),
-                'salesrep_mobile_app_version' => 1,
-                'mobile_id' => 'EDI_' . Str::random(10),
-                'payment_type_id' => $counteragent->payment_type_id,
-            ]);
+            $order = Order::where('number', $data['NUMBER'])->first();
+            if ($order) {
+                $order->update(
+                    [
+                        'salesrep_id' => 192,
+                        'driver_id' => $driver->id,
+                        'store_id' => $store->id,
+                        'delivery_date' => Carbon::parse($type == 0 ? $data['DELIVERYDATE'] : $data['RETURNDATE']),
+                        'error_message' => [],
+                        'payment_type_id' => $counteragent->payment_type_id,
+                    ]);
+                $order->baskets()->forceDelete();
+
+            } else {
+                $order = Order::create(
+                    [
+                        'salesrep_id' => 192,
+                        'driver_id' => $driver->id,
+                        'store_id' => $store->id,
+                        'number' => $data['NUMBER'],
+                        'delivery_date' => Carbon::parse($type == 0 ? $data['DELIVERYDATE'] : $data['RETURNDATE']),
+                        'salesrep_mobile_app_version' => 1,
+                        'mobile_id' => 'EDI_' . $date . '_' . Str::random(7),
+                        'payment_type_id' => $counteragent->payment_type_id,
+                    ]);
+            }
+
 
             if (isset($data['HEAD']['POSITION'][0])) {
                 foreach ($data['HEAD']['POSITION'] as $item) {
@@ -82,10 +115,13 @@ class ParseXmlCommand extends Command
             $order->update(['error_message' => $errorMessages]);
 
             OrderPriceAction::execute($order);
-        } catch (\Throwable $exception) {
-            $this->error($exception);
-            return 0;
+
+            if (count($errorMessages) == 0) {
+                $success[] = $fileName;
+            }
         }
+
+        $this->info('success count: ' . count($success));
     }
 
     public function createBasket(int $type, Order $order, array $item): array|null
@@ -104,14 +140,14 @@ class ParseXmlCommand extends Command
                 ->first();
         }
         if (!$product) {
-            $this->error($item['PRODUCT']);
+            $this->error('product barcode not found: ' . $item['PRODUCT']);
 
             $errorMessage['barcode'] = $item['PRODUCT'];
             $errorMessage['name'] = $type == 0 ? $item['CHARACTERISTIC']['DESCRIPTION'] : $item['DESCRIPTION'];
             return $errorMessage;
         }
-        $this->info($item['PRODUCT']);
-        $count = $type == 0 ? $item['ORDEREDQUANTITY'] : $item['RETURNDQUANTITY'];
+//        $this->info($item['PRODUCT']);
+        $count = $type == 0 ? $item['ORDEREDQUANTITY'] : $item['RETURNQUANTITY'];
         $price = $type == 0 ? $item['PRICEWITHVAT'] : $item['PRICE'];
         $order->baskets()->create([
             'product_id' => $product->id,

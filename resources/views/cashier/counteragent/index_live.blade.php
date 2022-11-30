@@ -22,6 +22,7 @@
                     <th>активность</th>
                     <th>долг</th>
                     <th>кол. ТТ</th>
+                    <th>кол. заявок</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -40,6 +41,7 @@
                         <th>{{$counteragent->enabled}}</th>
                         <th class="price">{{$counteragent->debt()}}</th>
                         <th>{{$counteragent->stores()->count()}}</th>
+                        <th>{{$counteragent->orders()->count()}}</th>
 
                         <td class="project-actions text-right">
                             <a class="btn btn-primary btn-sm" href="{{route('cashier.show',$counteragent->id)}}">

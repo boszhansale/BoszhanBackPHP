@@ -24,7 +24,9 @@ class ProductIndex extends Component
 
     public function mount()
     {
-        $this->categories = Category::all();
+        $this->categories = Category::orderBy('name')
+            ->where('enabled', 1)
+            ->get();
     }
 
     public function render()
@@ -35,8 +37,8 @@ class ProductIndex extends Component
             'products' => Product::select('products.*')
                 ->when($this->search, function ($q) {
                     return $q->where(function ($qq) {
-                        return $qq->where('products.name', 'LIKE', '%'.$this->search.'%')
-                            ->orWhere('products.article', 'LIKE', '%'.$this->search.'%');
+                        return $qq->where('products.name', 'LIKE', '%' . $this->search . '%')
+                            ->orWhere('products.article', 'LIKE', '%' . $this->search . '%');
                     });
                 })
                 ->join('categories', 'categories.id', 'products.category_id')
@@ -47,7 +49,6 @@ class ProductIndex extends Component
                     return $q->where('categories.id', $this->category_id);
                 })
                 ->with('category')
-
                 ->orderBy('products.article')
                 ->paginate(25),
         ]);

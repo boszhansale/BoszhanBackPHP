@@ -19,6 +19,10 @@
             @if($user->isSalesrep())
                 <a href="{{route('admin.user.order',[$user->id,1])}}" class="btn btn-primary">заявки торгового</a>
             @endif
+            @if($user->isSalesrep())
+                <a href="{{route('admin.store.position',$user->id)}}" class="btn btn-primary"> торговые точки на
+                    карте</a>
+            @endif
 
             @if($user->isDriver())
                 <a href="{{route('admin.user.order',[$user->id,2])}}" class="btn btn-primary">заявки водителя</a>
@@ -30,6 +34,7 @@
     <hr>
     <br>
     <div class="row">
+
         <div class="col-md-4">
             <div class="card">
                 <div class="card-body">
@@ -74,6 +79,18 @@
                 </div>
             </div>
         </div>
+        @if($user->isDriver())
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="chart">
+                            <canvas id="areaChart"
+                                    style="height: 340px; max-height: 450px; max-width: 100%;"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        @endif
         @if($user->isSalesrep())
             <div class="col-md-4">
                 <div class="card">
@@ -221,4 +238,43 @@
     </div>
 @endsection
 
+
+@section('js')
+    <script>
+        var areaChartCanvas = $('#areaChart').get(0).getContext('2d')
+        new Chart(areaChartCanvas, {
+            type: 'line',
+            data: {
+                labels: @js($hours),
+                datasets: [
+                    {
+                        label: 'доставлено',
+                        fill: false,
+                        borderColor: "#3cba9f",
+                        data: @js($hourOrders)
+                    }
+                ]
+            },
+            options: {
+                maintainAspectRatio: true,
+                responsive: true,
+                legend: {
+                    display: true
+                },
+                scales: {
+                    xAxes: [{
+                        gridLines: {
+                            display: true,
+                        }
+                    }],
+                    yAxes: [{
+                        gridLines: {
+                            display: true,
+                        }
+                    }]
+                }
+            }
+        })
+    </script>
+@endsection
 

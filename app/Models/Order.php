@@ -284,7 +284,7 @@ class Order extends Model implements Auditable
     protected function deliveredDate(): Attribute
     {
         return Attribute::make(
-            get: fn($value) => $value ? Carbon::parse($value)->format('d.m.Y') : null,
+            get: fn($value) => $value ? Carbon::parse($value)->format('H:i d.m.Y') : null,
         );
     }
 }

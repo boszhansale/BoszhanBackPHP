@@ -7,7 +7,7 @@
                     <div class="card-header">Выберите водителя "C"</div>
                     <div class="card-body">
                         <select wire:model="from_driver_id" name="from_driver_id" required class="form-control">
-                            <option>выберите</option>
+                            <option value="*">выберите</option>
                             @foreach($fromDrivers  as $driver)
                                 <option value="{{$driver->id}}">{{$driver->name}}</option>
                             @endforeach
@@ -27,6 +27,12 @@
                         </select>
                     </div>
                 </div>
+            </div>
+            <div class="col-md-12">
+                @if($to_driver_id)
+                    <button type="submit" class="btn btn-primary">Перенести</button>
+                @endif
+                <br>
             </div>
             <div class="col-md-12">
                 <div class="card">
@@ -59,7 +65,8 @@
                                 <tr class="{{$order->deleted_at != null ?'bg-red':''}}">
                                     <td>{{$order->id}}</td>
                                     <td>
-                                        <input class="order_checkbox" type="checkbox" name="orders[]" value="{{$order->id}}">
+                                        <input class="order_checkbox" type="checkbox" name="orders[]"
+                                               value="{{$order->id}}">
                                     </td>
                                     <td class="project-actions text-right">
                                         <a class="btn btn-primary btn-sm"
@@ -113,7 +120,7 @@
                         </table>
                     </div>
                 </div>
-                @if($from_driver_id and $to_driver_id)
+                @if($to_driver_id)
                     <button type="submit" class="btn btn-primary">Перенести</button>
                 @endif
             </div>

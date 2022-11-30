@@ -14,7 +14,7 @@
                     </select>
                 </div>
                 <div class="col-md-2">
-                    <select  wire:model="salesrep_id"  class="form-control">
+                    <select wire:model="salesrep_id" class="form-control">
                         <option value="">все торговые</option>
                         @foreach($salesreps as $salesrep)
                             <option value="{{$salesrep->id}}">{{$salesrep->name}}</option>
@@ -22,7 +22,7 @@
                     </select>
                 </div>
                 <div class="col-md-2">
-                    <select  wire:model="driver_id"  class="form-control">
+                    <select wire:model="driver_id" class="form-control">
                         <option value="">все водители</option>
                         @foreach($drivers as $driver)
                             <option value="{{$driver->id}}">{{$driver->name}}</option>
@@ -30,8 +30,8 @@
                     </select>
                 </div>
                 <div class="col-md-2">
-                    <input wire:model="start_date"  type="date" required class="form-control">
-                    <input wire:model="end_date"  type="date" required class="form-control">
+                    <input wire:model="start_date" type="date" required class="form-control">
+                    <input wire:model="end_date" type="date" required class="form-control">
                 </div>
             </div>
         </div>
@@ -86,23 +86,26 @@
                 @foreach($orders as $order)
                     <tr class="{{$order->deleted_at != null ?'bg-red':''}}">
                         <td>{{$order->id}}</td>
-                        <td  class="project-actions text-right">
-                            <a class="btn btn-primary btn-sm" href="{{route('admin.order.show',$order->id)}}">
+                        <td class="project-actions text-right">
+                            <a class="btn btn-primary btn-sm" href="{{route('supervisor.order.show',$order->id)}}">
                                 <i class="fas fa-folder">
                                 </i>
 
                             </a>
-                            <a class="btn btn-info btn-sm" href="{{route('admin.order.edit',$order->id)}}">
+                            <a class="btn btn-info btn-sm" href="{{route('supervisor.order.edit',$order->id)}}">
                                 <i class="fas fa-pencil-alt">
                                 </i>
 
                             </a>
                             @if($order->deleted_at != null )
-                                <a  class="btn btn-warning btn-sm" href="{{route('admin.order.recover',$order->id)}}" onclick="return confirm('уверен?')">
+                                <a class="btn btn-warning btn-sm"
+                                   href="{{route('supervisor.order.recover',$order->id)}}"
+                                   onclick="return confirm('уверен?')">
                                     <i class="fas fa-eraser"></i>
                                 </a>
                             @else
-                                <a  class="btn btn-danger btn-sm" href="{{route('admin.order.delete',$order->id)}}" onclick="return confirm('Удалить?')">
+                                <a class="btn btn-danger btn-sm" href="{{route('supervisor.order.delete',$order->id)}}"
+                                   onclick="return confirm('Удалить?')">
                                     <i class="fas fa-trash"></i>
                                 </a>
                             @endif
@@ -114,7 +117,7 @@
                         </td>
                         <td>
                             @if($order->store?->counteragent_id)
-                                <a href="{{route('admin.counteragent.show',$order->store->counteragent_id)}}">{{$order->store->counteragent->name}}</a>
+                                <a href="#">{{$order->store->counteragent->name}}</a>
                             @endif
                         </td>
                         <td>
@@ -122,15 +125,21 @@
                                 {{$order->store?->counteragent?->bin}}
                             @endif
                         </td>
-                        <td><a href="{{route('admin.store.show',$order->store_id)}}">{{$order->store?->name}}</a></td>
+                        <td><a href="{{route('supervisor.store.show',$order->store_id)}}">{{$order->store?->name}}</a>
+                        </td>
                         <td>{{$order->status->description}}</td>
-                        <td><a href="{{route('admin.user.show',$order->salesrep_id)}}">{{$order->salesrep->name}}</a></td>
-                        <td><a href="{{route('admin.user.show',$order->driver_id)}}">{{$order->driver->name}}</a></td>
+                        <td>
+                            <a href="{{route('supervisor.user.show',$order->salesrep_id)}}">{{$order->salesrep->name}}</a>
+                        </td>
+                        <td><a href="{{route('supervisor.user.show',$order->driver_id)}}">{{$order->driver->name}}</a>
+                        </td>
                         <td class="price">{{$order->purchase_price}}</td>
                         <td class="price">{{$order->return_price}}</td>
                         @if($order->return_price > 0)
                             @if(($order->return_price / $order->purchase_price)*100 >= 60 )
-                                <th style="color: red">{{ round(($order->return_price / $order->purchase_price)*100)  }}%</th>
+                                <th style="color: red">{{ round(($order->return_price / $order->purchase_price)*100)  }}
+                                    %
+                                </th>
                             @else
                                 <th>{{ round(($order->return_price / $order->purchase_price)*100)  }}%</th>
                             @endif

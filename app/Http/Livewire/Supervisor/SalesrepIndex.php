@@ -24,7 +24,11 @@ class SalesrepIndex extends Component
         return view('supervisor.user.salesreps_live', [
             'users' => User::query()
                 ->join('supervisor_salesreps', 'supervisor_salesreps.salesrep_id', 'users.id')
-                ->where('supervisor_salesreps.supervisor_id', \Auth::id())
+                ->when(\Auth::id() == 217, function ($q) {
+
+                }, function ($q) {
+                    $q->where('supervisor_salesreps.supervisor_id', \Auth::id());
+                })
                 ->select('users.*')
                 ->when($this->search, function ($q) {
                     return $q->where(function ($qq) {

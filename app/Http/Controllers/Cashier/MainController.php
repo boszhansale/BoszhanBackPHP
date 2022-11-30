@@ -50,7 +50,7 @@ class MainController extends Controller
                 $debtPrice = $order->purchase_price - $order->payment_partial;
                 //если остаток менше чем сумма оплаты
                 if ($debtPrice > $balance) {
-                    $order->payment_partial += $debtPrice;
+                    $order->payment_partial += $balance;
                     $order->save();
                     $order_ids[] = $order->id;
                     break;
@@ -68,7 +68,7 @@ class MainController extends Controller
             //остаток +
             if ($order->purchase_price >= $balance) {
                 //add to payment_purchase
-                $order->payment_partial = $balance;
+                $order->payment_partial += $balance;
                 $order->save();
 
 

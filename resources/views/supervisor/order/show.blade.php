@@ -29,7 +29,7 @@
                     удалить
                 </a>
             @endif
-            <a class="btn btn-info btn-sm" href="{{route('admin.order.history',$order->id)}}">
+            <a class="btn btn-info btn-sm" href="{{route('supervisor.order.history',$order->id)}}">
                 <i class="fas fa-info"></i>
                 история
             </a>

@@ -1,6 +1,7 @@
 @extends('admin.layouts.index')
 @section('content')
-    <form class="product-edit" action="{{route('admin.order.update',$order->id)}}" method="post" enctype="multipart/form-data">
+    <form class="product-edit" action="{{route('admin.order.update',$order->id)}}" method="post"
+          enctype="multipart/form-data">
         @csrf
         @method('PUT')
         <div class="row">
@@ -14,7 +15,9 @@
                     <label for="">Торговый точка</label>
                     <select name="store_id" class="form-control">
                         @foreach($order->salesrep->stores()->orderBy('name')->get() as $store)
-                            <option {{$store->id == $order->store_id ? 'selected':''}} value="{{$store->id}}">{{$store->name}} -> {{$store->address}}</option>
+                            <option
+                                {{$store->id == $order->store_id ? 'selected':''}} value="{{$store->id}}">{{$store->name}}
+                                -> {{$store->address}}</option>
                         @endforeach
                     </select>
                 </div>
@@ -23,7 +26,8 @@
                     <label for="">Торговый представитель</label>
                     <select name="salesrep_id" class="form-control" required>
                         @foreach($salesreps as $salesrep)
-                            <option {{$order->salesrep_id == $salesrep->id ? 'selected':''}} value="{{$salesrep->id}}">{{$salesrep->name}}</option>
+                            <option
+                                {{$order->salesrep_id == $salesrep->id ? 'selected':''}} value="{{$salesrep->id}}">{{$salesrep->name}}</option>
                         @endforeach
                     </select>
                 </div>
@@ -32,7 +36,8 @@
                     <label for="">Водитель</label>
                     <select name="driver_id" class="form-control" required>
                         @foreach($drivers as $driver)
-                            <option  {{$order->driver_id == $driver->id ? 'selected':''}}  value="{{$driver->id}}">{{$driver->name}}</option>
+                            <option
+                                {{$order->driver_id == $driver->id ? 'selected':''}}  value="{{$driver->id}}">{{$driver->name}}</option>
                         @endforeach
                     </select>
                 </div>
@@ -41,7 +46,8 @@
                     <label for="">Статус</label>
                     <select name="status_id" class="form-control" required>
                         @foreach($statuses as $status)
-                            <option  {{$order->status_id == $status->id ? 'selected':''}}  value="{{$status->id}}">{{$status->description}}</option>
+                            <option
+                                {{$order->status_id == $status->id ? 'selected':''}}  value="{{$status->id}}">{{$status->description}}</option>
                         @endforeach
                     </select>
                 </div>
@@ -50,7 +56,8 @@
                     <label for="">Тип оплаты</label>
                     <select name="payment_type_id" class="form-control" required>
                         @foreach($paymentTypes as $paymentType)
-                            <option  {{$order->payment_type_id == $paymentType->id ? 'selected':''}}  value="{{$paymentType->id}}">{{$paymentType->name}}</option>
+                            <option
+                                {{$order->payment_type_id == $paymentType->id ? 'selected':''}}  value="{{$paymentType->id}}">{{$paymentType->name}}</option>
                         @endforeach
                     </select>
                 </div>
@@ -59,29 +66,32 @@
                     <label for="">Статус оплаты</label>
                     <select name="payment_status_id" class="form-control" required>
                         @foreach($paymentStatuses as $paymentStatus)
-                            <option  {{$order->payment_status_id == $paymentStatus->id ? 'selected':''}}  value="{{$paymentStatus->id}}">{{$paymentStatus->name}}</option>
+                            <option
+                                {{$order->payment_status_id == $paymentStatus->id ? 'selected':''}}  value="{{$paymentStatus->id}}">{{$paymentStatus->name}}</option>
                         @endforeach
                     </select>
                 </div>
 
                 <div class="form-group">
                     <label for="">Дата доставки</label>
-                    <input type="date" name="delivery_date" class="form-control" required value="{{\Carbon\Carbon::parse($order->delivery_date)->format('Y-m-d')}}">
+                    <input type="date" name="delivery_date" class="form-control" required
+                           value="{{\Carbon\Carbon::parse($order->delivery_date)->format('Y-m-d')}}">
                 </div>
                 <div class="form-group">
                     <label for="">Дата доставлено</label>
-                    <input type="date" name="delivered_date" class="form-control" required value="{{\Carbon\Carbon::parse($order->delivered_date)->format('Y-m-d')}}">
+                    <input type="datetime-local" name="delivered_date" class="form-control" required
+                           value="{{\Carbon\Carbon::parse($order->delivered_date)->format('Y-m-d H:i')}}">
                 </div>
                 <div class="form-group">
                     <label for="">сумма</label>
-                    <input type="text" name="purchase_price" class="form-control" required value="{{$order->purchase_price}}">
+                    <input type="text" name="purchase_price" class="form-control" required
+                           value="{{$order->purchase_price}}">
                 </div>
                 <div class="form-group">
                     <label for="">сумма возврата</label>
-                    <input type="text" name="return_price" class="form-control" required value="{{$order->return_price}}">
+                    <input type="text" name="return_price" class="form-control" required
+                           value="{{$order->return_price}}">
                 </div>
-
-
 
 
             </div>

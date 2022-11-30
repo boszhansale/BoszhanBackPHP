@@ -64,7 +64,7 @@ class ProductController extends Controller
         $product->save();
 
         foreach ($request->get('counteragent_prices') as $item) {
-            if (! isset($item['price'])) {
+            if (!isset($item['price'])) {
                 continue;
             }
             if ($item['price'] == 0) {
@@ -112,7 +112,10 @@ class ProductController extends Controller
     public function edit(Product $product)
     {
         $priceTypes = PriceType::all();
-        $categories = Category::orderBy('brand_id')->where('enabled', 1)->with('brand')->get();
+        $categories = Category::orderBy('brand_id')
+            ->where('enabled', 1)
+            ->with('brand')
+            ->get();
         $counteragents = Counteragent::orderBy('name')->get();
 
         return view('admin.product.edit', compact('product', 'priceTypes', 'categories', 'counteragents'));
@@ -159,7 +162,7 @@ class ProductController extends Controller
         $product->counteragentPrices()->where('price', 0)->delete();
         if ($request->has('counteragent_prices')) {
             foreach ($request->get('counteragent_prices') as $item) {
-                if (! isset($item['price'])) {
+                if (!isset($item['price'])) {
                     continue;
                 }
                 if ($item['price'] == 0) {
@@ -230,7 +233,7 @@ class ProductController extends Controller
         return back();
     }
 
-    public function barcodeCreate(Request $request,Product $product)
+    public function barcodeCreate(Request $request, Product $product)
     {
         $product->barcodes()->create(
             ['barcode' => $request->get('barcode')]
@@ -238,6 +241,7 @@ class ProductController extends Controller
 
         return redirect()->back();
     }
+
     public function barcodeDelete(ProductBarcode $productBarcode)
     {
         $productBarcode->delete();

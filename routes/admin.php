@@ -74,9 +74,11 @@ Route::prefix('store')->name('store.')->group(function () {
 
     Route::get('salesrep-move', [StoreController::class, 'salesrepMove'])->name('salesrep-move');
     Route::post('salesrep-moving', [StoreController::class, 'salesrepMoving'])->name('salesrep-moving');
-    
+
     Route::get('driver-move', [StoreController::class, 'driverMove'])->name('driver-move');
     Route::post('driver-moving', [StoreController::class, 'driverMoving'])->name('driver-moving');
+
+    Route::get('position/{user}', [StoreController::class, 'position'])->name('position');
 });
 Route::prefix('counteragent')->name('counteragent.')->group(function () {
     Route::get('/', [CounteragentController::class, 'index'])->name('index');
@@ -141,8 +143,8 @@ Route::prefix('order')->name('order.')->group(function () {
     Route::put('update/{order}', [OrderController::class, 'update'])->name('update');
     Route::get('delete/{order}', [OrderController::class, 'delete'])->name('delete');
     Route::get('recover/{order}', [OrderController::class, 'recover'])->name('recover');
-    Route::get('export-excel/{order}', [OrderController::class, 'exportExcel'])->name('export-excel');
-    Route::get('waybill/{order}', [OrderController::class, 'waybill'])->name('waybill');
+    Route::get('export-excel/{order}', [OrderController::class, 'exportExcel'])->name('export-excel')->withoutMiddleware(['auth', 'admin']);
+    Route::get('waybill/{order}', [OrderController::class, 'waybill'])->name('waybill')->withoutMiddleware(['auth', 'admin']);;
     Route::get('driver-move', [OrderController::class, 'driverMove'])->name('driver-move');
     Route::post('driver-moving', [OrderController::class, 'driverMoving'])->name('driver-moving');
     Route::get('statistic', [OrderController::class, 'statistic'])->name('statistic');

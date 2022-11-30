@@ -17,6 +17,8 @@ use Illuminate\Database\Eloquent\Relations\HasManyThrough;
  * @property string $group
  * @property string|null $id_1c
  * @property string|null $bin
+ * @property string|null $iik
+ * @property string|null $bik
  * @property int $payment_type
  * @property int $price_type_id
  * @property string|null $deleted_at
@@ -65,6 +67,8 @@ class Counteragent extends Model
         'group',
         'id_1c',
         'bin',
+        'iik',
+        'bik',
         'payment_type_id',
         'price_type_id',
         'discount',
@@ -96,13 +100,18 @@ class Counteragent extends Model
 
     public function debt(): float|int
     {
-        return $this->orders()
+
+        $noPaymentSum = $this->orders()
                 ->where('orders.payment_status_id', 2)
-                ->sum('orders.purchase_price')
-            -
-            $this->orders()
-                ->where('orders.payment_status_id', 1)
-                ->sum('orders.purchase_price');
+                ->sum('orders.purchase_price') - $this->orders()
+                ->where('orders.payment_status_id', 2)
+                ->sum('orders.payment_partial');
+
+        $paymentSum = $this->orders()
+            ->where('orders.payment_status_id', 1)
+            ->sum('orders.purchase_price');
+
+        return $noPaymentSum <= 0 ? 0 : $noPaymentSum - $paymentSum;
     }
 
     public function orders(): HasManyThrough
@@ -110,3 +119,15 @@ class Counteragent extends Model
         return $this->hasManyThrough(Order::class, Store::class, 'counteragent_id', 'store_id', '', 'id');
     }
 }
+
+
+/*
+ * Контрагент AA FOOD TOO
+ * у него 3 заказа ( 30000тг, 20000тг , 10000тг)
+ *
+ * оплатил 1 заказ на сумму 10000тг
+ *
+ * долг = (30000 + 20000) - 10000
+ *
+ * итого  = -40 000
+ */

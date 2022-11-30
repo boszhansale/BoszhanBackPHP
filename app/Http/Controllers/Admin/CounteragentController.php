@@ -48,6 +48,8 @@ class CounteragentController extends Controller
         $counteragent->group = $request->get('group');
         $counteragent->id_1c = $request->get('id_1c');
         $counteragent->bin = $request->get('bin');
+        $counteragent->iik = $request->get('iik');
+        $counteragent->bik = $request->get('bik');
         $counteragent->payment_type_id = $request->get('payment_type_id');
         $counteragent->price_type_id = $request->get('price_type_id');
         $counteragent->discount = $request->get('discount');
@@ -86,6 +88,8 @@ class CounteragentController extends Controller
         $counteragent->group = $request->get('group');
         $counteragent->id_1c = $request->get('id_1c');
         $counteragent->bin = $request->get('bin');
+        $counteragent->iik = $request->get('iik');
+        $counteragent->bik = $request->get('bik');
         $counteragent->payment_type_id = $request->get('payment_type_id');
         $counteragent->price_type_id = $request->get('price_type_id');
         $counteragent->discount = $request->get('discount');

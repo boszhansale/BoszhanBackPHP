@@ -89,6 +89,11 @@ class Store extends Model implements Auditable
 
     protected $hidden = ['created_at', 'updated_at', 'deleted_at'];
 
+//    protected $casts = [
+//        'lat' => 'float',
+//        'lng' => 'float',
+//    ];
+
     public function counteragent(): BelongsTo
     {
         return $this->belongsTo(Counteragent::class);

@@ -25,6 +25,8 @@
                     <th>название</th>
                     <th>id_1c</th>
                     <th>БИН</th>
+                    <th>ИИК</th>
+                    <th>БИК</th>
                     <th>тип оплаты</th>
                     <th>цена</th>
                     <th>скидка</th>
@@ -45,6 +47,8 @@
                         </th>
                         <th>{{$counteragent->id_1c}}</th>
                         <th>{{$counteragent->bin}}</th>
+                        <th>{{$counteragent->iik}}</th>
+                        <th>{{$counteragent->bik}}</th>
                         <th>{{$counteragent->paymentType->name}}</th>
                         <th>{{$counteragent->priceType->name}}</th>
                         <th>{{$counteragent->discount}}</th>

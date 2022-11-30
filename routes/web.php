@@ -1,7 +1,6 @@
 <?php
 
 use App\Http\Controllers\AuthController;
-use App\Http\Controllers\Cashier\MainController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,8 +13,11 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
-Route::get('/',[AuthController::class,'login'])->name('login');
-Route::post('/',[AuthController::class,'auth'])->name('auth');
-Route::get('logout',[AuthController::class,'logout'])->name('logout');
+Route::get('/', function () {
+    return redirect('https://boszhan.com');
+});
+Route::get('login', [AuthController::class, 'login'])->name('login');
+Route::post('/', [AuthController::class, 'auth'])->name('auth');
+Route::get('logout', [AuthController::class, 'logout'])->name('logout');
 
 

@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\StoreStoreRequest;
 use App\Http\Requests\Api\StoreUpdateRequest;
 use App\Models\Store;
-use App\Models\StoreSalesrep;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -17,10 +16,11 @@ class StoreController extends Controller
         $lat = Auth::user()->lat;
         $lng = Auth::user()->lng;
 
+
         $stores = Store::query()
-            ->leftJoin('store_salesreps','store_salesreps.store_id','stores.id')
-            ->where(function ($q){
-                return $q->where('stores.salesrep_id',Auth::id())->orWhere('store_salesreps.salesrep_id',Auth::id());
+            ->leftJoin('store_salesreps', 'store_salesreps.store_id', 'stores.id')
+            ->where(function ($q) {
+                return $q->where('stores.salesrep_id', Auth::id())->orWhere('store_salesreps.salesrep_id', Auth::id());
             })
 //            ->when($lat or $lng, function ($q) use ($lng, $lat) {
 //                $q->selectRaw("ST_Distance_Sphere(
@@ -41,6 +41,7 @@ class StoreController extends Controller
             ->with(['salesrep', 'counteragent'])
             ->select('stores.*')
             ->get();
+
 
         return response()->json($stores);
     }

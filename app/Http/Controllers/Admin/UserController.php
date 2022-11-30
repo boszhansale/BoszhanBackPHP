@@ -32,7 +32,17 @@ class UserController extends Controller
         $driverOrders = $user->driverOrders()->paginate(20);
         $salesrepOrders = $user->salesrepOrders()->paginate(20);
 
-        return view('admin.user.show', compact('user', 'driverOrders', 'salesrepOrders'));
+        $hours = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 23];
+        $hourOrders = [];
+
+        foreach ($hours as $hour) {
+            $hourOrders[] = $user->driverOrders()
+                ->whereDate('orders.delivered_date', now())
+                ->whereRaw("HOUR(delivered_date) = $hour")
+                ->count();
+        }
+
+        return view('admin.user.show', compact('user', 'driverOrders', 'salesrepOrders', 'hours', 'hourOrders'));
     }
 
     public function position(Request $request, User $user): View

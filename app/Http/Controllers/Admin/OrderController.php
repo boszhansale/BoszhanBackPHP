@@ -105,19 +105,19 @@ class OrderController extends Controller
 
     public function driverMoving(Request $request)
     {
-        Order::whereIn('id',$request->get('orders'))
-            ->where('driver_id',$request->get('from_driver_id'))
+        Order::whereIn('id', $request->get('orders'))
             ->update(['driver_id' => $request->get('to_driver_id')]);
 
-        return redirect()->route('admin.user.show',$request->get('to_driver_id'));
+        return redirect()->route('admin.user.show', $request->get('to_driver_id'));
     }
 
     public function statistic()
     {
         return \view('admin.order.statistic');
     }
+
     public function history(Order $order)
     {
-        return \view('admin.order.history',compact('order'));
+        return \view('admin.order.history', compact('order'));
     }
 }
