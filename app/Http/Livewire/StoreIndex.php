@@ -51,6 +51,7 @@ class StoreIndex extends Component
                 return $query->whereDate('stores.created_at', '<=', $this->end_date);
             })
             ->groupBy('stores.id')
+            ->orderBy('stores.id_edi', 'asc')
             ->orderBy('stores.id', 'desc');
 
         return view('admin.store.index_live', [

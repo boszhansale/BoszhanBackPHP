@@ -35,34 +35,36 @@ io.on('connection', (socket) => {
     console.log('socket user connected');
     socket.on('position', function (json) {
         let data = JSON.parse(json)
-        console.log(data)
         connection.query(`UPDATE users
-                          SET lat = ${data.lat} lng = ${data.lng}
-                          where users.id = ${data.id}`, function (err, results, fields) {
-            if (err) {
-                console.log(err.message)
-            }
-            for (let i of results) {
-                console.log(i.name)
-            }
-        })
-        var mysqlTimestamp = moment(Date.now()).format('YYYY-MM-DD HH:mm:ss');
+                          SET lat = ${data.lat},
+                              lng = ${data.lng}
+                          where id = ${data.id}`,
+            function (err, results, fields) {
+                if (err) {
+                    console.error(err.message)
+                }
+            })
+        var mysqlTimestamp = moment(Date.now()).add(6, 'hours').format('YYYY-MM-DD HH:mm:ss');
 
-        connection.query(`INSERT INTO user_positions ('user_id', 'lat', 'lng', 'created_at')
-                          VALUES (${data.id}, ${data.lat}, ${data.lng}, mysqlTimestamp,
-                                  mysqlTimestamp);`, function (err, results, fields) {
-            if (err) {
-                console.log(err.message)
-            }
-            for (let i of results) {
-                console.log(i.name)
-            }
-        })
+
+        connection.query(`INSERT INTO user_positions (user_id, lat, lng, created_at)
+                          VALUES (${data.id}, ${data.lat}, ${data.lng}, '${mysqlTimestamp}');`,
+            function (err, results, fields) {
+                if (err) {
+                    console.log(err.message)
+                }
+            })
     })
 
     socket.on('disconnect', function () {
         console.log('A user disconnected');
     });
+
+    setInterval(function () {
+        console.log('emit')
+        socket.emit('position', 1)
+    }, 10000)
+
 });
 
 

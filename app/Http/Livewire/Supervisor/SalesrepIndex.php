@@ -23,7 +23,7 @@ class SalesrepIndex extends Component
     {
         return view('supervisor.user.salesreps_live', [
             'users' => User::query()
-                ->join('supervisor_salesreps', 'supervisor_salesreps.salesrep_id', 'users.id')
+                ->leftJoin('supervisor_salesreps', 'supervisor_salesreps.salesrep_id', 'users.id')
                 ->when(\Auth::id() == 217, function ($q) {
 
                 }, function ($q) {

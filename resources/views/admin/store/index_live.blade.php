@@ -7,7 +7,7 @@
                 </div>
 
                 <div class="col-md-2">
-                    <select  wire:model="salesrepId"  class="form-control">
+                    <select wire:model="salesrepId" class="form-control">
                         <option value="">все торговые</option>
                         @foreach($salesreps as $salesrep)
                             <option value="{{$salesrep->id}}">{{$salesrep->name}}</option>
@@ -15,7 +15,7 @@
                     </select>
                 </div>
                 <div class="col-md-2">
-                    <select  wire:model="counteragentId"  class="form-control">
+                    <select wire:model="counteragentId" class="form-control">
                         <option value="">все контрагенты</option>
                         @foreach($counteragents as $counteragent)
                             <option value="{{$counteragent->id}}">{{$counteragent->name}}</option>
@@ -23,8 +23,8 @@
                     </select>
                 </div>
                 <div class="col-md-2">
-                    <input wire:model="start_date"  type="date" class="form-control">
-                    <input wire:model="end_date"  type="date" class="form-control">
+                    <input wire:model="start_date" type="date" class="form-control">
+                    <input wire:model="end_date" type="date" class="form-control">
                 </div>
             </div>
         </div>
@@ -44,6 +44,7 @@
                     <th>ТП</th>
                     <th>БИН</th>
                     <th>id_1c</th>
+                    <th>id_edi</th>
                     <th>скидка %</th>
                     <th>кол заявок</th>
                     <th>долг</th>
@@ -75,6 +76,9 @@
                         <td>
                             {{$store->id_1c}}
                         </td>
+                        <td>
+                            {{$store->id_edi}}
+                        </td>
 
                         <td>
                             {{$store->discount}}
@@ -82,7 +86,7 @@
                         <td>
                             {{$store->orders()->count()}}
                         </td>
-                        <td > {{$store->orders()->where('payment_status_id',2)->sum('purchase_price') - $store->orders()->where('payment_status_id',1)->sum('purchase_price')}}</td>
+                        <td> {{$store->orders()->where('payment_status_id',2)->sum('purchase_price') - $store->orders()->where('payment_status_id',1)->sum('purchase_price')}}</td>
 
 
                         <td class="project-actions text-right">
@@ -94,11 +98,12 @@
                                 <i class="fas fa-pencil-alt">
                                 </i>
                             </a>
-{{--                            <a  class="btn btn-danger btn-sm" href="{{route('admin.store.delete',$store->id)}}" onclick="return confirm('Удалить?')">--}}
-{{--                                <i class="fas fa-trash"></i>--}}
-{{--                            </a>--}}
+                            {{--                            <a  class="btn btn-danger btn-sm" href="{{route('admin.store.delete',$store->id)}}" onclick="return confirm('Удалить?')">--}}
+                            {{--                                <i class="fas fa-trash"></i>--}}
+                            {{--                            </a>--}}
 
-                            <button class="btn btn-danger btn-sm" wire:click="delete({{$store->id}})" onclick="return confirm('Удалить?')">
+                            <button class="btn btn-danger btn-sm" wire:click="delete({{$store->id}})"
+                                    onclick="return confirm('Удалить?')">
                                 <i class="fas fa-trash"></i>
                             </button>
                         </td>

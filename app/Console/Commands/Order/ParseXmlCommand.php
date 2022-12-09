@@ -19,9 +19,12 @@ class ParseXmlCommand extends Command
 
     public function handle()
     {
+//        $this->clear();
+
         $files = Storage::disk('ftp')->files('inbox');
         $this->info('all count ' . count($files));
-        $date = Carbon::now()->format('Ymd');
+        $date = Carbon::parse('2022-12-06')->format('Ymd');
+//        $date = Carbon::now()->format('Ymd');
         $matches = preg_grep("/(ORDER_|RETANN)($date)([0-9]{2})([0-9]{2}).*/", $files);
         $this->info('parse count ' . count($matches));
         $success = [];
@@ -40,7 +43,7 @@ class ParseXmlCommand extends Command
                 continue;
             }
 
-            $this->info("scan $fileName" . ' time: ' . Carbon::now()->format('H:i:s'));
+//            $this->info("scan $fileName" . ' time: ' . Carbon::now()->format('H:i:s'));
 
 
             $xmlFile = Storage::disk('ftp')->get($fileName);
@@ -160,5 +163,42 @@ class ParseXmlCommand extends Command
         return null;
     }
 
+    public function clear()
+    {
+        $files = Storage::disk('ftp')->files('inbox');
+        $this->info('all count ' . count($files));
+//        $date = Carbon::parse('2022-11-30')->format('Ymd');
+        $date = (int)Carbon::now()->subDays(7)->format('Ymd');
+        foreach ($files as $fileName) {
+            if (strpos($fileName, 'ORDER')) {
+                $d = (int)substr($fileName, 12, 8);
+
+                if ($d <= $date) {
+                    $this->info('delete: ' . $fileName);
+
+                    Storage::disk('ftp')->delete($fileName);
+                }
+
+            } elseif (strpos($fileName, 'RETANN')) {
+                $d = (int)substr($fileName, 13, 8);
+
+                if ($d <= $date) {
+                    $this->info('delete: ' . $fileName);
+
+                    Storage::disk('ftp')->delete($fileName);
+                }
+            } else {
+                $d = (int)substr($fileName, 13, 8);
+
+                if ($d <= $date) {
+                    $this->info('delete: ' . $fileName);
+
+                    Storage::disk('ftp')->delete($fileName);
+                }
+            }
+        }
+
+
+    }
 
 }
