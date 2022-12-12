@@ -22,11 +22,11 @@ class ParseXmlCommand extends Command
         $this->clear();
 
         $files = Storage::disk('ftp')->files('inbox');
-        $this->info('all count ' . count($files));
-        $date = Carbon::parse('2022-12-09')->format('Ymd');
-//        $date = Carbon::now()->format('Ymd');
+        dump('all count ' . count($files));
+//        $date = Carbon::parse('2022-12-12')->format('Ymd');
+        $date = Carbon::now()->format('Ymd');
         $matches = preg_grep("/(ORDER_|RETANN)($date)([0-9]{2})([0-9]{2}).*/", $files);
-        $this->info('parse count ' . count($matches));
+        dump('parse count ' . count($matches));
         $success = [];
         foreach ($matches as $fileName) {
 
@@ -39,16 +39,16 @@ class ParseXmlCommand extends Command
             } elseif (strpos($fileName, 'RETANN')) {
                 $type = 1;
             } else {
-//                $this->error('filename type error');
+//               dump('filename type error');
                 continue;
             }
 
-//            $this->info("scan $fileName" . ' time: ' . Carbon::now()->format('H:i:s'));
+//            dump("scan $fileName" . ' time: ' . Carbon::now()->format('H:i:s'));
 
 
             $xmlFile = Storage::disk('ftp')->get($fileName);
             if (!$xmlFile) {
-                $this->error('xml file not found');
+                dump('xml file not found');
                 continue;
             }
             $objectData = simplexml_load_string($xmlFile);
@@ -57,17 +57,17 @@ class ParseXmlCommand extends Command
             //salesrep_id = 192
             $store = Store::where('id_edi', $data['HEAD']['DELIVERYPLACE'])->first();
             if (!$store) {
-                $this->error('store not found: ' . $data['HEAD']['DELIVERYPLACE']);
+                dump('store not found: ' . $data['HEAD']['DELIVERYPLACE']);
                 continue;
             }
             $counteragent = $store->counteragent;
             if (!$counteragent) {
-                $this->error('counteragent not found');
+                dump('counteragent not found');
                 continue;
             }
             $driver = $store->driver;
             if (!$driver) {
-                $this->error('driver not found');
+                dump('driver not found');
                 continue;
             }
             $errorMessages = [];
@@ -124,7 +124,7 @@ class ParseXmlCommand extends Command
             }
         }
 
-        $this->info('success count: ' . count($success));
+        dump('success count: ' . count($success));
     }
 
     public function createBasket(int $type, Order $order, array $item): array|null
@@ -143,7 +143,7 @@ class ParseXmlCommand extends Command
                 ->first();
         }
         if (!$product) {
-            $this->error('product barcode not found: ' . $item['PRODUCT']);
+            dump('product barcode not found: ' . $item['PRODUCT']);
 
             $errorMessage['barcode'] = $item['PRODUCT'];
             $errorMessage['name'] = $type == 0 ? $item['CHARACTERISTIC']['DESCRIPTION'] : $item['DESCRIPTION'];
@@ -158,7 +158,7 @@ class ParseXmlCommand extends Command
             }
 
 
-            //        $this->info($item['PRODUCT']);
+            //        dump($item['PRODUCT']);
             $count = $type == 0 ? $item['ORDEREDQUANTITY'] : $item['RETURNQUANTITY'];
             $price = $type == 0 ? $item['PRICEWITHVAT'] : $item['PRICE'];
             $order->baskets()->create([
@@ -176,7 +176,7 @@ class ParseXmlCommand extends Command
     public function clear()
     {
         $files = Storage::disk('ftp')->files('inbox');
-        $this->info('all count ' . count($files));
+        dump('all count ' . count($files));
 //        $date = Carbon::parse('2022-11-30')->format('Ymd');
         $date = (int)Carbon::now()->subDays(7)->format('Ymd');
         foreach ($files as $fileName) {
@@ -184,7 +184,7 @@ class ParseXmlCommand extends Command
                 $d = (int)substr($fileName, 12, 8);
 
                 if ($d <= $date) {
-                    $this->info('delete: ' . $fileName);
+                    dump('delete: ' . $fileName);
 
                     Storage::disk('ftp')->delete($fileName);
                 }
@@ -193,7 +193,7 @@ class ParseXmlCommand extends Command
                 $d = (int)substr($fileName, 13, 8);
 
                 if ($d <= $date) {
-                    $this->info('delete: ' . $fileName);
+                    dump('delete: ' . $fileName);
 
                     Storage::disk('ftp')->delete($fileName);
                 }
@@ -201,7 +201,7 @@ class ParseXmlCommand extends Command
                 $d = (int)substr($fileName, 13, 8);
 
                 if ($d <= $date) {
-                    $this->info('delete: ' . $fileName);
+                    dump('delete: ' . $fileName);
 
                     Storage::disk('ftp')->delete($fileName);
                 }

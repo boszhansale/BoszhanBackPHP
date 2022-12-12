@@ -149,6 +149,7 @@ Route::prefix('order')->name('order.')->group(function () {
     Route::post('driver-moving', [OrderController::class, 'driverMoving'])->name('driver-moving');
     Route::get('statistic', [OrderController::class, 'statistic'])->name('statistic');
     Route::get('history/{order}', [OrderController::class, 'history'])->name('history');
+    Route::get('edi/parse', [OrderController::class, 'ediParse'])->name('edi-parse');
 });
 Route::prefix('basket')->name('basket.')->group(function () {
     Route::get('create/{order}/{type}', [BasketController::class, 'create'])->name('create');

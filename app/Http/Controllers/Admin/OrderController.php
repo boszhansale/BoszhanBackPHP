@@ -120,4 +120,10 @@ class OrderController extends Controller
     {
         return \view('admin.order.history', compact('order'));
     }
+
+    public function ediParse()
+    {
+        Artisan::call('order:parse');
+
+    }
 }
