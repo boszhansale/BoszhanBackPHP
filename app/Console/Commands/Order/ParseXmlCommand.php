@@ -19,11 +19,11 @@ class ParseXmlCommand extends Command
 
     public function handle()
     {
-//        $this->clear();
+        $this->clear();
 
         $files = Storage::disk('ftp')->files('inbox');
         $this->info('all count ' . count($files));
-        $date = Carbon::parse('2022-12-06')->format('Ymd');
+        $date = Carbon::parse('2022-12-09')->format('Ymd');
 //        $date = Carbon::now()->format('Ymd');
         $matches = preg_grep("/(ORDER_|RETANN)($date)([0-9]{2})([0-9]{2}).*/", $files);
         $this->info('parse count ' . count($matches));
@@ -149,17 +149,27 @@ class ParseXmlCommand extends Command
             $errorMessage['name'] = $type == 0 ? $item['CHARACTERISTIC']['DESCRIPTION'] : $item['DESCRIPTION'];
             return $errorMessage;
         }
-//        $this->info($item['PRODUCT']);
-        $count = $type == 0 ? $item['ORDEREDQUANTITY'] : $item['RETURNQUANTITY'];
-        $price = $type == 0 ? $item['PRICEWITHVAT'] : $item['PRICE'];
-        $order->baskets()->create([
-            'product_id' => $product->id,
-            'count' => $count,
-            'price' => $type == 0 ? $item['PRICEWITHVAT'] : $item['PRICE'],
-            'all_price' => $count * $price,
-            'type' => $type,
-            'measure' => $product->measure
-        ]);
+
+
+        if ($product) {
+
+            if ($product->remainder == 0) {
+                return null;
+            }
+
+
+            //        $this->info($item['PRODUCT']);
+            $count = $type == 0 ? $item['ORDEREDQUANTITY'] : $item['RETURNQUANTITY'];
+            $price = $type == 0 ? $item['PRICEWITHVAT'] : $item['PRICE'];
+            $order->baskets()->create([
+                'product_id' => $product->id,
+                'count' => $count,
+                'price' => $type == 0 ? $item['PRICEWITHVAT'] : $item['PRICE'],
+                'all_price' => $count * $price,
+                'type' => $type,
+                'measure' => $product->measure
+            ]);
+        }
         return null;
     }
 
