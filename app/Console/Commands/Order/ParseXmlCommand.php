@@ -184,7 +184,7 @@ class ParseXmlCommand extends Command
                 $d = (int)substr($fileName, 12, 8);
 
                 if ($d <= $date) {
-                    dump('delete: ' . $fileName);
+//                    dump('delete: ' . $fileName);
 
                     Storage::disk('ftp')->delete($fileName);
                 }
@@ -193,7 +193,7 @@ class ParseXmlCommand extends Command
                 $d = (int)substr($fileName, 13, 8);
 
                 if ($d <= $date) {
-                    dump('delete: ' . $fileName);
+//                    dump('delete: ' . $fileName);
 
                     Storage::disk('ftp')->delete($fileName);
                 }
@@ -201,7 +201,7 @@ class ParseXmlCommand extends Command
                 $d = (int)substr($fileName, 13, 8);
 
                 if ($d <= $date) {
-                    dump('delete: ' . $fileName);
+//                    dump('delete: ' . $fileName);
 
                     Storage::disk('ftp')->delete($fileName);
                 }

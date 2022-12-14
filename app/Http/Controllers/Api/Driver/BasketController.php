@@ -17,7 +17,7 @@ class BasketController extends Controller
             $order->baskets()
                 ->with('product')
                 ->join('products', 'products.id', 'baskets.product_id')
-                ->orderBy('products.measure', 'desc')
+                ->orderBy('products.name')
                 ->select('baskets.*')
                 ->get()
         );
@@ -55,8 +55,9 @@ class BasketController extends Controller
 
     public function delete(Basket $basket)
     {
+        $order = $basket->order;
         $basket->delete();
-
+        OrderPriceAction::execute($order);
         return response()->json(['message' => 'Удалено']);
     }
 }

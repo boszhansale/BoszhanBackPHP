@@ -25,6 +25,28 @@ class ProductStoreRequest extends FormRequest
     {
         return [
             'article' => 'unique:products',
+            'category_id' => '',
+            'id_1c' => '',
+            'measure' => '',
+            'name' => '',
+            'barcode' => '',
+            'remainder' => '',
+            'enabled' => '',
+            'purchase' => '',
+            'return' => '',
+            'presale_id' => '',
+            'discount' => '',
+            'hit' => '',
+            'new' => '',
+            'action' => '',
+            'discount_5' => '',
+            'discount_10' => '',
+            'discount_15' => '',
+            'discount_20' => '',
+            'rating' => '',
+
+            'images' => 'array',
+            'images.*' => 'image|max:1024'
         ];
     }
 

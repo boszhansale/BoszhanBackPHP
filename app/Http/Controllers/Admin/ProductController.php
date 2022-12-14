@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\ProductStoreRequest;
+use App\Http\Requests\Admin\ProductUpdateRequest;
 use App\Models\Category;
 use App\Models\Counteragent;
 use App\Models\PriceType;
@@ -40,28 +41,7 @@ class ProductController extends Controller
 
     public function store(ProductStoreRequest $request)
     {
-        $product = new Product();
-        $product->category_id = $request->get('category_id');
-        $product->name = $request->get('name');
-        $product->article = $request->get('article');
-        $product->id_1c = $request->get('id_1c');
-        $product->measure = $request->get('measure');
-        $product->barcode = $request->get('barcode');
-
-
-        $product->remainder = $request->get('remainder');
-        $product->hit = $request->has('hit');
-        $product->new = $request->has('new');
-        $product->action = $request->has('action');
-        $product->purchase = $request->has('purchase');
-        $product->return = $request->has('return');
-
-        $product->discount_5 = $request->has('discount_5');
-        $product->discount_10 = $request->has('discount_10');
-        $product->discount_15 = $request->has('discount_15');
-        $product->discount_20 = $request->has('discount_20');
-
-        $product->save();
+        $product = Product::create($request->validated());
 
         foreach ($request->get('counteragent_prices') as $item) {
             if (!isset($item['price'])) {
@@ -98,11 +78,10 @@ class ProductController extends Controller
         }
         if ($request->file('images')) {
             foreach ($request->file('images') as $image) {
-                $productImage = new ProductImage();
-                $productImage->product_id = $product->id;
-                $productImage->name = $image->getClientOriginalName();
-                $productImage->path = Storage::disk('public')->put('images', $image);
-                $productImage->save();
+                $product->images()->create([
+                    'name' => $image->getClientOriginalName(),
+                    'path' => $image,
+                ]);
             }
         }
 
@@ -121,7 +100,7 @@ class ProductController extends Controller
         return view('admin.product.edit', compact('product', 'priceTypes', 'categories', 'counteragents'));
     }
 
-    public function update(Request $request, Product $product)
+    public function update(ProductUpdateRequest $request, Product $product)
     {
         $product->category_id = $request->get('category_id');
         $product->name = $request->get('name');
@@ -129,11 +108,8 @@ class ProductController extends Controller
         $product->id_1c = $request->get('id_1c');
         $product->measure = $request->get('measure');
         $product->barcode = $request->get('barcode');
-
-
         $product->remainder = $request->get('remainder');
         $product->discount = $request->get('discount');
-
         $product->hit = $request->has('hit');
         $product->new = $request->has('new');
         $product->action = $request->has('action');

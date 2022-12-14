@@ -27,7 +27,7 @@ class BasketController extends Controller
         $basket->count = $request->get('count');
         $basket->product_id = $product->id;
         $basket->price = $request->get('price');
-        $basket->all_price = (int) $request->get('price') * (int) $request->get('count');
+        $basket->all_price = (int)$request->get('price') * (int)$request->get('count');
         $basket->type = $request->get('type');
         $basket->save();
         OrderPriceAction::execute($order);
@@ -46,7 +46,7 @@ class BasketController extends Controller
     {
         $basket->count = $request->get('count');
         $basket->price = $request->get('price');
-        $basket->all_price = (int) $request->get('price') * (int) $request->get('count');
+        $basket->all_price = (int)$request->get('price') * (int)$request->get('count');
         $basket->save();
         OrderPriceAction::execute($basket->order);
 
@@ -55,7 +55,9 @@ class BasketController extends Controller
 
     public function delete(Basket $basket)
     {
+        $order = $basket->order;
         $basket->delete();
+        OrderPriceAction::execute($order);
 
         return redirect()->back();
     }

@@ -37,7 +37,8 @@ class ProductImage extends Model
     protected function path(): Attribute
     {
         return Attribute::make(
-            get: fn ($value) => $value ? asset(Storage::url($value)) : '',
+            get: fn($value) => $value ? asset(Storage::url($value)) : '',
+            set: fn($value) => Storage::disk('public')->put('images', $value),
         );
     }
 }

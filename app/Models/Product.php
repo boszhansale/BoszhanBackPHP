@@ -91,13 +91,10 @@ class Product extends Model
         'measure',
         'name',
         'barcode',
-        'barcode_1',
-        'barcode_2',
-        'barcode_3',
-        'barcode_4',
         'remainder',
         'enabled',
         'purchase',
+        'return',
         'presale_id',
         'discount',
         'hit',
@@ -139,7 +136,7 @@ class Product extends Model
 
     public function category(): BelongsTo
     {
-        return  $this->belongsTo(Category::class, 'category_id');
+        return $this->belongsTo(Category::class, 'category_id');
     }
 
     public function measureDescription(): string
