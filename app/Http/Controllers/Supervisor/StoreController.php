@@ -45,7 +45,7 @@ class StoreController extends Controller
     {
         $store = new Store();
         $store->name = $request->get('name');
-        $store->id_1c = $request->get('id_1c');
+        $store->id_sell = $request->get('id_sell');
         $store->phone = $request->get('phone');
         $store->bin = $request->get('bin');
         $store->salesrep_id = $request->get('salesrep_id');
@@ -95,7 +95,7 @@ class StoreController extends Controller
     public function update(Request $request, Store $store)
     {
         $store->name = $request->get('name');
-        $store->id_1c = $request->get('id_1c');
+        $store->id_sell = $request->get('id_sell');
         $store->phone = $request->get('phone');
         $store->bin = $request->get('bin');
         $store->salesrep_id = $request->get('salesrep_id');

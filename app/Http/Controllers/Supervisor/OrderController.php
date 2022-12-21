@@ -11,6 +11,7 @@ use App\Models\PaymentType;
 use App\Models\Status;
 use App\Models\User;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\View\View;
 use Maatwebsite\Excel\Facades\Excel;
@@ -64,7 +65,8 @@ class OrderController extends Controller
 
     public function delete(Order $order)
     {
-        $order->delete();
+        $order->removed_at = Carbon::now();
+        $order->save();
 
         return redirect()->back();
     }

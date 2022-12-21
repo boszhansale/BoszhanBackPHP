@@ -93,7 +93,6 @@ class UserController extends Controller
     {
         $user = new User();
         $user->name = $request->get('name');
-        $user->id_1c = $request->get('id_1c');
         $user->login = $request->get('login');
         $user->phone = $request->get('phone');
         $user->id_1c = $request->get('id_1c');

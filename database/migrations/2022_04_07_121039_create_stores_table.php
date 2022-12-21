@@ -4,8 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      *
@@ -22,7 +21,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('phone');
             $table->string('bin')->nullable();
-            $table->string('id_1c')->nullable();
+            $table->string('id_sell')->nullable();
 
             $table->foreignId('district_id')->nullable()->constrained('districts')->cascadeOnDelete();
 

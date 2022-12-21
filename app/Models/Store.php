@@ -18,7 +18,7 @@ use OwenIt\Auditing\Contracts\Auditable;
  * @property string $name
  * @property string $phone
  * @property string|null $bin
- * @property string|null $id_1c
+ * @property string|null $id_sell
  * @property int|null $district_id
  * @property int|null $id_edi
  * @property string $address
@@ -38,7 +38,7 @@ use OwenIt\Auditing\Contracts\Auditable;
  * @method static \Illuminate\Database\Eloquent\Builder|Store whereDeletedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Store whereDistrictId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Store whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Store whereId1c($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Store whereIdSell($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Store whereLat($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Store whereLng($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Store whereName($value)
@@ -76,7 +76,7 @@ class Store extends Model implements Auditable
         'name',
         'phone',
         'bin',
-        'id_1c',
+        'id_sell',
         'district_id',
         'address',
         'lat',

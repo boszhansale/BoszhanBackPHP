@@ -12,7 +12,7 @@
     <tbody>
     @foreach($stores as $store)
         <tr>
-            <td>{{ $store->id_1c }}</td>
+            <td>{{ $store->id_sell }}</td>
             <td>{{ $store->salesrep->name }}</td>
             <td>{{ $store->address }}</td>
             <td>{{ $store->phone }}</td>

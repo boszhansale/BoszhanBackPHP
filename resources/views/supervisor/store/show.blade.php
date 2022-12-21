@@ -46,7 +46,7 @@
                         </tr>
                         <tr>
                             <td>id_1c</td>
-                            <td>{{$store->id_1c}}</td>
+                            <td>{{$store->id_sell}}</td>
                         </tr>
                         <tr>
                             <td>Дата создание</td>

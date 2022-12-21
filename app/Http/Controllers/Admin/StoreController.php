@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\StoreStoreRequest;
 use App\Models\Counteragent;
 use App\Models\CounteragentUser;
 use App\Models\Store;
@@ -40,11 +41,11 @@ class StoreController extends Controller
         return view('admin.store.create', compact('salesreps', 'drivers', 'counteragents'));
     }
 
-    public function store(Request $request)
+    public function store(StoreStoreRequest $request): RedirectResponse
     {
         $store = new Store();
         $store->name = $request->get('name');
-        $store->id_1c = $request->get('id_1c');
+        $store->id_sell = $request->get('id_sell');
         $store->id_edi = $request->get('id_edi');
         $store->phone = $request->get('phone');
         $store->bin = $request->get('bin');
@@ -84,7 +85,7 @@ class StoreController extends Controller
     public function update(Request $request, Store $store)
     {
         $store->name = $request->get('name');
-        $store->id_1c = $request->get('id_1c');
+        $store->id_sell = $request->get('id_sell');
         $store->id_edi = $request->get('id_edi');
         $store->phone = $request->get('phone');
         $store->bin = $request->get('bin');

@@ -29,7 +29,7 @@ class StoreStoreRequest extends FormRequest
             'name' => 'required',
             'phone' => 'required',
             'bin' => '  ',
-            'id_1c' => '',
+            'id_sell' => '',
             'district_id' => '',
             'address' => 'required',
             'lat' => '',

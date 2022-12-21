@@ -46,7 +46,7 @@ class OrderController extends Controller
             ])
             ->latest()
             ->get();
-    
+
 
         return response()->json($orders);
     }
@@ -77,7 +77,8 @@ class OrderController extends Controller
 
     public function delete(Order $order)
     {
-        $order->delete();
+        $order->removed_at = Carbon::now();
+        $order->save();
 
         return response()->json(['message' => 'Успешно удалено']);
     }

@@ -122,7 +122,7 @@
                                     {{$store->bin}}
                                 </td>
                                 <td>
-                                    {{$store->id_1c}}
+                                    {{$store->id_sell}}
                                 </td>
 
                                 <td>

@@ -23,8 +23,8 @@ class ParseXmlCommand extends Command
 
         $files = Storage::disk('ftp')->files('inbox');
         dump('all count ' . count($files));
-//        $date = Carbon::parse('2022-12-12')->format('Ymd');
-        $date = Carbon::now()->format('Ymd');
+        $date = Carbon::parse('2022-12-21')->format('Ymd');
+//        $date = Carbon::now()->format('Ymd');
         $matches = preg_grep("/(ORDER_|RETANN)($date)([0-9]{2})([0-9]{2}).*/", $files);
         dump('parse count ' . count($matches));
         $success = [];

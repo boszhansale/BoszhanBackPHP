@@ -70,8 +70,8 @@ class OrderController extends Controller
 
     public function recover($id)
     {
-        $order = Order::withTrashed()->find($id);
-        $order->deleted_at = null;
+        $order = Order::findOrFail($id);
+        $order->removed_at = null;
         $order->save();
 
         return redirect()->back();

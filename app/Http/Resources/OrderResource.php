@@ -39,7 +39,7 @@ class OrderResource extends JsonResource
                 ->with(['product', 'reasonRefund'])
                 ->join('products', 'products.id', 'baskets.product_id')
                 ->orderBy('baskets.type')
-                ->orderBy('products.name')
+                ->orderBy('products.measure', 'desc')
                 ->select('baskets.*')
                 ->get(),
         ];

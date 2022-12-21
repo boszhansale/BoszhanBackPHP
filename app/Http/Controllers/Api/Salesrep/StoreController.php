@@ -50,7 +50,7 @@ class StoreController extends Controller
     {
         $store = Auth::user()->stores()->create($request->validated());
 
-        $store->id_1c = 300000000000000 + $store->id;
+        $store->id_sell = 300000000000000 + $store->id;
         $store->save();
 
         return response()->json(Store::with(['salesrep', 'counteragent'])->find($store->id));

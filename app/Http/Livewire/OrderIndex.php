@@ -30,7 +30,7 @@ class OrderIndex extends Component
     {
         $query = Order::with(['store', 'salesrep', 'driver'])
             ->when($this->search, function ($q) {
-                return $q->where('orders.id', 'LIKE', $this->search.'%');
+                return $q->where('orders.id', 'LIKE', $this->search . '%');
             })
             ->when(\Auth::user()->isSupervisor(), function ($q) {
                 return $q->whereIn('orders.salesrep_id', \Auth::user()->supervisorsSalesreps()->pluck('users.id')->toArray());
@@ -65,7 +65,7 @@ class OrderIndex extends Component
                 ->get('users.*'),
             'statuses' => Status::all(),
 
-            'orders' => $query->clone()->withTrashed()->paginate(50),
+            'orders' => $query->clone()->paginate(50),
             'order_count' => $query->clone()->count(),
             'order_purchase_price' => $query->clone()->sum('purchase_price'),
             'order_return_price' => $query->clone()->sum('return_price'),

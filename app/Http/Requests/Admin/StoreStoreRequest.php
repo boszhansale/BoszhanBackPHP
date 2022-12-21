@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Requests\Api;
+namespace App\Http\Requests\Admin;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 
-class StoreUpdateRequest extends FormRequest
+class StoreStoreRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -26,12 +26,12 @@ class StoreUpdateRequest extends FormRequest
     {
         return [
             'counteragent_id' => 'exists:counteragents,id',
-            'name' => '',
+            'name' => 'required',
             'phone' => '',
-            'bin' => '',
-            'id_sell' => '',
+            'bin' => '  ',
+            'id_sell' => 'unique:stores,id_sell',
             'district_id' => '',
-            'address' => '',
+            'address' => 'required',
             'lat' => '',
             'lng' => '',
         ];
@@ -40,6 +40,7 @@ class StoreUpdateRequest extends FormRequest
     public function messages()
     {
         return [
+            'id_sell.unique' => 'id_sell уже занят'
         ];
     }
 
