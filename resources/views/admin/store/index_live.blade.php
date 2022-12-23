@@ -43,7 +43,7 @@
                     <th>Телефон</th>
                     <th>ТП</th>
                     <th>БИН</th>
-                    <th>id_1c</th>
+                    <th>id_sell</th>
                     <th>id_edi</th>
                     <th>скидка %</th>
                     <th>кол заявок</th>
@@ -53,14 +53,19 @@
                 </thead>
                 <tbody>
                 @foreach($stores as $store)
-                    <tr>
+                    <tr class="{{$store->removed_at != null ?'bg-red':''}}">
                         <th>{{$store->id}}</th>
                         <th>
                             <b>{{$store->name}}</b><br>
                             <small>{{$store->address}}</small>
                         </th>
                         <td>
-                            {{$store->counteragent?->name}}
+                            @if($store->counteragent)
+                                <a href="{{route('admin.counteragent.show',$store->counteragent->id)}}">
+                                    <small style="font-size: 12px;">{{$store->counteragent->name}}</small>
+                                </a>
+
+                            @endif
                         </td>
                         <td>
                             {{$store->phone}}
@@ -98,14 +103,30 @@
                                 <i class="fas fa-pencil-alt">
                                 </i>
                             </a>
-                            {{--                            <a  class="btn btn-danger btn-sm" href="{{route('admin.store.delete',$store->id)}}" onclick="return confirm('Удалить?')">--}}
-                            {{--                                <i class="fas fa-trash"></i>--}}
-                            {{--                            </a>--}}
 
-                            <button class="btn btn-danger btn-sm" wire:click="delete({{$store->id}})"
-                                    onclick="return confirm('Удалить?')">
-                                <i class="fas fa-trash"></i>
-                            </button>
+
+                            @if($store->removed_at != null  AND  in_array(Auth::id(),[1,153]))
+                                <a class="btn btn-warning btn-sm" href="{{route('admin.store.recover',$store->id)}}"
+                                   onclick="return confirm('уверен?')">
+                                    <i class="fas fa-eraser"></i>
+                                </a>
+
+                            @endif
+                            @if(in_array(Auth::id(),[1,153]))
+
+                                <button class="btn btn-danger btn-sm" wire:click="delete({{$store->id}})"
+                                        onclick="return confirm('Удалить?')">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+
+                            @else
+                                <a class="btn btn-danger btn-sm" href="{{route('admin.store.remove',$store->id)}}"
+                                   onclick="return confirm('Удалить?')">
+                                    <i class="fas fa-trash"></i>
+                                </a>
+                            @endif
+
+
                         </td>
                     </tr>
                 @endforeach

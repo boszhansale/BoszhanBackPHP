@@ -63,7 +63,7 @@ class OrderController extends Controller
         return redirect()->back();
     }
 
-    public function delete(Order $order)
+    public function remove(Order $order)
     {
         $order->removed_at = Carbon::now();
         $order->save();

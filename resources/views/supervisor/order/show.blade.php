@@ -22,13 +22,12 @@
                     изменить
                 </a>
             @endif
-            @if(Auth::user()->permissionExists("order_delete"))
-                <a class="btn btn-danger btn-sm" href="{{route('admin.order.delete',$order->id)}}"
-                   onclick="return confirm('Удалить?')">
-                    <i class="fas fa-trash"></i>
-                    удалить
-                </a>
-            @endif
+
+            <a class="btn btn-danger btn-sm" href="{{route('admin.order.remove',$order->id)}}"
+               onclick="return confirm('Удалить?')">
+                <i class="fas fa-trash"></i>
+                удалить
+            </a>
             <a class="btn btn-info btn-sm" href="{{route('supervisor.order.history',$order->id)}}">
                 <i class="fas fa-info"></i>
                 история
@@ -68,7 +67,8 @@
                         @endif
                         <tr>
                             <th>Торговый точка</th>
-                            <td><a href="{{route('admin.store.show',$order->store_id)}}">{{$order->store->name}}</a>
+                            <td>
+                                <a href="{{route('supervisor.store.show',$order->store_id)}}">{{$order->store->name}}</a>
                             </td>
                         </tr>
                         <tr>

@@ -10,7 +10,7 @@ class Kernel extends ConsoleKernel
     /**
      * Define the application's command schedule.
      *
-     * @param  \Illuminate\Console\Scheduling\Schedule  $schedule
+     * @param \Illuminate\Console\Scheduling\Schedule $schedule
      * @return void
      */
     protected function schedule(Schedule $schedule)
@@ -21,7 +21,7 @@ class Kernel extends ConsoleKernel
 //        $schedule->command('export:order')->dailyAt('18:00');
 //        $schedule->command('import:all')->dailyAt('23:00');
 
-//        $schedule->command('db:backup')->dailyAt('02:00');
+        $schedule->command('db:backup')->hourly();
 
         $schedule->command('telescope:clear')->everyMinute();
         $schedule->command('order:delivery')->dailyAt('05:00');
@@ -55,7 +55,7 @@ class Kernel extends ConsoleKernel
      */
     protected function commands()
     {
-        $this->load(__DIR__.'/Commands');
+        $this->load(__DIR__ . '/Commands');
 
         require base_path('routes/console.php');
     }

@@ -68,6 +68,13 @@ class OrderController extends Controller
         return redirect()->back();
     }
 
+    public function remove(Order $store)
+    {
+        $store->removed_at = now();
+        $store->save();
+        return redirect()->back();
+    }
+
     public function recover($id)
     {
         $order = Order::findOrFail($id);

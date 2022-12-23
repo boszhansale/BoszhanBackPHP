@@ -13,8 +13,8 @@
                     <input type="text" class="form-control" name="phone">
                 </div>
                 <div class="form-group">
-                    <label for="">id_1c</label>
-                    <input type="text" class="form-control" name="id_1c">
+                    <label for="">id_sell</label>
+                    <input type="text" class="form-control" name="id_sell">
                 </div>
                 <div class="form-group">
                     <label for="">id_edi</label>

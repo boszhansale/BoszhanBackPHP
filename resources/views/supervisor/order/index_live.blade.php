@@ -104,7 +104,7 @@
                                     <i class="fas fa-eraser"></i>
                                 </a>
                             @else
-                                <a class="btn btn-danger btn-sm" href="{{route('supervisor.order.delete',$order->id)}}"
+                                <a class="btn btn-danger btn-sm" href="{{route('supervisor.order.remove',$order->id)}}"
                                    onclick="return confirm('Удалить?')">
                                     <i class="fas fa-trash"></i>
                                 </a>

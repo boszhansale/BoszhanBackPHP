@@ -177,6 +177,21 @@ class StoreController extends Controller
     public function delete(Store $store)
     {
         $store->delete();
+        return redirect()->back();
+    }
+
+    public function remove(Store $store)
+    {
+        $store->removed_at = now();
+        $store->save();
+        return redirect()->back();
+    }
+
+    public function recover($id)
+    {
+        $store = Store::findOrFail($id);
+        $store->removed_at = null;
+        $store->save();
 
         return redirect()->back();
     }

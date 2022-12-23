@@ -83,8 +83,10 @@ class StoreIndex extends Component
         ]);
     }
 
-    public function delete($id)
+    public function remove($id)
     {
-        Store::where('id', $id)->delete();
+        Store::where('id', $id)->update([
+            'removed_at' => now()
+        ]);
     }
 }

@@ -47,7 +47,7 @@
                             <td>{{$store->bin}}</td>
                         </tr>
                         <tr>
-                            <td>id_1c</td>
+                            <td>id_sell</td>
                             <td>{{$store->id_sell}}</td>
                         </tr>
                         <tr>

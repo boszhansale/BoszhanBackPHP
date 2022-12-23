@@ -183,9 +183,10 @@ class StoreController extends Controller
         return view('supervisor.store.show', compact('store', 'orders', 'purchasePrices', 'returnPrices'));
     }
 
-    public function delete(Store $store)
+    public function remove(Store $store)
     {
-        $store->delete();
+        $store->removed_at = now();
+        $store->save();
 
         return redirect()->back();
     }

@@ -52,7 +52,7 @@
                 </thead>
                 <tbody>
                 @foreach($stores as $store)
-                    <tr>
+                    <tr class="{{$store->removed_at != null ?'bg-red':''}}">
                         <th>{{$store->id}}</th>
                         <th>
                             <b>{{$store->name}}</b><br>
@@ -98,10 +98,12 @@
                             {{--                                <i class="fas fa-trash"></i>--}}
                             {{--                            </a>--}}
 
-                            <button class="btn btn-danger btn-sm" wire:click="delete({{$store->id}})"
-                                    onclick="return confirm('Удалить?')">
-                                <i class="fas fa-trash"></i>
-                            </button>
+                          @if($store->removed_at == null)
+                                <button class="btn btn-danger btn-sm" wire:click="remove({{$store->id}})"
+                                        onclick="return confirm('Удалить?')">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                          @endif
                         </td>
                     </tr>
                 @endforeach

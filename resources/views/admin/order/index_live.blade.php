@@ -104,11 +104,18 @@
                                 </a>
 
                             @endif
+                            @if(in_array(Auth::id(),[1,153]))
+                                <a class="btn btn-danger btn-sm" href="{{route('admin.order.delete',$order->id)}}"
+                                   onclick="return confirm('Удалить?')">
+                                    <i class="fas fa-trash"></i>
+                                </a>
 
-                            <a class="btn btn-danger btn-sm" href="{{route('admin.order.delete',$order->id)}}"
-                               onclick="return confirm('Удалить?')">
-                                <i class="fas fa-trash"></i>
-                            </a>
+                            @else
+                                <a class="btn btn-danger btn-sm" href="{{route('admin.order.remove',$order->id)}}"
+                                   onclick="return confirm('Удалить?')">
+                                    <i class="fas fa-trash"></i>
+                                </a>
+                            @endif
                             <a class="btn btn-info btn-sm" href="{{route('admin.order.export-excel',$order->id)}}">
                                 <i class="fas fa-download">
                                 </i>

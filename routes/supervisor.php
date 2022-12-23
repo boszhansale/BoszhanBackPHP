@@ -25,7 +25,7 @@ Route::prefix('store')->name('store.')->group(function () {
     Route::get('edit/{store}', [StoreController::class, 'edit'])->name('edit');
     Route::get('show/{store}', [StoreController::class, 'show'])->name('show');
     Route::put('update/{store}', [StoreController::class, 'update'])->name('update');
-    Route::get('delete/{store}', [StoreController::class, 'delete'])->name('delete');
+    Route::get('remove/{store}', [StoreController::class, 'remove'])->name('remove');
     Route::get('order/{store}', [StoreController::class, 'order'])->name('order');
     Route::get('move', [StoreController::class, 'move'])->name('move');
     Route::post('moving', [StoreController::class, 'moving'])->name('moving');
@@ -40,7 +40,7 @@ Route::prefix('order')->name('order.')->group(function () {
     Route::get('edit/{order}', [OrderController::class, 'edit'])->name('edit');
     Route::get('show/{order}', [OrderController::class, 'show'])->name('show');
     Route::put('update/{order}', [OrderController::class, 'update'])->name('update');
-    Route::get('delete/{order}', [OrderController::class, 'delete'])->name('delete');
+    Route::get('remove/{order}', [OrderController::class, 'remove'])->name('remove');
     Route::get('recover/{order}', [OrderController::class, 'recover'])->name('recover');
     Route::get('export-excel/{order}', [OrderController::class, 'exportExcel'])->name('export-excel');
     Route::get('waybill/{order}', [OrderController::class, 'waybill'])->name('waybill');

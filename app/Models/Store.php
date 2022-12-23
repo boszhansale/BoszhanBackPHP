@@ -25,6 +25,7 @@ use OwenIt\Auditing\Contracts\Auditable;
  * @property string|null $lat
  * @property string|null $lng
  * @property string|null $deleted_at
+ * @property string|null $removed_at
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  *
@@ -84,7 +85,8 @@ class Store extends Model implements Auditable
         'discount',
         'created_at',
         'export_1c',
-        'id_edi'
+        'id_edi',
+        'removed_at'
     ];
 
     protected $hidden = ['created_at', 'updated_at', 'deleted_at'];

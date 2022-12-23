@@ -15,8 +15,8 @@
                 </div>
 
                 <div class="col-md-2">
-                    <input wire:model="start_date"  type="date" class="form-control">
-                    <input wire:model="end_date"  type="date" class="form-control">
+                    <input wire:model="start_date" type="date" class="form-control">
+                    <input wire:model="end_date" type="date" class="form-control">
                 </div>
             </div>
         </div>
@@ -65,22 +65,24 @@
                 </thead>
                 <tbody>
                 @foreach($orders as $order)
-                    <tr>
+                    <tr class="{{$order->deleted_at != null ?'bg-red':''}}">
                         <td>{{$order->id}}</td>
-                        <td  class="project-actions text-right">
-                            <a class="btn btn-primary btn-sm" href="{{route('admin.order.show',$order->id)}}">
+                        <td class="project-actions text-right">
+                            <a class="btn btn-primary btn-sm" href="{{route('supervisor.order.show',$order->id)}}">
                                 <i class="fas fa-folder">
                                 </i>
 
                             </a>
                             @if(Auth::user()->permissionExists('order_edit'))
-                                <a class="btn btn-info btn-sm" href="{{route('admin.order.edit',$order->id)}}">
+                                <a class="btn btn-info btn-sm" href="{{route('supervisor.order.edit',$order->id)}}">
                                     <i class="fas fa-pencil-alt">
                                     </i>
                                 </a>
                             @endif
-                            @if(Auth::user()->permissionExists('order_delete'))
-                                <a  class="btn btn-danger btn-sm" href="{{route('admin.order.delete',$order->id)}}" onclick="return confirm('Удалить?')">
+                            @if($order->removed_at == null)
+
+                                <a class="btn btn-danger btn-sm" href="{{route('supervisor.order.remove',$order->id)}}"
+                                   onclick="return confirm('Удалить?')">
                                     <i class="fas fa-trash"></i>
 
                                 </a>
@@ -93,7 +95,8 @@
                         </td>
                         <td><a href="{{route('admin.store.show',$order->store_id)}}">{{$order->store->name}}</a></td>
                         <td>{{$order->status->description}}</td>
-                        <td><a href="{{route('admin.user.show',$order->salesrep_id)}}">{{$order->salesrep->name}}</a></td>
+                        <td><a href="{{route('admin.user.show',$order->salesrep_id)}}">{{$order->salesrep->name}}</a>
+                        </td>
                         <td><a href="{{route('admin.user.show',$order->driver_id)}}">{{$order->driver->name}}</a></td>
                         <td class="price">{{$order->purchase_price}}</td>
                         <td class="price">{{$order->return_price}}</td>

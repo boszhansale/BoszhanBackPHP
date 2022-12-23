@@ -10,7 +10,7 @@
             <a class="btn btn-info btn-sm" href="{{route('supervisor.store.edit',$store->id)}}">
                 изменить
             </a>
-            <a class="btn btn-danger btn-sm" href="{{route('supervisor.store.delete',$store->id)}}"
+            <a class="btn btn-danger btn-sm" href="{{route('supervisor.store.remove',$store->id)}}"
                onclick="return confirm('Удалить?')">
                 удалить
             </a>
@@ -45,7 +45,7 @@
                             <td>{{$store->bin}}</td>
                         </tr>
                         <tr>
-                            <td>id_1c</td>
+                            <td>id_sell</td>
                             <td>{{$store->id_sell}}</td>
                         </tr>
                         <tr>

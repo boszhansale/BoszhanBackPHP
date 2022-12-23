@@ -41,8 +41,9 @@ class DatabaseBackup extends Command
      */
     public function handle()
     {
+
         $path = storage_path('app/public/database/');
-        $name = sprintf($path.'backup_%s.sql', now()->format('YmdHis'));
+        $name = sprintf('/home/dev/index/backups/sql/' . 'backup_%s.sql', now()->format('YmdHis'));
         //mysql
         $this->process = Process::fromShellCommandline(sprintf(
             'mysqldump -u%s -p%s %s > %s',
