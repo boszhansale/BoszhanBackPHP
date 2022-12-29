@@ -50,6 +50,7 @@ class OrderIndex extends Component
             ->when($this->end_date, function ($q) {
                 return $q->whereDate('orders.delivery_date', '<=', $this->end_date);
             })
+            ->withTrashed()
             ->latest();
 
         return view('admin.order.index_live', [

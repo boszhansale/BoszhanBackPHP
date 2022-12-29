@@ -142,8 +142,8 @@ class OrderController extends Controller
         $data['individual_games'] = 0;
         $data['individual_games_wins'] = 0;
         foreach ($orders as $order) {
-            $data['individual_games'] += $order->bonusGames()->count();
-            $data['individual_games_wins'] += $order->bonusGames()->sum('win');
+            $data['individual_games'] += 0;//$order->bonusGames()->count();
+            $data['individual_games_wins'] += 0;//$order->bonusGames()->sum('win');
             $data['individual_purchase'] += $order->purchase_price;
             $data['individual_return'] += $order->return_price;
         }
@@ -161,8 +161,8 @@ class OrderController extends Controller
         $data['legal_entity_games'] = 0;
         $data['legal_entity_games_wins'] = 0;
         foreach ($orders as $order) {
-            $data['legal_entity_games'] += $order->bonusGames()->count();
-            $data['legal_entity_games_wins'] += $order->bonusGames()->sum('win');
+            $data['legal_entity_games'] += 0;// $order->bonusGames()->count();
+            $data['legal_entity_games_wins'] += 0;// $order->bonusGames()->sum('win');
             $data['legal_entity_purchase'] += $order->purchase_price;
             $data['legal_entity_return'] += $order->return_price;
         }

@@ -129,4 +129,21 @@ class Store extends Model implements Auditable
 //    }
 
     //300000000100113
+
+    public function debt(): float|int
+    {
+
+        $noPayments = $this->orders()->where('payment_status_id', 2)->sum('purchase_price');//7000
+        $payments = $this->orders()->where('payment_status_id', 1)->sum('purchase_price');//0
+
+        if ($noPayments == 0) {
+            return 0;
+        }
+        if ($noPayments <= $payments) {
+            return $payments - $noPayments;
+        } else {
+            return $noPayments - $payments;
+        }
+
+    }
 }

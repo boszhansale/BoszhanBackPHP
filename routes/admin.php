@@ -141,6 +141,8 @@ Route::prefix('order')->name('order.')->group(function () {
     Route::get('create', [OrderController::class, 'create'])->name('create');
     Route::post('store', [OrderController::class, 'store'])->name('store');
     Route::get('edit/{order}', [OrderController::class, 'edit'])->name('edit');
+    Route::get('many-edit', [OrderController::class, 'manyEdit'])->name('many-edit');
+    Route::put('many-update', [OrderController::class, 'manyUpdate'])->name('many-update');
     Route::get('show/{order}', [OrderController::class, 'show'])->name('show');
     Route::put('update/{order}', [OrderController::class, 'update'])->name('update');
     Route::get('delete/{order}', [OrderController::class, 'delete'])->name('delete');

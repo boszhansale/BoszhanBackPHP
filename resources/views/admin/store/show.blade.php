@@ -89,7 +89,7 @@
                         </tr>
                         <tr>
                             <th>Долг</th>
-                            <td> {{$store->orders()->where('payment_status_id',2)->sum('purchase_price')- $store->orders()->where('payment_status_id',1)->sum('purchase_price')}}</td>
+                            <td>{{$store->debt()}}</td>
                         </tr>
 
                     </table>

@@ -23,7 +23,7 @@ class ParseXmlCommand extends Command
 
         $files = Storage::disk('ftp')->files('inbox');
         dump('all count ' . count($files));
-        $date = Carbon::parse('2022-12-21')->format('Ymd');
+        $date = Carbon::parse('2022-12-26')->format('Ymd');
 //        $date = Carbon::now()->format('Ymd');
         $matches = preg_grep("/(ORDER_|RETANN)($date)([0-9]{2})([0-9]{2}).*/", $files);
         dump('parse count ' . count($matches));
@@ -165,7 +165,7 @@ class ParseXmlCommand extends Command
                 'product_id' => $product->id,
                 'count' => $count,
                 'price' => $type == 0 ? $item['PRICEWITHVAT'] : $item['PRICE'],
-                'all_price' => $count * $price,
+                'all_price' => (int)$count * (int)$price,
                 'type' => $type,
                 'measure' => $product->measure
             ]);

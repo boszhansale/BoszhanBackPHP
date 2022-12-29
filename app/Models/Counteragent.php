@@ -98,20 +98,21 @@ class Counteragent extends Model
         return $this->hasMany(Store::class);
     }
 
+
     public function debt(): float|int
     {
 
-        $noPaymentSum = $this->orders()
-                ->where('orders.payment_status_id', 2)
-                ->sum('orders.purchase_price') - $this->orders()
-                ->where('orders.payment_status_id', 2)
-                ->sum('orders.payment_partial');
+        $noPayments = $this->orders()->where('payment_status_id', 2)->sum('purchase_price');//7000
+        $payments = $this->orders()->where('payment_status_id', 1)->sum('purchase_price');//0
 
-        $paymentSum = $this->orders()
-            ->where('orders.payment_status_id', 1)
-            ->sum('orders.purchase_price');
-
-        return $noPaymentSum <= 0 ? 0 : $noPaymentSum - $paymentSum;
+        if ($noPayments == 0) {
+            return 0;
+        }
+        if ($noPayments <= $payments) {
+            return $payments - $noPayments;
+        } else {
+            return $noPayments - $payments;
+        }
     }
 
     public function orders(): HasManyThrough

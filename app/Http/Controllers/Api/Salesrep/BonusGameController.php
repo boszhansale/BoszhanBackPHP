@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Api\Salesrep;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\BonusGameStoreRequest;
-use App\Models\BonusGame;
+use App\Models\Game;
 use App\Models\Order;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -13,7 +13,7 @@ class BonusGameController extends Controller
 {
     public function index(Request $request): JsonResponse
     {
-        $bonusGames = BonusGame::where('store_id', $request->get('store_id'))->get();
+        $bonusGames = Game::where('store_id', $request->get('store_id'))->get();
 
         return response()->json($bonusGames);
     }
@@ -26,7 +26,7 @@ class BonusGameController extends Controller
             ->first();
 
         return response()->json(
-            BonusGame::query()->create([
+            Game::query()->create([
                 'mobile_id' => $request['mobile_id'],
                 'win' => $request['win'],
                 'game_id' => $request['game_id'],

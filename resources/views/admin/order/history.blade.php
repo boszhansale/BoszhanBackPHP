@@ -15,10 +15,22 @@
                 </tr>
                 </thead>
                 <tbody>
-                @foreach($order->audits as $audit)
+                @foreach($order->audits()->where('event','<>','created')->get() as $audit)
                     <tr>
                         <td>{{$audit->created_at}}</td>
-                        <td>{{$audit->event}}</td>
+                        <td>
+                            @switch($audit->event)
+                                @case('created')
+                                    создание заказа
+                                    @break
+                                @case('updated')
+                                    изменение
+                                    @break
+                                @case('deleted')
+                                    удален
+                                    @break
+                            @endswitch
+                        </td>
                         <td>
                             <table>
                                 <tr>
@@ -27,7 +39,19 @@
                                 </tr>
                                 @foreach($audit->old_values as $key => $value)
                                     <tr>
-                                        <td>{{$key}}</td>
+                                        <td>
+                                            @switch($key)
+                                                @case('purchase_price')
+                                                    сумма покупки
+                                                    @break
+                                                @case('return_price')
+                                                    сумма возврата
+                                                    @break
+                                                @default
+                                                    {{$key}}
+
+                                            @endswitch
+                                        </td>
                                         <td>{{$value}}</td>
                                     </tr>
                                 @endforeach
@@ -42,7 +66,19 @@
                                 </tr>
                                 @foreach($audit->new_values as $key => $value)
                                     <tr>
-                                        <td>{{$key}}</td>
+                                        <td>
+                                            @switch($key)
+                                                @case('purchase_price')
+                                                    сумма покупки
+                                                    @break
+                                                @case('return_price')
+                                                    сумма возврата
+                                                    @break
+                                                @default
+                                                    {{$key}}
+
+                                            @endswitch
+                                        </td>
                                         <td>{{$value}}</td>
                                     </tr>
                                 @endforeach
@@ -56,7 +92,7 @@
     </div>
 
     <div class="card mt-5">
-        <div class="card-header">Корзина</div>
+        <div class="card-header"><h2>Корзина</h2></div>
         <div class="card-body">
             <table class="table table-bordered">
                 <thead>
@@ -71,7 +107,6 @@
                         <td>{{$basket->product->name}}</td>
 
                         <td>
-
                             <table>
                                 <thead>
                                 <tr>
@@ -84,12 +119,48 @@
                                 @foreach($basket->audits as $audit)
                                     <tr>
                                         <td> {{$audit->created_at}}</td>
-                                        <td> {{$audit->event}}</td>
+                                        <td>
+                                            @switch($audit->event)
+                                                @case('created')
+                                                    добавлен в корзину
+                                                    @break
+                                                @case('updated')
+                                                    изменение
+                                                    @break
+                                                @case('deleted')
+                                                    удален
+                                                    @break
+                                            @endswitch
+                                        </td>
                                         <td>
                                             <table>
                                                 @foreach($audit->old_values as $key => $value)
                                                     <tr>
-                                                        <td>{{$key}}</td>
+                                                        <td>
+                                                            @switch($key)
+                                                                @case('product_id')
+                                                                    ID продукта
+                                                                    @break
+                                                                @case('count')
+                                                                    количество
+                                                                    @break
+                                                                @case('type')
+                                                                    тип
+                                                                    @break
+                                                                @case('price')
+                                                                    цена продукта
+                                                                    @break
+                                                                @case('all_price')
+                                                                    цена
+                                                                    @break
+                                                                @case('order_id')
+                                                                    айди заказа
+                                                                    @break
+                                                                @default
+                                                                    {{$key}}
+
+                                                            @endswitch
+                                                        </td>
                                                         <td>{{$value}}</td>
                                                     </tr>
                                                 @endforeach
@@ -99,7 +170,31 @@
                                             <table>
                                                 @foreach($audit->new_values as $key => $value)
                                                     <tr>
-                                                        <td>{{$key}}</td>
+                                                        <td>
+                                                            @switch($key)
+                                                                @case('product_id')
+                                                                    ID продукта
+                                                                    @break
+                                                                @case('count')
+                                                                    количество
+                                                                    @break
+                                                                @case('type')
+                                                                    тип
+                                                                    @break
+                                                                @case('price')
+                                                                    цена продукта
+                                                                    @break
+                                                                @case('all_price')
+                                                                    цена
+                                                                    @break
+                                                                @case('order_id')
+                                                                    айди заказа
+                                                                    @break
+                                                                @default
+                                                                    {{$key}}
+
+                                                            @endswitch
+                                                        </td>
                                                         <td>{{$value}}</td>
                                                     </tr>
                                                 @endforeach

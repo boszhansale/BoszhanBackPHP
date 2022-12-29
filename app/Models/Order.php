@@ -43,7 +43,7 @@ use OwenIt\Auditing\Contracts\Auditable;
  * @property-read int|null $audits_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Basket[] $baskets
  * @property-read int|null $baskets_count
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\BonusGame[] $bonusGames
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Game[] $bonusGames
  * @property-read int|null $bonus_games_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\OrderComment[] $comments
  * @property-read int|null $comments_count
@@ -190,7 +190,7 @@ class Order extends Model implements Auditable
 
     public function bonusGames(): HasMany
     {
-        return $this->hasMany(BonusGame::class, 'mobile_id', 'mobile_id');
+        return $this->hasMany(Game::class, 'mobile_id', 'mobile_id');
     }
 
     public function baskets(): HasMany
