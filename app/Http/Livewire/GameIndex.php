@@ -3,7 +3,6 @@
 namespace App\Http\Livewire;
 
 use App\Models\Game;
-use App\Models\Store;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -35,17 +34,11 @@ class GameIndex extends Component
             ->when($this->end_date, function ($query) {
                 return $query->whereDate('games.created_at', '<=', $this->end_date);
             })
-            ->groupBy('games.game')
-            ->orderBy('stores.id_edi', 'asc')
-            ->orderBy('stores.id', 'desc');
+            ->orderBy('games.id', 'desc')
+            ->paginate(35);
 
         return view('admin.game.index_live', [
             'games' => $games
         ]);
-    }
-
-    public function delete($id)
-    {
-        Store::where('id', $id)->delete();
     }
 }

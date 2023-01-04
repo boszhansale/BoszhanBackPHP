@@ -3,36 +3,31 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Brand;
-use App\Models\Category;
+use App\Models\Game;
 use Illuminate\Http\Request;
 
 class GameController extends Controller
 {
-    public function index(Brand $brand)
+    public function index()
     {
         return view('admin.game.index');
     }
 
-    public function edit(Category $category)
+    public function edit(Game $game)
     {
-        return view('admin.category.edit', compact('category'));
+        return view('admin.game.edit', compact('game'));
     }
 
-    public function update(Request $request, Category $category)
+    public function update(Request $request, Game $game)
     {
-        $category->name = $request->get('name');
-        $category->enabled = $request->has('enabled');
-        $category->save();
 
-        return redirect()->route('admin.category.index', $category->brand_id);
+        return redirect()->route('admin.game.index');
     }
 
-    public function delete(Category $category)
+    public function delete(Game $game)
     {
-        $brand_id = $category->brand_id;
-        $category->delete();
+        $game->delete();
 
-        return redirect()->route('admin.category.index', $brand_id);
+        return redirect()->route('admin.game.index');
     }
 }

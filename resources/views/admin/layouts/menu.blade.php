@@ -146,4 +146,12 @@
         </p>
     </a>
 </li>
+<li class="nav-item">
+    <a href="{{route('admin.game.index')}}" class="nav-link">
+        <i class="nav-icon fas fa-align-justify"></i>
+        <p>
+            игры
+        </p>
+    </a>
+</li>
 {{--@endif--}}

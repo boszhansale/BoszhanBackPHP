@@ -31,4 +31,6 @@ use Illuminate\Database\Eloquent\Model;
 class GameLoop extends Model
 {
     use HasFactory;
+
+    protected $fillable = ['game_id', 'mobile_id', 'win'];
 }

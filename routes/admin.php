@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\BasketController;
 use App\Http\Controllers\Admin\BrandController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\CounteragentController;
+use App\Http\Controllers\Admin\GameController;
 use App\Http\Controllers\Admin\MainController;
 use App\Http\Controllers\Admin\MobileAppController;
 use App\Http\Controllers\Admin\OrderController;
@@ -170,4 +171,11 @@ Route::prefix('plan-group')->name('plan-group.')->group(function () {
     Route::get('edit/{planGroup}', [PlanGroupController::class, 'edit'])->name('edit');
     Route::put('update/{planGroup}', [PlanGroupController::class, 'update'])->name('update');
     Route::get('delete/{planGroup}', [PlanGroupController::class, 'delete'])->name('delete');
+});
+
+Route::prefix('game')->name('game.')->group(function () {
+    Route::get('/', [GameController::class, 'index'])->name('index');
+    Route::get('edit/{game}', [GameController::class, 'edit'])->name('edit');
+    Route::get('update/{game}', [GameController::class, 'update'])->name('update');
+    Route::get('delete/{game}', [GameController::class, 'delete'])->name('delete');
 });

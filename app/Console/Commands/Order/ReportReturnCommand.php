@@ -44,6 +44,7 @@ class ReportReturnCommand extends Command
             ->whereDoesntHave('report', function ($q) {
                 $q->where('type', 1);
             })
+            ->whereNull('orders.removed_at')
             ->get();
 
         if (! $orders) {

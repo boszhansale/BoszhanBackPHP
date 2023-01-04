@@ -15,28 +15,27 @@ class ReportCommand extends Command
     public function handle()
     {
         $order_id = $this->argument('order_id');
-        if ($order_id){
-            OrderReport::where('order_id',$order_id)->where('type',0)->delete();
+        if ($order_id) {
+            OrderReport::where('order_id', $order_id)->where('type', 0)->delete();
         }
 
 
         $orders = Order::query()
             ->select('orders.*')
-            ->when($order_id,function ($q) use ($order_id) {
-                return $q->where('orders.id',$order_id);
-            },function ($q){
-                return $q ->whereDate('created_at', now());
+            ->when($order_id, function ($q) use ($order_id) {
+                return $q->where('orders.id', $order_id);
+            }, function ($q) {
+                return $q->whereDate('created_at', now());
             })
             ->whereHas('salesrep.counterparty')
-
             ->with(['salesrep.counterparty', 'store'])
             ->whereDoesntHave('report', function ($q) {
                 $q->where('type', 0);
             })
-
+            ->whereNull('orders.removed_at')
             ->get();
 
-        if (! $orders) {
+        if (!$orders) {
             $this->info('There is no orders to generate report for');
 
             return 0;

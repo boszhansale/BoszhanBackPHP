@@ -136,6 +136,7 @@ class OrderController extends Controller
     {
         $order = Order::findOrFail($id);
         $order->removed_at = null;
+        $order->deleted_at = null;
         $order->save();
 
         return redirect()->back();

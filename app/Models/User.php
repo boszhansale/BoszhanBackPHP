@@ -171,6 +171,11 @@ class User extends Authenticatable
         return $this->belongsTo(Role::class);
     }
 
+    public function games(): HasMany
+    {
+        return $this->hasMany(Game::class, 'salesrep_id');
+    }
+
     public function userRoles(): HasMany
     {
         return $this->hasMany(UserRole::class);

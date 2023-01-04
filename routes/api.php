@@ -5,8 +5,8 @@ use App\Http\Controllers\Api\Driver\BasketController as DriverBasketController;
 use App\Http\Controllers\Api\Driver\OrderController as DriverOrderController;
 use App\Http\Controllers\Api\ListController;
 use App\Http\Controllers\Api\ProductController;
-use App\Http\Controllers\Api\Salesrep\BonusGameController;
 use App\Http\Controllers\Api\Salesrep\CounteragentController;
+use App\Http\Controllers\Api\Salesrep\GameController;
 use App\Http\Controllers\Api\Salesrep\OrderController;
 use App\Http\Controllers\Api\Salesrep\PlanController;
 use App\Http\Controllers\Api\Salesrep\StoreController;
@@ -79,9 +79,9 @@ Route::middleware('auth:sanctum')->group(function () {
             Route::get('info', [OrderController::class, 'info']);
         });
 
-        Route::prefix('bonus-game')->group(function () {
-            Route::get('/', [BonusGameController::class, 'index']);
-            Route::post('/', [BonusGameController::class, 'store']);
+        Route::prefix('game')->group(function () {
+            Route::get('/', [GameController::class, 'index']);
+            Route::post('/', [GameController::class, 'store']);
         });
     });
 

@@ -185,7 +185,9 @@
                 </table>
 
             </div>
-            <button type="submit" class="btn btn-warning">редактировать</button>
+            @if(in_array(Auth::id(),[1,153]))
+                    <button type="submit" class="btn btn-warning">редактировать</button>
+            @endif
         </form>
     </div>
     {{$orders->links()}}

@@ -5,7 +5,7 @@ namespace App\Http\Requests\Api;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 
-class BonusGameStoreRequest extends FormRequest
+class GameStoreRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,18 +25,19 @@ class BonusGameStoreRequest extends FormRequest
     public function rules()
     {
         return [
-            'mobile_id' => 'required|string',
+            'token' => 'required|unique:games',
             'store_id' => 'integer|exists:stores,id',
-            'win' => 'required|numeric',
-            'game_id' => 'required|unique:bonus_games',
+            'order_id' => 'integer|exists:orders,id',
+            'total_win' => 'required|numeric',
+            'loops' => 'required|array',
+            'loops.*.win' => 'required|numeric|min:0',
+            'loops.*.mobile_id' => 'required|unique:game_loops'
         ];
     }
 
     public function messages()
     {
         return [
-            'mobile_id.required' => 'поле mobile_id обязательное',
-            'win.required' => 'поле сумма выигрыша обязательное',
         ];
     }
 
