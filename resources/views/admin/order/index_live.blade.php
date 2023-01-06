@@ -98,7 +98,7 @@
                                     <input type="checkbox" name="orders[]" value="{{$order->id}}">
 
                                 </td>
-                                <td class="project-actions text-right">
+                                <td class="project-actions text-left">
                                     <a class="btn btn-primary btn-sm" href="{{route('admin.order.show',$order->id)}}">
                                         <i class="fas fa-folder">
                                         </i>
@@ -109,33 +109,38 @@
                                         </i>
 
                                     </a>
+                                    <a class="btn btn-info btn-sm"
+                                       href="{{route('admin.order.export-excel',$order->id)}}">
+                                        <i class="fas fa-download">
+                                        </i>
+                                    </a>
+
+
                                     @if(($order->removed_at OR $order->deleted_at)  AND  in_array(Auth::id(),[1,153]))
                                         <a class="btn btn-warning btn-sm"
                                            href="{{route('admin.order.recover',$order->id)}}"
-                                           onclick="return confirm('уверен?')">
+                                           onclick="return confirm('восстановить?')">
                                             <i class="fas fa-eraser"></i>
                                         </a>
 
                                     @endif
-                                    @if(in_array(Auth::id(),[1,153]))
+
+                                    @if(!$order->deleted_at AND in_array(Auth::id(),[1,153]))
                                         <a class="btn btn-danger btn-sm"
                                            href="{{route('admin.order.delete',$order->id)}}"
                                            onclick="return confirm('Удалить?')">
                                             <i class="fas fa-trash"></i>
                                         </a>
+                                    @endif
 
-                                    @else
+                                    @if(($order->removed_at == null and $order->deleted_at == null) AND !in_array(Auth::id(),[1,153]))
                                         <a class="btn btn-danger btn-sm"
                                            href="{{route('admin.order.remove',$order->id)}}"
                                            onclick="return confirm('Удалить?')">
                                             <i class="fas fa-trash"></i>
                                         </a>
                                     @endif
-                                    <a class="btn btn-info btn-sm"
-                                       href="{{route('admin.order.export-excel',$order->id)}}">
-                                        <i class="fas fa-download">
-                                        </i>
-                                    </a>
+
 
                                 </td>
                                 <td>
@@ -186,7 +191,7 @@
 
             </div>
             @if(in_array(Auth::id(),[1,153]))
-                    <button type="submit" class="btn btn-warning">редактировать</button>
+                <button type="submit" class="btn btn-warning">редактировать</button>
             @endif
         </form>
     </div>

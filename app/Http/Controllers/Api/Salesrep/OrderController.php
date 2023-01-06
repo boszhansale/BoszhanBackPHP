@@ -77,9 +77,7 @@ class OrderController extends Controller
 
     public function delete(Order $order)
     {
-        $order->removed_at = Carbon::now();
-        $order->save();
-
+        $order->delete();
         return response()->json(['message' => 'Успешно удалено']);
     }
 

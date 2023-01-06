@@ -23,7 +23,7 @@ class Kernel extends ConsoleKernel
 
         $schedule->command('db:backup')->hourly();
 
-        $schedule->command('telescope:clear')->everyMinute();
+        $schedule->command('telescope:clear')->dailyAt('03:00');
         $schedule->command('order:delivery')->dailyAt('05:00');
 
         $schedule->command('store:report')->dailyAt('17:00');
