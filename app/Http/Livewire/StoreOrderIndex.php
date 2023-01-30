@@ -30,7 +30,9 @@ class StoreOrderIndex extends Component
 
     public function render()
     {
-        $query = Order::with(['store', 'salesrep', 'driver'])
+        $query = Order::query()
+            ->join('stores', 'stores.id', 'orders.store_id')
+            ->with(['store', 'salesrep', 'driver'])
             ->where('store_id', $this->store_id)
             ->where('orders.id', 'LIKE', $this->search.'%')
             ->when($this->status_id != 'all', function ($query) {
@@ -43,17 +45,17 @@ class StoreOrderIndex extends Component
             ->when($this->end_date, function ($query) {
                 return $query->whereDate('orders.delivery_date', '<=', $this->end_date);
             })
+            ->select('orders.*')
             ->latest();
 
         return view('admin.store.order_live', [
             'statuses' => Status::all(),
-            'orders' => $query->clone()->paginate(50),
-            'order_count' => $query->clone()->count(),
+
+            'orders' => $query->clone()->withTrashed()->paginate(50),
+            'query' => $query,
             'order_purchase_price' => $query->clone()->sum('purchase_price'),
             'order_return_price' => $query->clone()->sum('return_price'),
-            'order_return_count' => $query->clone()
-                ->where('orders.return_price', '>', 0)
-                ->count(),
+
         ]);
     }
 }

@@ -30,7 +30,8 @@ class StoresExport implements FromView, WithColumnFormatting
     {
         return [
             'A' => NumberFormat::FORMAT_NUMBER,
-            'D' => NumberFormat::FORMAT_NUMBER,
+            'D' => NumberFormat::FORMAT_TEXT,
+            'F' => NumberFormat::FORMAT_NUMBER,
         ];
     }
 }

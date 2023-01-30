@@ -64,7 +64,7 @@ class Counteragent extends Model
     protected $fillable = [
         'id',
         'name',
-        'group',
+        'group_id',
         'id_1c',
         'bin',
         'iik',
@@ -91,6 +91,11 @@ class Counteragent extends Model
     public function counteragentUsers(): HasMany
     {
         return $this->hasMany(CounteragentUser::class);
+    }
+
+    public function counteragentGroup(): HasMany
+    {
+        return $this->hasMany(CounteragentGroup::class);
     }
 
     public function stores(): HasMany

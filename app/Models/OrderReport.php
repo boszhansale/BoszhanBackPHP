@@ -108,14 +108,27 @@ class OrderReport extends Model
         }
         $date = $dateObj->format('Y-m-d');
         $name = self::generateReportName($order, $type, $dateObj);
-        $path = self::PATH."$dates/$name";
+        $path = self::PATH . "$dates/$name";
         try {
             $output = View::make('onec.report_template')->with(compact('order', 'type', 'counteragent_id_1c', 'date'))->render();
-            $output = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n".$output;
+            $output = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n" . $output;
 
             //storing in local storage
             Storage::disk('public')->put($path, $output);
-            File::put("/home/dev/index/$name", $output);
+
+            if ($order->number) {
+                if (File::exists("/home/dev/index/edi/$name")) {
+                    File::delete("/home/dev/index/edi/$name");
+                }
+                File::put("/home/dev/index/edi/$name", $output);
+            } else {
+                if (File::exists("/home/dev/index/$name")) {
+                    File::delete("/home/dev/index/$name");
+                }
+                File::put("/home/dev/index/$name", $output);
+            }
+
+
         } catch (Exception $e) {
             self::query()->create([
                 'order_id' => $order->id,
@@ -163,15 +176,26 @@ class OrderReport extends Model
         }
         $date = $dateObj->format('Y-m-d');
         $name = self::generateReportName($order, $type, $dateObj);
-        $path = self::PATH."$dates/$name";
+        $path = self::PATH . "$dates/$name";
         try {
             $output = View::make('onec.report_return_template')->with(compact('order', 'type', 'counteragent_id_1c', 'date'))->render();
 
-            $output = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n".$output;
+            $output = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n" . $output;
 
             //storing in local storage
             Storage::disk('public')->put($path, $output);
             //storing in 1c processor folder
+            if ($order->number) {
+                if (File::exists("/home/dev/index/edi/$name")) {
+                    File::delete("/home/dev/index/edi/$name");
+                }
+                File::put("/home/dev/index/edi/$name", $output);
+            } else {
+                if (File::exists("/home/dev/index/$name")) {
+                    File::delete("/home/dev/index/$name");
+                }
+                File::put("/home/dev/index/$name", $output);
+            }
             File::put("/home/dev/index/$name", $output);
         } catch (Exception $e) {
             self::query()->create([
@@ -199,7 +223,7 @@ class OrderReport extends Model
     public function sendTo1C($report)
     {
         $file = Storage::disk('public')->get($report->path);
-        $success = Storage::disk('ftp-1c')->put('index/'.basename($report->path), $file);
+        $success = Storage::disk('ftp-1c')->put('index/' . basename($report->path), $file);
 
         if ($success) {
             $this->sendingStatus = 'success';
@@ -223,7 +247,7 @@ class OrderReport extends Model
             $todayDateFor1C = $dateObj->format('YmdHis');
         }
 
-        return $head."_$todayDateFor1C"."_{$order->salesrep->counterparty->id_1c}_9864232489962_{$order->id}".'.xml';
+        return $head . "_$todayDateFor1C" . "_{$order->salesrep->counterparty->id_1c}_9864232489962_{$order->id}" . '.xml';
     }
 
     public function determineOrder($order)

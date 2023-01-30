@@ -12,7 +12,12 @@
                 </div>
                 <div class="form-group">
                     <label for="">группа</label>
-                    <input type="text" class="form-control" name="group" value="{{$counteragent->group}}">
+                    <select name="group_id" class="form-control">
+                        <option value="">выберите</option>
+                        @foreach(\App\Models\CounteragentGroup::all() as $group)
+                            <option value="{{$group->id}}" {{$group->id == $counteragent->group_id ? 'selected' : ''}}>{{$group->name}}</option>
+                        @endforeach
+                    </select>
                 </div>
                 <div class="form-group">
                     <label for="">id_1c</label>

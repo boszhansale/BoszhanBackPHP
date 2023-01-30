@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use Auth;
 use Closure;
 use Illuminate\Http\Request;
 
@@ -16,7 +17,8 @@ class Admin
      */
     public function handle(Request $request, Closure $next)
     {
-        if (\Auth::user()->role->name == 'admin'){
+        $accessRoles = ['admin','operator'];
+        if (in_array(Auth::user()->role->name ,$accessRoles)){
             return $next($request);
         }
         return to_route('login')->with('нет доступа');

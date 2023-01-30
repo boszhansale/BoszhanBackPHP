@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
  * App\Models\CounteragentGroup
@@ -29,4 +30,12 @@ use Illuminate\Database\Eloquent\Model;
 class CounteragentGroup extends Model
 {
     use HasFactory;
+
+    protected $fillable = ['name'];
+
+
+    public function counteragents(): HasMany
+    {
+        return $this->hasMany(Counteragent::class, 'group_id');
+    }
 }

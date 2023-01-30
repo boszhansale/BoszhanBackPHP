@@ -3,6 +3,7 @@
 namespace App\Http\Livewire;
 
 use App\Models\Counteragent;
+use App\Models\CounteragentGroup;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -13,7 +14,7 @@ class CounteragentIndex extends Component
     protected $paginationTheme = 'bootstrap';
 
     public $search;
-    public $group;
+    public $group_id;
 
     public function render()
     {
@@ -25,16 +26,14 @@ class CounteragentIndex extends Component
                             ->orWhere('bin', 'LIKE', "%$this->search%");
                     });
                 })
-                ->when($this->group, function ($q) {
-                    $q->where('group', $this->group);
+                ->when($this->group_id, function ($q) {
+                    $q->where('group_id', $this->group_id);
                 })
                 ->orderBy('counteragents.name')
                 ->paginate(30),
-            'groups' => Counteragent::query()
-                ->whereNotNull('group')
-                ->groupBy('group')
-                ->pluck('group')
-                ->toArray(),
+            'groups' => CounteragentGroup::query()
+                ->orderBy('name')
+                ->get()
 
         ]);
     }

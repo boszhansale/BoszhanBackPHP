@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Actions\OrderPriceAction;
 use App\Exports\Excel\OrderExcelExport;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\OrderManyUpdateRequest;
@@ -24,6 +25,12 @@ class OrderController extends Controller
         $query = Order::query();
 
         return view('admin.order.index', compact('query'));
+    }
+
+    public function edi()
+    {
+
+        return view('admin.order.edi');
     }
 
     public function edit(Order $order): View
@@ -135,7 +142,7 @@ class OrderController extends Controller
     public function recover($id)
     {
 
-        $order = Order::where('id',$id)->withTrashed()->first();
+        $order = Order::where('id', $id)->withTrashed()->first();
         $order->removed_at = null;
         $order->deleted_at = null;
         $order->save();
@@ -191,5 +198,58 @@ class OrderController extends Controller
     {
         Artisan::call('order:parse');
 
+        return redirect()->back();
+
+    }
+
+    public function toOnecEdi()
+    {
+        $orders = Order::whereNotNull('number')
+            ->whereDate('created_at', now())
+            ->get();
+        foreach ($orders as $order) {
+            if ($order->error_messages){
+                if (count($order->error_messages) == 0) {
+                    if ($order->purchase_price > 0) {
+                        Artisan::call('order:report ' . $order->id);
+                    }
+                    if ($order->return_price > 0) {
+                        Artisan::call('order:report-return ' . $order->id);
+                    }
+                }
+            }
+            else{
+                if ($order->purchase_price > 0) {
+                    Artisan::call('order:report ' . $order->id);
+                }
+                if ($order->return_price > 0) {
+                    Artisan::call('order:report-return ' . $order->id);
+                }
+            }
+
+        }
+
+        return redirect()->back();
+    }
+
+
+    public function initialState(Order $order)
+    {
+        $baskets = $order->baskets()->withTrashed()->get();
+        foreach ($baskets as $basket) {
+            $firstBasket = $basket->audits()->whereEvent('created')->first();
+            if ($firstBasket) {
+                $newValue = $firstBasket->new_values;
+                if (isset($newValue['count']) and isset($newValue['all_price'])) {
+                    $basket->count = $newValue['count'];
+                    $basket->all_price = $newValue['all_price'];
+                    $basket->deleted_at = null;
+                    $basket->save();
+                }
+            }
+        }
+        OrderPriceAction::execute($order);
+
+        return redirect()->back();
     }
 }

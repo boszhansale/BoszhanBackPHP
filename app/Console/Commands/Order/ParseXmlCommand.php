@@ -21,10 +21,13 @@ class ParseXmlCommand extends Command
     {
         $this->clear();
 
+
         $files = Storage::disk('ftp')->files('inbox');
         dump('all count ' . count($files));
-        $date = Carbon::parse('2023-01-05')->format('Ymd');
-//        $date = Carbon::now()->format('Ymd');
+//        $date = Carbon::parse('2023-01-10')->format('Ymd');
+//        $date = Carbon::now()->subDay()->format('Ymd');
+        $date = Carbon::now()->format('Ymd');
+
         $matches = preg_grep("/(ORDER_|RETANN)($date)([0-9]{2})([0-9]{2}).*/", $files);
         dump('parse count ' . count($matches));
         $success = [];
@@ -80,7 +83,7 @@ class ParseXmlCommand extends Command
                         'driver_id' => $driver->id,
                         'store_id' => $store->id,
                         'delivery_date' => Carbon::parse($type == 0 ? $data['DELIVERYDATE'] : $data['RETURNDATE']),
-                        'error_message' => [],
+//                        'error_message' => [],
                         'payment_type_id' => $counteragent->payment_type_id,
                     ]);
                 $order->baskets()->forceDelete();
@@ -95,6 +98,7 @@ class ParseXmlCommand extends Command
                         'delivery_date' => Carbon::parse($type == 0 ? $data['DELIVERYDATE'] : $data['RETURNDATE']),
                         'salesrep_mobile_app_version' => 1,
                         'mobile_id' => 'EDI_' . $date . '_' . Str::random(7),
+//                        'error_message' => [],
                         'payment_type_id' => $counteragent->payment_type_id,
                     ]);
             }
@@ -177,8 +181,8 @@ class ParseXmlCommand extends Command
     {
         $files = Storage::disk('ftp')->files('inbox');
         $all_count = count($files);
-        dump("all count $all_count");
-        dump('start clear ');
+//        dump("all count $all_count");
+//        dump('start clear ');
 //        $date = Carbon::parse('2022-11-30')->format('Ymd');
         $date = (int)Carbon::now()->subDays(7)->format('Ymd');
         foreach ($files as $fileName) {
@@ -186,7 +190,7 @@ class ParseXmlCommand extends Command
                 $d = (int)substr($fileName, 12, 8);
 
                 if ($d <= $date) {
-                    dump('delete: ' . $fileName);
+//                    dump('delete: ' . $fileName);
 
                     Storage::disk('ftp')->delete($fileName);
                 }
@@ -195,7 +199,7 @@ class ParseXmlCommand extends Command
                 $d = (int)substr($fileName, 13, 8);
 
                 if ($d <= $date) {
-                    dump('delete: ' . $fileName);
+//                    dump('delete: ' . $fileName);
 
                     Storage::disk('ftp')->delete($fileName);
                 }
@@ -203,15 +207,15 @@ class ParseXmlCommand extends Command
                 $d = (int)substr($fileName, 13, 8);
 
                 if ($d <= $date) {
-                    dump('delete: ' . $fileName);
+//                    dump('delete: ' . $fileName);
 
                     Storage::disk('ftp')->delete($fileName);
                 }
             }
         }
 
-        $files = Storage::disk('ftp')->files('inbox');
-        dump('end clear, deleted: ' . $all_count - count($files));
+//        $files = Storage::disk('ftp')->files('inbox');
+//        dump('end clear, deleted: ' . $all_count - count($files));
 
     }
 

@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\BasketController;
 use App\Http\Controllers\Admin\BrandController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\CounteragentController;
+use App\Http\Controllers\Admin\CounteragentGroupController;
 use App\Http\Controllers\Admin\GameController;
 use App\Http\Controllers\Admin\MainController;
 use App\Http\Controllers\Admin\MobileAppController;
@@ -139,6 +140,7 @@ Route::prefix('role')->name('role.')->group(function () {
 Route::prefix('order')->name('order.')->group(function () {
     Route::get('/', [OrderController::class, 'index'])->name('index');
     Route::get('to-onec', [OrderController::class, 'toOnec'])->name('to-onec');
+    Route::get('to-onec/edi', [OrderController::class, 'toOnecEdi'])->name('to-onec-edi');
     Route::get('create', [OrderController::class, 'create'])->name('create');
     Route::post('store', [OrderController::class, 'store'])->name('store');
     Route::get('edit/{order}', [OrderController::class, 'edit'])->name('edit');
@@ -155,7 +157,9 @@ Route::prefix('order')->name('order.')->group(function () {
     Route::post('driver-moving', [OrderController::class, 'driverMoving'])->name('driver-moving');
     Route::get('statistic', [OrderController::class, 'statistic'])->name('statistic');
     Route::get('history/{order}', [OrderController::class, 'history'])->name('history');
+    Route::get('initial-state/{order}', [OrderController::class, 'initialState'])->name('initial-state');
     Route::get('edi/parse', [OrderController::class, 'ediParse'])->name('edi-parse');
+    Route::get('edi', [OrderController::class, 'edi'])->name('edi');
 });
 Route::prefix('basket')->name('basket.')->group(function () {
     Route::get('create/{order}/{type}', [BasketController::class, 'create'])->name('create');
@@ -178,4 +182,13 @@ Route::prefix('game')->name('game.')->group(function () {
     Route::get('edit/{game}', [GameController::class, 'edit'])->name('edit');
     Route::get('update/{game}', [GameController::class, 'update'])->name('update');
     Route::get('delete/{game}', [GameController::class, 'delete'])->name('delete');
+});
+
+Route::prefix('counteragent-group')->name('counteragent-group.')->group(function () {
+    Route::get('/', [CounteragentGroupController::class, 'index'])->name('index');
+    Route::get('create', [CounteragentGroupController::class, 'create'])->name('create');
+    Route::post('/', [CounteragentGroupController::class, 'store'])->name('store');
+    Route::get('edit/{counteragentGroup}', [CounteragentGroupController::class, 'edit'])->name('edit');
+    Route::put('update/{counteragentGroup}', [CounteragentGroupController::class, 'update'])->name('update');
+    Route::get('delete/{counteragentGroup}', [CounteragentGroupController::class, 'delete'])->name('delete');
 });

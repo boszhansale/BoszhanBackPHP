@@ -14,6 +14,7 @@ class AuthController extends Controller
         if (Auth::check()) {
             return match (Auth::user()->role->name) {
                 'admin' => to_route('admin.main'),
+                'operator' => to_route('admin.main'),
                 'cashier' => to_route('cashier.main'),
                 'supervisor' => to_route('supervisor.main'),
                 default => to_route('login')
@@ -30,10 +31,10 @@ class AuthController extends Controller
         if (!Hash::check($request->get('password'), $user->password)) {
             return back()->withErrors('Неправильный пароль');
         }
-
         Auth::login($user, 1);
-        return match (Auth::user()->role->name) {
+        return match ($user->role->name) {
             'admin' => to_route('admin.main'),
+            'operator' => to_route('admin.main'),
             'cashier' => to_route('cashier.main'),
             'supervisor' => to_route('supervisor.main'),
             default => to_route('login'),

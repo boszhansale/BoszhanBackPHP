@@ -12,7 +12,12 @@
                 <div class="col-md-6">
                     <div class="form-group">
                         <label for="">группа</label>
-                        <input type="text" class="form-control" name="group">
+                        <select name="group_id" class="form-control">
+                            <option value="">Выберите группу</option>
+                            @foreach(\App\Models\CounteragentGroup::all() as $group)
+                                <option value="{{$group->id}}">{{$group->nmae}}</option>
+                            @endforeach
+                        </select>
                     </div>
                     <div class="form-group">
                         <label for="">id_1c</label>
