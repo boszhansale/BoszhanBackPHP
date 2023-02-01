@@ -15,11 +15,21 @@ return [
     |
     */
 
-    'paths' => ['api/*', 'sanctum/csrf-cookie'],
+    'paths' => ['api/*',
+        'sanctum/csrf-cookie',
+    ],
 
     'allowed_methods' => ['*'],
 
-    'allowed_origins' => ['*'],
+    'allowed_origins' => [
+        '*',
+        'https://salesrep.boszhan.kz/*',
+        'http://salesrep.boszhan.kz/*',
+        'http://salesrep.boszhan.kz',
+        'https://boszhan.kz/',
+        '*.boszhan.kz/*',
+        'salesrep.boszhan.kz'
+    ],
 
     'allowed_origins_patterns' => [],
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Console\Commands\Order;
+namespace App\Console\Commands\Edi;
 
 use App\Actions\OrderPriceAction;
 use App\Models\Order;
@@ -11,16 +11,14 @@ use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Storage;
 use Str;
 
-class ParseXmlCommand extends Command
+class ParseCommand extends Command
 {
-    protected $signature = 'order:parse';
+    protected $signature = 'edi:parse';
 
     protected $description = 'parse xml from ftp';
 
     public function handle()
     {
-        $this->clear();
-
 
         $files = Storage::disk('ftp')->files('inbox');
         dump('all count ' . count($files));
@@ -175,48 +173,6 @@ class ParseXmlCommand extends Command
             ]);
         }
         return null;
-    }
-
-    public function clear()
-    {
-        $files = Storage::disk('ftp')->files('inbox');
-        $all_count = count($files);
-//        dump("all count $all_count");
-//        dump('start clear ');
-//        $date = Carbon::parse('2022-11-30')->format('Ymd');
-        $date = (int)Carbon::now()->subDays(7)->format('Ymd');
-        foreach ($files as $fileName) {
-            if (strpos($fileName, 'ORDER')) {
-                $d = (int)substr($fileName, 12, 8);
-
-                if ($d <= $date) {
-//                    dump('delete: ' . $fileName);
-
-                    Storage::disk('ftp')->delete($fileName);
-                }
-
-            } elseif (strpos($fileName, 'RETANN')) {
-                $d = (int)substr($fileName, 13, 8);
-
-                if ($d <= $date) {
-//                    dump('delete: ' . $fileName);
-
-                    Storage::disk('ftp')->delete($fileName);
-                }
-            } else {
-                $d = (int)substr($fileName, 13, 8);
-
-                if ($d <= $date) {
-//                    dump('delete: ' . $fileName);
-
-                    Storage::disk('ftp')->delete($fileName);
-                }
-            }
-        }
-
-//        $files = Storage::disk('ftp')->files('inbox');
-//        dump('end clear, deleted: ' . $all_count - count($files));
-
     }
 
 }

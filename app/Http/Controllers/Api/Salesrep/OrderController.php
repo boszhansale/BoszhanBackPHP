@@ -13,6 +13,7 @@ use App\Models\Order;
 use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Auth;
 
 class OrderController extends Controller
@@ -54,9 +55,16 @@ class OrderController extends Controller
     public function store(OrderStoreRequest $request, OrderCreateAction $action, BasketCreateAction $basketCreateAction)
     {
         $order = $action->execute($request->validated(), Auth::user());
-        $baskets = $basketCreateAction->execute($request->get('baskets'), $order);
+        $basketCreateAction->execute($request->get('baskets'), $order);
+        $order = OrderPriceAction::execute($order);
+        //Проверка если контрагент в группе сотрудники, то отправляем на фтп 1с
+        if ($order->store->counteragent) {
+            if ($order->store->counteragent->group_id == 3) {
+                Artisan::call('order:report ' . $order->id);
+            }
+        }
 
-        return response()->json(OrderPriceAction::execute($order));
+        return response()->json($order);
     }
 
     public function show($id): JsonResponse

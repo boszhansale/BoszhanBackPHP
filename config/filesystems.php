@@ -67,6 +67,11 @@ return [
             'ssl' => false,
             // 'timeout'  => 30,
         ],
+        'ftpBackup' => [
+            'driver' => 'local',
+            'root' => '/home/dev/index/backups/sql',
+            'throw' => false,
+        ],
 
     ],
 

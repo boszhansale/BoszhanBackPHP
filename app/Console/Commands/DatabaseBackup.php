@@ -3,6 +3,8 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Storage;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 use Symfony\Component\Process\Process;
 
@@ -42,6 +44,8 @@ class DatabaseBackup extends Command
     public function handle()
     {
 
+        $this->clear();
+
         $path = storage_path('app/public/database/');
         $name = sprintf('/home/dev/index/backups/sql/' . 'backup_%s.sql', now()->format('YmdHis'));
         //mysql
@@ -61,6 +65,22 @@ class DatabaseBackup extends Command
         } catch (ProcessFailedException $exception) {
             logger()->error('Backup exception', compact('exception'));
             $this->error('The backup process has been failed.');
+        }
+    }
+
+    protected function clear()
+    {
+        $files = Storage::disk('ftpBackup')->files();
+        $date = (int)Carbon::now()->subDays(3)->format('Ymd');
+        foreach ($files as $fileName) {
+
+            $d = (int)substr($fileName, 7, 8);
+            if ($d <= $date) {
+                dump('delete: ' . $fileName);
+
+                Storage::disk('ftpBackup')->delete($fileName);
+            }
+
         }
     }
 }

@@ -196,7 +196,7 @@ class OrderController extends Controller
 
     public function ediParse()
     {
-        Artisan::call('order:parse');
+        Artisan::call('edi:parse');
 
         return redirect()->back();
 
@@ -208,7 +208,7 @@ class OrderController extends Controller
             ->whereDate('created_at', now())
             ->get();
         foreach ($orders as $order) {
-            if ($order->error_messages){
+            if ($order->error_messages) {
                 if (count($order->error_messages) == 0) {
                     if ($order->purchase_price > 0) {
                         Artisan::call('order:report ' . $order->id);
@@ -217,8 +217,7 @@ class OrderController extends Controller
                         Artisan::call('order:report-return ' . $order->id);
                     }
                 }
-            }
-            else{
+            } else {
                 if ($order->purchase_price > 0) {
                     Artisan::call('order:report ' . $order->id);
                 }
