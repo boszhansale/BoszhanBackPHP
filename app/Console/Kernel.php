@@ -21,7 +21,7 @@ class Kernel extends ConsoleKernel
 //        $schedule->command('export:order')->dailyAt('18:00');
 //        $schedule->command('import:all')->dailyAt('23:00');
 
-        $schedule->command('db:backup')->hourly();
+        $schedule->command('db:backup')->dailyAt('02:00');
 
         $schedule->command('edi:clear')->everySixHours();
 
@@ -42,7 +42,7 @@ class Kernel extends ConsoleKernel
         $schedule->command('order:report-return')->dailyAt('18:10');
 
         $schedule->command('plan:init')->everyFourHours();
-        $schedule->command('plan:calk')->everyTenMinutes();
+        $schedule->command('plan:calk')->everyThirtyMinutes();
     }
 
     /*

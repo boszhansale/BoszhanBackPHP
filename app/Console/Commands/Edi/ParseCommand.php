@@ -21,13 +21,13 @@ class ParseCommand extends Command
     {
 
         $files = Storage::disk('ftp')->files('inbox');
-        dump('all count ' . count($files));
+//        dump('all count ' . count($files));
 //        $date = Carbon::parse('2023-01-10')->format('Ymd');
 //        $date = Carbon::now()->subDay()->format('Ymd');
         $date = Carbon::now()->format('Ymd');
 
         $matches = preg_grep("/(ORDER_|RETANN)($date)([0-9]{2})([0-9]{2}).*/", $files);
-        dump('parse count ' . count($matches));
+//        dump('parse count ' . count($matches));
         $success = [];
         foreach ($matches as $fileName) {
 
@@ -49,7 +49,7 @@ class ParseCommand extends Command
 
             $xmlFile = Storage::disk('ftp')->get($fileName);
             if (!$xmlFile) {
-                dump('xml file not found');
+//                dump('xml file not found');
                 continue;
             }
             $objectData = simplexml_load_string($xmlFile);
@@ -58,21 +58,20 @@ class ParseCommand extends Command
             //salesrep_id = 192
             $store = Store::where('id_edi', $data['HEAD']['DELIVERYPLACE'])->first();
             if (!$store) {
-                dump('store not found: ' . $data['HEAD']['DELIVERYPLACE']);
+                dd('не найден торговый точка: ' . $data['HEAD']['DELIVERYPLACE']);
                 continue;
             }
             $counteragent = $store->counteragent;
             if (!$counteragent) {
-                dump('counteragent not found');
+                dd('не найден контаргент');
                 continue;
             }
             $driver = $store->driver;
             if (!$driver) {
-                dump('driver not found');
+                dd('не найден водитель');
                 continue;
             }
             $errorMessages = [];
-
             $order = Order::where('number', $data['NUMBER'])->first();
             if ($order) {
                 $order->update(
@@ -126,7 +125,7 @@ class ParseCommand extends Command
             }
         }
 
-        dump('success count: ' . count($success));
+//        dump('success count: ' . count($success));
     }
 
     public function createBasket(int $type, Order $order, array $item): array|null
@@ -145,7 +144,7 @@ class ParseCommand extends Command
                 ->first();
         }
         if (!$product) {
-            dump('product barcode not found: ' . $item['PRODUCT']);
+//            dump('product barcode not found: ' . $item['PRODUCT']);
 
             $errorMessage['barcode'] = $item['PRODUCT'];
             $errorMessage['name'] = $type == 0 ? $item['CHARACTERISTIC']['DESCRIPTION'] : $item['DESCRIPTION'];

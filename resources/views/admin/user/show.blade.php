@@ -17,17 +17,18 @@
                 </a>
             @endif
             @if($user->isSalesrep())
-                <a href="{{route('admin.user.order',[$user->id,1])}}" class="btn btn-primary">заявки торгового</a>
-            @endif
-            @if($user->isSalesrep())
+                <a href="{{route('admin.order.index',['salesrep_id' => $user->id])}}" class="btn btn-primary">заявки</a>
+                <a href="{{route('admin.store.index',['salesrep_id' => $user->id])}}" class="btn btn-primary">торговые
+                    точки</a>
                 <a href="{{route('admin.store.position',$user->id)}}" class="btn btn-primary"> торговые точки на
                     карте</a>
             @endif
 
             @if($user->isDriver())
-                <a href="{{route('admin.user.order',[$user->id,2])}}" class="btn btn-primary">заявки водителя</a>
+                <a href="{{route('admin.order.index',['driver_id' => $user->id])}}" class="btn btn-primary">заявки</a>
+                <a href="{{route('admin.store.index',['driver_id' => $user->id])}}" class="btn btn-primary">торговые
+                    точки</a>
             @endif
-
 
         </div>
     </div>
@@ -71,6 +72,12 @@
                                 @else
                                     нету данных
                                 @endif
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>пройденный путь за сегодня</th>
+                            <td>
+                               {{$user->getDistance()}}
                             </td>
                         </tr>
                         <th>количество ТТ</th>

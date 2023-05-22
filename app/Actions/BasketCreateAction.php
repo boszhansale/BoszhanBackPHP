@@ -14,6 +14,7 @@ class BasketCreateAction
         //Basket
         $store = $order->store;
         $counteragent = $store->counteragent;
+
         $priceType = $counteragent ? $counteragent->priceType : PriceType::find(1);
 
         $discount = $counteragent ? $counteragent->discount : 0;
@@ -47,6 +48,7 @@ class BasketCreateAction
                     $value['price'] = $this->discount($productPriceType->price, $discount);
                 }
             } else {
+                $product->update(['remainder' => $product->remainder - $value['count']]);
                 $productCounteragentPrice = $counteragent ? $product->counteragentPrices()->where(
                     'counteragent_id',
                     $counteragent->id

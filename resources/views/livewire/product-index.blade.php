@@ -6,7 +6,7 @@
                     <input wire:model="search" type="search" name="search" placeholder="поиск" class="form-control">
                 </div>
                 <div class="col-md-2">
-                    <select  wire:model="brand_id"  class="form-control">
+                    <select wire:model="brand_id" class="form-control">
                         <option value="all">Все бренды</option>
                         @foreach($brands as $brand)
                             <option value="{{$brand->id}}">{{$brand->name}}</option>
@@ -14,7 +14,7 @@
                     </select>
                 </div>
                 <div class="col-md-2">
-                    <select  wire:model="category_id"  class="form-control">
+                    <select wire:model="category_id" class="form-control">
                         <option value="all">все категории</option>
                         @foreach($categories as $category)
                             <option value="{{$category->id}}">{{$category->name}}</option>
@@ -35,7 +35,7 @@
                     <th>name</th>
                     <th>cat</th>
                     @foreach(\App\Models\PriceType::all() as $priceType)
-                    <th>{{$priceType->name}}</th>
+                        <th>{{$priceType->name}}</th>
                     @endforeach
 
                     <th>шт/кг</th>
@@ -72,11 +72,10 @@
                             <a>{{$product->name}}</a>
                         </th>
 
-                        <th>{{$product->prices()->where('price_type_id',1)->first()?->price}}</th>
-                        <th>{{$product->prices()->where('price_type_id',2)->first()?->price}}</th>
-                        <th>{{$product->prices()->where('price_type_id',3)->first()?->price}}</th>
-                        <th>{{$product->prices()->where('price_type_id',4)->first()?->price}}</th>
-                        <th>{{$product->prices()->where('price_type_id',5)->first()?->price}}</th>
+                        @foreach(\App\Models\PriceType::all() as $priceType)
+                            <th>{{$product->prices()->where('price_type_id',$priceType->id)->first()?->price}}</th>
+
+                        @endforeach
                         <th>
                             @if($product->measure == 1)
                                 штука

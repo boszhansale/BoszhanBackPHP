@@ -2,5 +2,5 @@
 
 @section('content-header-title','Перенос заявок Водителя')
 @section('content')
-    @livewire('order-driver-move')
+    @livewire('supervisor.order-driver-move')
 @endsection

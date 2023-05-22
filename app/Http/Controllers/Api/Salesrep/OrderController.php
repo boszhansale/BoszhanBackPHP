@@ -52,6 +52,7 @@ class OrderController extends Controller
         return response()->json($orders);
     }
 
+
     public function store(OrderStoreRequest $request, OrderCreateAction $action, BasketCreateAction $basketCreateAction)
     {
         $order = $action->execute($request->validated(), Auth::user());

@@ -12,6 +12,7 @@ use App\Models\Status;
 use App\Models\User;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\View\View;
 use Maatwebsite\Excel\Facades\Excel;
@@ -110,5 +111,19 @@ class OrderController extends Controller
     public function history(Order $order)
     {
         return \view('supervisor.order.history', compact('order'));
+    }
+
+
+    public function driverMove()
+    {
+        return \view('supervisor.order.driver_move');
+    }
+
+    public function driverMoving(Request $request)
+    {
+        Order::whereIn('id', $request->get('orders'))
+            ->update(['driver_id' => $request->get('to_driver_id')]);
+
+        return redirect()->route('supervisor.user.show', $request->get('to_driver_id'));
     }
 }

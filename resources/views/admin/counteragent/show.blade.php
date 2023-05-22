@@ -5,7 +5,9 @@
 @section('content')
     <div class="row">
         <div class="col">
-            <a href="{{route('admin.counteragent.order',$counteragent->id)}}" class="btn btn-primary">заявки</a>
+            <a href="{{route('admin.order.index',['counteragent_id' => $counteragent->id])}}" class="btn btn-primary">заявки</a>
+            <a href="{{route('admin.store.index',['counteragent_id' => $counteragent->id])}}" class="btn btn-primary">торговые
+                точки</a>
             <a href="{{route('admin.counteragent.edit',$counteragent->id)}}" class="btn btn-warning">изменить</a>
             <a href="{{route('admin.counteragent.delete',$counteragent->id)}}" class="btn btn-danger">удалить</a>
         </div>
@@ -143,14 +145,14 @@
                                         <i class="fas fa-pencil-alt">
                                         </i>
                                     </a>
-                                    {{--                            <a  class="btn btn-danger btn-sm" href="{{route('admin.store.delete',$store->id)}}" onclick="return confirm('Удалить?')">--}}
-                                    {{--                                <i class="fas fa-trash"></i>--}}
-                                    {{--                            </a>--}}
+                                                                <a  class="btn btn-danger btn-sm" href="{{route('admin.store.delete',$store->id)}}" onclick="return confirm('Удалить?')">
+                                                                    <i class="fas fa-trash"></i>
+                                                                </a>
 
-                                    <button class="btn btn-danger btn-sm" wire:click="delete({{$store->id}})"
-                                            onclick="return confirm('Удалить?')">
-                                        <i class="fas fa-trash"></i>
-                                    </button>
+{{--                                    <button class="btn btn-danger btn-sm" wire:click="delete({{$store->id}})"--}}
+{{--                                            onclick="return confirm('Удалить?')">--}}
+{{--                                        <i class="fas fa-trash"></i>--}}
+{{--                                    </button>--}}
                                 </td>
                             </tr>
                         @endforeach

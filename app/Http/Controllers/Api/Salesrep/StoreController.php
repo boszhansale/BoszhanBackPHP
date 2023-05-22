@@ -13,8 +13,8 @@ class StoreController extends Controller
 {
     public function index(Request $request)
     {
-        $lat = Auth::user()->lat;
-        $lng = Auth::user()->lng;
+//        $lat = Auth::user()->lat;
+//        $lng = Auth::user()->lng;
 
 
         $stores = Store::query()
@@ -29,8 +29,8 @@ class StoreController extends Controller
                     return $query->whereNull('counteragent_id');
                 }
             })
-            ->when($request->has('counteragent_id'),function ($q){
-                return $q->where('counteragent_id',\request('counteragent_id'));
+            ->when($request->has('counteragent_id'), function ($q) {
+                return $q->where('counteragent_id', \request('counteragent_id'));
             })
             ->groupBy('stores.id')
             ->orderBy('stores.name')
@@ -39,6 +39,24 @@ class StoreController extends Controller
             ->get();
 
 
+        return response()->json($stores);
+    }
+
+    public function lastOrders(Request $request)
+    {
+        $stores = Auth::user()
+            ->stores()
+            ->whereHas('orders')
+            ->with(
+                'orders', function ($q) {
+            }
+            )
+            ->with(['orders.baskets', 'orders.baskets.product'])
+            ->latest()
+            ->get()->map(function ($query) {
+                $query->setRelation('orders', $query->orders->take(5));
+                return $query;
+            });
         return response()->json($stores);
     }
 

@@ -72,6 +72,11 @@ return [
             'root' => '/home/dev/index/backups/sql',
             'throw' => false,
         ],
+        'ftpOrder' => [
+            'driver' => 'local',
+            'root' => '/home/dev/index/',
+            'throw' => false,
+        ],
 
     ],
 

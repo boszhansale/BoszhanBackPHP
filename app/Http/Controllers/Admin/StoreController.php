@@ -15,11 +15,12 @@ use Illuminate\View\View;
 
 class StoreController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $stores = Store::paginate(50);
-
-        return view('admin.store.index', compact('stores'));
+        $driver_id = $request->get('driver_id');
+        $salesrep_id = $request->get('salesrep_id');
+        $counteragent_id = $request->get('counteragent_id');
+        return view('admin.store.index', compact('driver_id', 'salesrep_id', 'counteragent_id'));
     }
 
     public function create()

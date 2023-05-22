@@ -39,3 +39,15 @@
         </p>
     </a>
 </li>
+
+@if(Auth::id() == 217)
+    <li class="nav-item">
+        <a href="{{route('supervisor.order.driver-move')}}" class="nav-link">
+            <i class="nav-icon fas fa-align-justify"></i>
+            <p>
+                Перенос Заявок водителя
+            </p>
+        </a>
+    </li>
+
+@endif

@@ -162,8 +162,9 @@ class ProductController extends Controller
                 $productImage = new ProductImage();
                 $productImage->product_id = $product->id;
                 $productImage->name = $image->getClientOriginalName();
-                $productImage->path = Storage::disk('public')->put('images', $image);
+                $productImage->path = $image;
                 $productImage->save();
+
             }
         }
 

@@ -213,6 +213,11 @@ class User extends Authenticatable
         return $this->hasMany(Store::class, $this->isSalesrep() ? 'salesrep_id' : 'driver_id');
     }
 
+    public function orders(): HasMany
+    {
+        return $this->hasMany(Order::class, $this->role_id == 1 ? 'salesrep_id' : 'driver_id');
+    }
+
     public function counteragents(): HasManyThrough
     {
         return $this->hasManyThrough(Counteragent::class, CounteragentUser::class, '', 'id', '', 'counteragent_id');
@@ -256,5 +261,33 @@ class User extends Authenticatable
             case 2:
                 return 'не работает';
         }
+    }
+
+    public function getDistance(): string
+    {
+        $totalDistance = 0;
+
+        $coords = $this->userPositions()->whereDate('created_at', now())->get(['lat', 'lng']);
+        for ($i = 0; $i < count($coords) - 1; $i++) {
+            $lat1 = $coords[$i]["lat"];
+            $lng1 = $coords[$i]["lng"];
+            $lat2 = $coords[$i + 1]["lat"];
+            $lng2 = $coords[$i + 1]["lng"];
+            $totalDistance += $this->calculateDistance($lat1, $lng1, $lat2, $lng2);
+        }
+
+        return round($totalDistance) . " км";
+
+    }
+
+    function calculateDistance($lat1, $lng1, $lat2, $lng2): float|int
+    {
+        $earthRadius = 6371; // радиус Земли в км
+        $latDelta = deg2rad($lat2 - $lat1);
+        $lngDelta = deg2rad($lng2 - $lng1);
+        $a = sin($latDelta / 2) * sin($latDelta / 2) + cos(deg2rad($lat1)) * cos(deg2rad($lat2)) * sin($lngDelta / 2) * sin($lngDelta / 2);
+        $c = 2 * atan2(sqrt($a), sqrt(1 - $a));
+        $distance = $earthRadius * $c;
+        return $distance;
     }
 }

@@ -29,13 +29,6 @@ class OrderIndex extends Component
     public function render()
     {
         $query = Order::query()
-            ->join('users', 'users.id', 'orders.salesrep_id')
-            ->join('supervisor_salesreps', 'supervisor_salesreps.salesrep_id', 'orders.salesrep_id')
-            ->when(\Auth::id() != 217, function ($q) {
-                $q->where('supervisor_salesreps.supervisor_id', \Auth::id());
-            })
-            ->where('users.status', 1)
-            ->with(['store', 'salesrep', 'driver'])
             ->when($this->search, function ($q) {
                 return $q->where('orders.id', 'LIKE', $this->search . '%');
             })
@@ -69,7 +62,16 @@ class OrderIndex extends Component
                 ->get('users.*'),
             'statuses' => Status::all(),
 
-            'orders' => $query->clone()->withTrashed()->select('orders.*')->paginate(50),
+            'orders' => $query->clone()
+                ->when(\Auth::id() != 217, function ($q) {
+                    $q->join('supervisor_salesreps', 'supervisor_salesreps.salesrep_id', 'orders.salesrep_id')
+                        ->where('supervisor_salesreps.supervisor_id', \Auth::id());
+                })
+                ->with(['store', 'salesrep', 'driver'])
+                ->groupBy('orders.id')
+                ->select('orders.*')
+                ->paginate(50),
+
             'order_count' => $query->clone()->count(),
             'order_purchase_price' => $query->clone()->sum('purchase_price'),
             'order_return_price' => $query->clone()->sum('return_price'),

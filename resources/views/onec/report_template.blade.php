@@ -1,17 +1,9 @@
 <ORDER>
     <DOCUMENTNAME>220</DOCUMENTNAME>
-    <NUMBER>{{$order->id}}-0800{{\Carbon\Carbon::now()->year}}-{{substr($order->salesrep->id_1c,-4)}}
-        -{{$order->payment_type_id}}</NUMBER>
+    <NUMBER>{{$order->id}}-0800{{\Carbon\Carbon::now()->year}}-{{substr($order->salesrep->id_1c,-4)}}-{{$order->payment_type_id}}</NUMBER>
     <DATE>{{\Carbon\Carbon::parse($order->created_at)->format('Y-m-d')}}</DATE>
     <DELIVERYDATE>{{\Carbon\Carbon::parse($order->delivery_date)->format('Y-m-d')}}</DELIVERYDATE>
-
-    @if($order->store->driver)
-        <MANAGER>{{$order->store->driver->id_1c}}</MANAGER>
-    @else
-        <MANAGER>{{$order->salesrep->driver->id_1c}}</MANAGER>
-    @endif
-
-
+    @if($order->store->driver)<MANAGER>{{$order->store->driver->id_1c}}</MANAGER>@else<MANAGER>{{$order->salesrep->driver->id_1c}}</MANAGER>@endif
     <DRIVER>{{$order->salesrep->id_1c}}</DRIVER>
     <CURRENCY>KZT</CURRENCY>
     <HEAD>
@@ -30,11 +22,7 @@
                 <PRODUCTIDSUPPLIER/>
                 <PRODUCTIDBUYER>{{$order->store->id_sell}}</PRODUCTIDBUYER>
                 <ORDEREDQUANTITY>{{number_format((float)$basket->count, 3, '.', '')}}</ORDEREDQUANTITY>
-                @if($basket->product->measure == 1)
-                    <ORDERUNIT>PCE</ORDERUNIT>
-                @else
-                    <ORDERUNIT>KGM</ORDERUNIT>
-                @endif
+                @if($basket->product->measure == 1) <ORDERUNIT>PCE</ORDERUNIT>@else<ORDERUNIT>KGM</ORDERUNIT>@endif
                 <ORDERPRICE>{{ round($basket->price - ($order->price / 100 * 12))}}.00</ORDERPRICE>
                 <PRICEWITHVAT>{{$order->price}}.00</PRICEWITHVAT>
                 <VAT>12</VAT>

@@ -2,21 +2,23 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Exports\Excel\UserOrderExport;
 use App\Http\Controllers\Controller;
 use App\Models\Brand;
 use App\Models\Counteragent;
 use App\Models\CounteragentUser;
 use App\Models\Counterparty;
 use App\Models\DriverSalesrep;
+use App\Models\Order;
 use App\Models\PlanGroup;
 use App\Models\PlanGroupUser;
 use App\Models\Role;
 use App\Models\SupervisorSalesrep;
 use App\Models\User;
-use App\Models\UserRole;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\View\View;
+use Maatwebsite\Excel\Facades\Excel;
 
 class UserController extends Controller
 {
@@ -219,6 +221,7 @@ class UserController extends Controller
 
     public function update(Request $request, User $user)
     {
+
         $user->name = $request->get('name');
         $user->id_1c = $request->get('id_1c');
         $user->login = $request->get('login');
@@ -237,7 +240,6 @@ class UserController extends Controller
 
         if ($request->has('drivers')) {
             DriverSalesrep::where('salesrep_id', $user->id)->delete();
-
             foreach ($request->get('drivers') as $driver) {
                 DriverSalesrep::create(
                     [
@@ -246,6 +248,8 @@ class UserController extends Controller
                     ]
                 );
             }
+        } else {
+            DriverSalesrep::where('salesrep_id', $user->id)->delete();
         }
         if ($request->has('salesreps')) {
             DriverSalesrep::where('driver_id', $user->id)->delete();
@@ -257,7 +261,11 @@ class UserController extends Controller
                     ]
                 );
             }
+        } else {
+            DriverSalesrep::where('driver_id', $user->id)->delete();
         }
+
+
         if ($request->has('supervisor_salesreps')) {
             SupervisorSalesrep::where('supervisor_id', $user->id)->delete();
             foreach ($request->get('supervisor_salesreps') as $salesrep) {
@@ -268,6 +276,8 @@ class UserController extends Controller
                     ]
                 );
             }
+        } else {
+            SupervisorSalesrep::where('supervisor_id', $user->id)->delete();
         }
         if ($request->has('counteragents')) {
             CounteragentUser::whereUserId($user->id)->delete();
@@ -278,43 +288,45 @@ class UserController extends Controller
                     'counteragent_id' => $counteragentId,
                 ]);
             }
+        } else {
+            CounteragentUser::whereUserId($user->id)->delete();
         }
-        if ($request->has('roles')) {
-            $user->userRoles()->delete();
-            foreach ($request->get('roles') as $role_id) {
-                UserRole::updateOrCreate(
-                    [
-                        'user_id' => $user->id,
-                        'role_id' => $role_id,
-                    ],
-                    [
-                        'user_id' => $user->id,
-                        'role_id' => $role_id,
-                    ]
-                );
-
-                if ($role_id == 1) {
-//                    PlanGroupUser::whereUserId($user->id)->delete();
-//
-//                    PlanGroupUser::create([
-//                        'plan_group_id' => $request->get('plan_group_id'),
-//                        'plan' => $request->get('plan'),
+//        if ($request->has('roles')) {
+//            $user->userRoles()->delete();
+//            foreach ($request->get('roles') as $role_id) {
+//                UserRole::updateOrCreate(
+//                    [
 //                        'user_id' => $user->id,
-//                    ]);
-
-                    PlanGroupUser::updateOrCreate(
-                        [
-                            'user_id' => $user->id,
-                        ],
-                        [
-                            'plan_group_id' => $request->get('plan_group_id'),
-                            'plan' => $request->get('plan'),
-                            'user_id' => $user->id,
-                        ]
-                    );
-                }
-            }
-        }
+//                        'role_id' => $role_id,
+//                    ],
+//                    [
+//                        'user_id' => $user->id,
+//                        'role_id' => $role_id,
+//                    ]
+//                );
+//
+//                if ($role_id == 1) {
+////                    PlanGroupUser::whereUserId($user->id)->delete();
+////
+////                    PlanGroupUser::create([
+////                        'plan_group_id' => $request->get('plan_group_id'),
+////                        'plan' => $request->get('plan'),
+////                        'user_id' => $user->id,
+////                    ]);
+//
+//                    PlanGroupUser::updateOrCreate(
+//                        [
+//                            'user_id' => $user->id,
+//                        ],
+//                        [
+//                            'plan_group_id' => $request->get('plan_group_id'),
+//                            'plan' => $request->get('plan'),
+//                            'user_id' => $user->id,
+//                        ]
+//                    );
+//                }
+//            }
+//        }
 
         if ($user->role_id == 1) {
             PlanGroupUser::updateOrCreate(
@@ -373,11 +385,36 @@ class UserController extends Controller
 
     public function salesreps()
     {
-        return response()->view('admin.user.salesreps');
+        $salesreps = User::where('role_id', 1)->where('status', 1)
+            ->orderBy('name')->get();
+        return response()->view('admin.user.salesreps', compact('salesreps'));
     }
 
     public function supervisors()
     {
         return response()->view('admin.user.supervisors');
+    }
+
+    public function statisticByOrderExcel(Request $request)
+    {
+        $ordersQuery = Order::query()
+            ->select('orders.*')
+            ->join('stores', 'stores.id', 'orders.store_id')
+            ->when($request->has('from'), function ($q) {
+                $q->whereDate('orders.created_at', '>=', \request('from'));
+            })
+            ->when($request->has('to'), function ($q) {
+                $q->whereDate('orders.created_at', '<=', \request('to'));
+            })
+            ->whereNull('orders.removed_at');
+
+        $users = User::query()
+            ->whereIn('id', $request->get('users'))
+            ->where('status', 1)
+            ->where('role_id', 1)
+            ->get();
+
+        return Excel::download(new UserOrderExport($users, $ordersQuery), 'статистика.xlsx');
+
     }
 }

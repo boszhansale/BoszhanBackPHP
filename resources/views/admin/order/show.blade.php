@@ -127,6 +127,28 @@
                 </div>
             </div>
         </div>
+
+        @if($order->error_message)
+            <div class="col-md-4">
+                <div class="card bg-red">
+                    <div class="card-header">Ошибки с EDI. продукты нету базе</div>
+                    <div class="card-body">
+                        <table class="table table-bordered">
+                            <tr>
+                                <th>продукты</th>
+                                <td>код</td>
+                            </tr>
+                            @foreach($order->error_message as $error)
+                                <tr>
+                                    <td>{{$error['name']}}</td>
+                                    <td>{{$error['barcode']}}</td>
+                                </tr>
+                            @endforeach
+                        </table>
+                    </div>
+                </div>
+            </div>
+        @endif
     </div>
     <div class="row">
         <div class="col-md-12">

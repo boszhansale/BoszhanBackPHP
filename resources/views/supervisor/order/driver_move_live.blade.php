@@ -1,5 +1,5 @@
 <div>
-    <form action="{{route('admin.order.driver-moving')}}" method="post">
+    <form action="{{route('supervisor.order.driver-moving')}}" method="post">
         @csrf
         <div class="row">
             <div class="col-md-6">
@@ -7,7 +7,7 @@
                     <div class="card-header">Выберите водителя "C"</div>
                     <div class="card-body">
                         <select wire:model="from_driver_id" name="from_driver_id" required class="form-control">
-                            <option>выберите</option>
+                            <option value="*">выберите</option>
                             @foreach($fromDrivers  as $driver)
                                 <option value="{{$driver->id}}">{{$driver->name}}</option>
                             @endforeach
@@ -27,6 +27,12 @@
                         </select>
                     </div>
                 </div>
+            </div>
+            <div class="col-md-12">
+                @if($to_driver_id)
+                    <button type="submit" class="btn btn-primary">Перенести</button>
+                @endif
+                <br>
             </div>
             <div class="col-md-12">
                 <div class="card">
@@ -59,16 +65,17 @@
                                 <tr class="{{$order->deleted_at != null ?'bg-red':''}}">
                                     <td>{{$order->id}}</td>
                                     <td>
-                                        <input class="order_checkbox" type="checkbox" name="orders[]" value="{{$order->id}}">
+                                        <input class="order_checkbox" type="checkbox" name="orders[]"
+                                               value="{{$order->id}}">
                                     </td>
                                     <td class="project-actions text-right">
                                         <a class="btn btn-primary btn-sm"
-                                           href="{{route('admin.order.show',$order->id)}}">
+                                           href="{{route('supervisor.order.show',$order->id)}}">
                                             <i class="fas fa-folder">
                                             </i>
 
                                         </a>
-                                        <a class="btn btn-info btn-sm" href="{{route('admin.order.edit',$order->id)}}">
+                                        <a class="btn btn-info btn-sm" href="{{route('supervisor.order.edit',$order->id)}}">
                                             <i class="fas fa-pencil-alt">
                                             </i>
                                         </a>
@@ -76,16 +83,16 @@
                                     </td>
                                     <td>
                                         @if($order->store?->counteragent_id)
-                                            <a href="{{route('admin.counteragent.show',$order->store->counteragent_id)}}">{{$order->store->counteragent->name}}</a>
+                                           {{$order->store->counteragent->name}}
                                         @endif
                                     </td>
 
                                     <td>
-                                        <a href="{{route('admin.store.show',$order->store_id)}}">{{$order->store?->name}}</a>
+                                        <a href="{{route('supervisor.store.show',$order->store_id)}}">{{$order->store?->name}}</a>
                                     </td>
                                     <td>{{$order->status->description}}</td>
                                     <td>
-                                        <a href="{{route('admin.user.show',$order->salesrep_id)}}">{{$order->salesrep->name}}</a>
+                                        <a href="{{route('supervisor.user.show',$order->salesrep_id)}}">{{$order->salesrep->name}}</a>
                                     </td>
                                     <td class="price">{{$order->purchase_price}}</td>
                                     <td class="price">{{$order->return_price}}</td>
@@ -113,7 +120,7 @@
                         </table>
                     </div>
                 </div>
-                @if($from_driver_id and $to_driver_id)
+                @if($to_driver_id)
                     <button type="submit" class="btn btn-primary">Перенести</button>
                 @endif
             </div>

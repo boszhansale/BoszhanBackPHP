@@ -8,7 +8,7 @@
                 </div>
                 <div class="col-md-1">
                     <small>статус</small>
-                    <select wire:model="status_id" class="form-control">
+                    <select wire:model="statusId" class="form-control">
                         <option value="">Все статусы</option>
                         @foreach($statuses as $status)
                             <option value="{{$status->id}}">{{$status->description}}</option>
@@ -18,7 +18,7 @@
                 <div class="col-md-2">
                     <small>торговый</small>
 
-                    <select wire:model="salesrep_id" class="form-control">
+                    <select wire:model="salesrepId" class="form-control">
                         <option value="">все торговые</option>
                         @foreach($salesreps as $salesrep)
                             <option value="{{$salesrep->id}}">{{$salesrep->name}}</option>
@@ -27,7 +27,7 @@
                 </div>
                 <div class="col-md-2">
                     <small>водитель</small>
-                    <select wire:model="driver_id" class="form-control">
+                    <select wire:model="driverId" class="form-control">
                         <option value="">все водители</option>
                         @foreach($drivers as $driver)
                             <option value="{{$driver->id}}">{{$driver->name}}</option>
@@ -217,7 +217,7 @@
                                     <a href="{{route('admin.user.show',$order->salesrep_id)}}">{{$order->salesrep->name}}</a>
                                 </td>
                                 <td>
-                                    <a href="{{route('admin.user.show',$order->driver_id)}}">{{$order->driver->name}}</a>
+                                    <a href="{{route('admin.user.show',$order->driver_id)}}">{{$order->driver?->name}}</a>
                                 </td>
                                 <td class="price">{{$order->purchase_price}}</td>
                                 <td class="price">{{$order->return_price}}</td>

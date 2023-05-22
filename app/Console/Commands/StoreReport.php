@@ -34,8 +34,8 @@ class StoreReport extends Command
     {
         $stores = Store::whereNotNull('salesrep_id')
             ->with('salesrep')
-            ->where('export_1c', 0)
             ->whereDate('created_at', now())
+            ->where('export_1c', 0)
             ->get();
 
         $filename = 'excel/stores/'.now()->format('Y_m_d').'_stores_list.xlsx';

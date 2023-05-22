@@ -15,6 +15,14 @@
                     </select>
                 </div>
                 <div class="col-md-2">
+                    <select wire:model="driverId" class="form-control">
+                        <option value="">все водителя</option>
+                        @foreach($drivers as $driver)
+                            <option value="{{$driver->id}}">{{$driver->name}}</option>
+                        @endforeach
+                    </select>
+                </div>
+                <div class="col-md-2">
                     <select wire:model="counteragentId" class="form-control">
                         <option value="">все контрагенты</option>
                         @foreach($counteragents as $counteragent)

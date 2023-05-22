@@ -20,11 +20,13 @@ use Maatwebsite\Excel\Facades\Excel;
 
 class OrderController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $query = Order::query();
-
-        return view('admin.order.index', compact('query'));
+        $driver_id = $request->get('driver_id');
+        $salesrep_id = $request->get('salesrep_id');
+        $store_id = $request->get('store_id');
+        $counteragent_id = $request->get('counteragent_id');
+        return view('admin.order.index', compact('salesrep_id', 'driver_id', 'store_id', 'counteragent_id'));
     }
 
     public function edi()

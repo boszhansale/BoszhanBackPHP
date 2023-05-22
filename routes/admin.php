@@ -63,6 +63,7 @@ Route::prefix('user')->name('user.')->group(function () {
     Route::get('delete/{user}', [UserController::class, 'delete'])->name('delete');
     Route::get('position/{user}', [UserController::class, 'position'])->name('position');
     Route::get('order/{user}/{role}', [UserController::class, 'order'])->name('order');
+    Route::post('statistic/by-order-excel', [UserController::class, 'statisticByOrderExcel'])->name('statisticByOrderExcel');
 });
 Route::prefix('store')->name('store.')->group(function () {
     Route::get('/', [StoreController::class, 'index'])->name('index');

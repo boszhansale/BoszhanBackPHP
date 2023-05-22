@@ -17,6 +17,7 @@ class StoreIndex extends Component
     public $search;
 
     public $salesrepId;
+    public $driverId;
 
     public $counteragentId;
 
@@ -27,19 +28,23 @@ class StoreIndex extends Component
     public function render()
     {
         $q = Store::query()
-            ->leftJoin('store_salesreps','store_salesreps.store_id','stores.id')
+            ->leftJoin('store_salesreps', 'store_salesreps.store_id', 'stores.id')
             ->when($this->search, function ($q) {
                 return $q->where(function ($qq) {
                     return $qq->where('name', 'LIKE', "%$this->search%")
+                        ->orWhere('stores.id', 'LIKE', "%$this->search%")
                         ->orWhere('phone', 'LIKE', "%$this->search%")
                         ->orWhere('address', 'LIKE', "%$this->search%");
                 });
             })
             ->when($this->salesrepId, function ($q) {
-                return $q->where(function ($qq){
+                return $q->where(function ($qq) {
                     return $qq->where('stores.salesrep_id', $this->salesrepId)
                         ->orWhere('store_salesreps.salesrep_id', $this->salesrepId);
                 });
+            })
+            ->when($this->driverId, function ($q) {
+                return $q->where('stores.driver_id', $this->driverId);
             })
             ->when($this->counteragentId, function ($q) {
                 return $q->where('counteragent_id', $this->counteragentId);
@@ -56,10 +61,15 @@ class StoreIndex extends Component
 
         return view('admin.store.index_live', [
             'salesreps' => User::query()
-                ->where('users.role_id',1)
-                ->where('users.status',1)
+                ->where('users.role_id', 1)
+                ->where('users.status', 1)
                 ->orderBy('users.name')
-                 ->get('users.*'),
+                ->get('users.*'),
+            'drivers' => User::query()
+                ->where('users.role_id', 2)
+                ->where('users.status', 1)
+                ->orderBy('users.name')
+                ->get('users.*'),
             'counteragents' => Counteragent::orderBy('name')->get(),
             'stores' => $q->clone()->select('stores.*')->paginate(50),
             'store_count' => $q->clone()->count(),
@@ -70,5 +80,10 @@ class StoreIndex extends Component
     public function delete($id)
     {
         Store::where('id', $id)->delete();
+    }
+
+    public function mount()
+    {
+
     }
 }

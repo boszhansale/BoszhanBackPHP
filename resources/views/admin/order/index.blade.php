@@ -6,5 +6,5 @@
     <a href="{{route('admin.order.to-onec')}}" class="btn btn-info btn-sm  ">Отправить на 1С</a>
 @endsection
 @section('content')
-    @livewire('order-index')
+    @livewire('order-index',['driverId' => $driver_id,'salesrepId' => $salesrep_id,'storeId' => $store_id,'counteragentId'=> $counteragent_id])
 @endsection

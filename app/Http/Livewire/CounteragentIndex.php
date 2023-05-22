@@ -4,6 +4,7 @@ namespace App\Http\Livewire;
 
 use App\Models\Counteragent;
 use App\Models\CounteragentGroup;
+use App\Models\Store;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -37,4 +38,9 @@ class CounteragentIndex extends Component
 
         ]);
     }
+    public function delete($id)
+    {
+        Store::where('id', $id)->delete();
+    }
+
 }

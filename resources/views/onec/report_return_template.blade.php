@@ -1,7 +1,6 @@
 <RETURN>
     <DOCUMENTNAME>320</DOCUMENTNAME>
-    <NUMBER>{{$order->id}}-0700{{\Carbon\Carbon::now()->year}}-{{substr($order->salesrep->id_1c,-4)}}
-        -{{$order->payment_type_id}}</NUMBER>
+    <NUMBER>{{$order->id}}-0700{{\Carbon\Carbon::now()->year}}-{{substr($order->salesrep->id_1c,-4)}}-{{$order->payment_type_id}}</NUMBER>
     <DATE>{{\Carbon\Carbon::parse($order->created_at)->format('Y-m-d')}}</DATE>
     <DELIVERYDATE>{{\Carbon\Carbon::parse($order->delivery_date)->format('Y-m-d')}}</DELIVERYDATE>
     @if($order->store->driver)
@@ -9,7 +8,6 @@
     @else
         <MANAGER>{{$order->salesrep->driver->id_1c}}</MANAGER>
     @endif
-
     <DRIVER>{{$order->salesrep->id_1c}}</DRIVER>
     <CURRENCY>KZT</CURRENCY>
     <HEAD>

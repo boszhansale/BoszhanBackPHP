@@ -15,12 +15,11 @@ class OrderIndex extends Component
     protected $paginationTheme = 'bootstrap';
 
     public $search;
-
-    public $salesrep_id;
-
-    public $driver_id;
-
-    public $status_id;
+    public $salesrepId;
+    public $driverId;
+    public $storeId;
+    public $statusId;
+    public $counteragentId;
 
     public $start_delivery_date;
     public $end_delivery_date;
@@ -32,21 +31,26 @@ class OrderIndex extends Component
     {
         $query = Order::query()
             ->join('stores', 'stores.id', 'orders.store_id')
-            ->with(['store', 'salesrep', 'driver'])
             ->when($this->search, function ($q) {
                 return $q->where('orders.id', 'LIKE', $this->search . '%');
             })
             ->when(\Auth::user()->isSupervisor(), function ($q) {
                 return $q->whereIn('orders.salesrep_id', \Auth::user()->supervisorsSalesreps()->pluck('users.id')->toArray());
             })
-            ->when($this->status_id, function ($q) {
-                return $q->where('orders.status_id', $this->status_id);
+            ->when($this->statusId, function ($q) {
+                return $q->where('orders.status_id', $this->statusId);
             })
-            ->when($this->driver_id, function ($q) {
-                return $q->where('orders.driver_id', $this->driver_id);
+            ->when($this->driverId, function ($q) {
+                return $q->where('orders.driver_id', $this->driverId);
             })
-            ->when($this->salesrep_id, function ($q) {
-                return $q->where('orders.salesrep_id', $this->salesrep_id);
+            ->when($this->storeId, function ($q) {
+                return $q->where('orders.store_id', $this->storeId);
+            })
+            ->when($this->counteragentId, function ($q) {
+                return $q->where('stores.counteragent_id', $this->counteragentId);
+            })
+            ->when($this->salesrepId, function ($q) {
+                return $q->where('orders.salesrep_id', $this->salesrepId);
             })
             ->when($this->start_delivery_date, function ($q) {
                 return $q->whereDate('orders.delivery_date', '>=', $this->start_delivery_date);
@@ -76,20 +80,18 @@ class OrderIndex extends Component
                 ->get('users.*'),
             'statuses' => Status::all(),
 
-            'orders' => $query->clone()->withTrashed()->paginate(50),
+            'orders' => $query->clone()
+                ->with(['store', 'salesrep', 'driver'])
+                ->withTrashed()
+                ->paginate(50),
             'query' => $query,
-
-//            'order_count' => $query->clone()->count(),
-//            'order_legal_count' => $query->clone()->whereNotNull('stores.counteragent_id')->count(),
-//            'order_individual_count' => $query->clone()->whereNull('stores.counteragent_id')->count(),
-//
-//
             'order_purchase_price' => $query->clone()->sum('orders.purchase_price'),
             'order_return_price' => $query->clone()->sum('orders.return_price'),
-//            'order_return_count' => $query->clone()
-//                ->where('orders.return_price', '>', 0)
-//                ->count(),
-
         ]);
+    }
+
+    public function mount()
+    {
+
     }
 }
