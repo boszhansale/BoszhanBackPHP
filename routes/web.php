@@ -19,5 +19,8 @@ Route::get('/', function () {
 Route::get('login', [AuthController::class, 'login'])->name('login');
 Route::post('/', [AuthController::class, 'auth'])->name('auth');
 Route::get('logout', [AuthController::class, 'logout'])->name('logout');
+Route::get('test',function (){
+    return view('exports.excel.driver_store_distance');
+});
 
 

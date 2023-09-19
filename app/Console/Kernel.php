@@ -29,7 +29,7 @@ class Kernel extends ConsoleKernel
         $schedule->command('telescope:clear')->dailyAt('03:00');
         $schedule->command('order:delivery')->dailyAt('05:00');
 
-        $schedule->command('store:report')->dailyAt('17:00');
+        $schedule->command('store:report')->dailyAt('16:59');
         $schedule->command('order:report')->dailyAt('17:05');
         $schedule->command('order:report-return')->dailyAt('17:10');
 
@@ -39,7 +39,9 @@ class Kernel extends ConsoleKernel
 
         $schedule->command('store:report')->dailyAt('18:00');
         $schedule->command('order:report')->dailyAt('18:05');
+//        $schedule->command('driver:store-distance')->dailyAt('18:06');
         $schedule->command('order:report-return')->dailyAt('18:10');
+        $schedule->command('positions:save')->hourly();
 
         $schedule->command('plan:init')->everyFourHours();
         $schedule->command('plan:calk')->everyThirtyMinutes();

@@ -49,16 +49,68 @@ class UserController extends Controller
 
     public function position(Request $request, User $user): View
     {
-        $positions = $user->userPositions()
-            ->when($request->has('date'), function ($q) {
-                return $q->whereDate('created_at', \request('date'));
-            }, function ($q) {
-                return $q->whereDate('created_at', now());
-            })
-            ->selectRaw('user_positions.*, TIME(created_at) as time')
+//        $positions = $user->userPositions()
+//            ->when($request->has('date'), function ($q) {
+//                return $q->whereDate('created_at', \request('date'));
+//            }, function ($q) {
+//                return $q->whereDate('created_at', now());
+//            })
+//            ->selectRaw('user_positions.*, TIME(created_at) as time')
+//            ->get();
+
+        $date = request('date') ?? now()->format('Y-m-d');
+//        $positions = Cache::remember("user.position_$user->id_$date", 1, function () use ($user, $date) {
+//            return $user->userPositions()
+//                ->whereDate('created_at', $date)
+//                ->whereTime('created_at', '>=', '05:00:00')
+//                ->whereTime('created_at', '<=', '20:00:00')
+//                ->selectRaw('lat, lng, DATE_FORMAT(created_at, "%H:%i") as time')
+//                ->groupBy('lat', 'lng', \DB::raw('DATE_FORMAT(created_at, "%H:%i")'))
+//                ->get();
+//        });
+
+//        $query = $user->userPositions()
+//            ->whereDate('created_at', $date)
+//            ->whereTime('created_at', '>=', '05:00:00')
+//            ->whereTime('created_at', '<=', '20:00:00')
+//            ->selectRaw('lat, lng, DATE_FORMAT(created_at, "%H:%i") as time')
+//            ->groupBy('lat', 'lng', \DB::raw('DATE_FORMAT(created_at, "%H:%i")'))
+//            ->get();
+        $query = $user->userPositions()
+            ->whereDate('created_at', $date)
+            ->whereTime('created_at', '>=', '05:00:00')
+            ->whereTime('created_at', '<=', '20:00:00')
+            ->selectRaw('DATE_FORMAT(created_at, "%H:%i") as time')
+            ->groupBy(\DB::raw('DATE_FORMAT(created_at, "%H:%i")'))
+            ->orderBy(\DB::raw('DATE_FORMAT(created_at, "%H:%i")'))
             ->get();
 
+
+        $positions = $query->map(function ($query) use ($user, $date) {
+            $latest = $user->userPositions()
+                ->whereDate('created_at', $date)
+                ->whereTime('created_at', '>=', $query->time . ':00')
+                ->whereTime('created_at', '<=', $query->time . ':59')
+                ->select('lat', 'lng')
+                ->latest()
+                ->first();
+            return [
+                'lat' => $latest->lat,
+                'lng' => $latest->lng,
+                'time' => $query->time,
+            ];
+
+        });
+
+
         return view('admin.user.position', compact('user', 'positions'));
+    }
+
+    public function map(): View
+    {
+
+
+        return view('admin.user.map');
     }
 
     public function order(Request $request, User $user, $role)

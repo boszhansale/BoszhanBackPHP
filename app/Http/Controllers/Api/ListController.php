@@ -11,6 +11,7 @@ use App\Models\PaymentStatus;
 use App\Models\PaymentType;
 use App\Models\ReasonRefund;
 use App\Models\Status;
+use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -53,7 +54,7 @@ class ListController extends Controller
     public function mobileApp(Request $request)
     {
         $app = MobileApp::whereType($request->get('type'))
-            ->where('status',3)
+            ->where('status', 3)
             ->orderBy('version', 'desc')
             ->firstOrFail();
 
@@ -63,7 +64,7 @@ class ListController extends Controller
     public function mobileAppDownload(Request $request)
     {
         $app = MobileApp::whereType($request->get('type'))
-            ->where('status',3)
+            ->where('status', 3)
             ->orderBy('version', 'desc')
             ->firstOrFail();
         MobileAppDownload::updateOrCreate([
@@ -84,5 +85,18 @@ class ListController extends Controller
     public function reasonRefund(): JsonResponse
     {
         return response()->json(ReasonRefund::all());
+    }
+
+    public function position(Request $request)
+    {
+        $users = User::query()
+            ->where('status', 1)
+            ->whereIn('role_id', [1, 2])
+            ->select(['id', 'name', 'role_id', 'lat', 'lng'])
+            ->whereDate('users.updated_at', now())
+            ->get();
+
+
+        return response()->json($users);
     }
 }

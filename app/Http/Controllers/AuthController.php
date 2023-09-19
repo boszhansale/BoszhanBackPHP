@@ -17,7 +17,7 @@ class AuthController extends Controller
                 'operator' => to_route('admin.main'),
                 'cashier' => to_route('cashier.main'),
                 'supervisor' => to_route('supervisor.main'),
-                default => to_route('login')
+                default => view('login')->withErrors('нет доступа')
             };
         }
 

@@ -26,9 +26,9 @@ class UserIndex extends Component
             'users' => User::select('users.*')
                 ->when($this->search, function ($q) {
                     return $q->where(function ($qq) {
-                        return $qq->where('users.name', 'LIKE', '%'.$this->search.'%')
-                            ->orWhere('users.login', 'LIKE', '%'.$this->search.'%')
-                            ->orWhere('users.id', 'LIKE', '%'.$this->search.'%');
+                        return $qq->where('users.name', 'LIKE', '%' . $this->search . '%')
+                            ->orWhere('users.login', 'LIKE', '%' . $this->search . '%')
+                            ->orWhere('users.id', 'LIKE', '%' . $this->search . '%');
                     });
                 })
                 ->when($this->roleId, function ($q) {
@@ -37,8 +37,7 @@ class UserIndex extends Component
                 ->groupBy('users.id')
                 ->orderBy('users.status')
                 ->orderBy($this->sort, $this->sortBy)
-
-                ->get(),
+                ->paginate(15),
         ]);
     }
 

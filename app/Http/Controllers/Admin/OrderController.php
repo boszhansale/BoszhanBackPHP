@@ -164,10 +164,15 @@ class OrderController extends Controller
         return $pdf->download('waybill.pdf');
     }
 
-    public function toOnec()
+    public function toOnec($orderId = null)
     {
-        Artisan::call('order:report');
-        Artisan::call('order:report-return');
+        if ($orderId) {
+            Artisan::call("order:report $orderId");
+            Artisan::call("order:report-return $orderId");
+        } else {
+            Artisan::call('order:report');
+            Artisan::call('order:report-return');
+        }
         dump('отправлен');
 
         return redirect()->back();
@@ -188,7 +193,20 @@ class OrderController extends Controller
 
     public function statistic()
     {
-        return \view('admin.order.statistic');
+
+        $query = Order::query()
+            ->join('stores', 'store_id', 'stores.id')
+            ->select('orders.*');
+
+
+        $data['query'] = $query;
+        $data['order_purchase_price'] = $query->clone()->sum('orders.purchase_price');
+        $data['order_return_price'] = $query->clone()->sum('orders.return_price');
+        $data['order_return_count'] = $query->clone()->where('orders.return_price', '>', 0)->count();
+        $data['count'] = $query->clone()->count();
+        $data['closed_count'] = $query->clone()->whereNotNull('delivered_date')->count();
+
+        return \view('admin.order.statistic', $data);
     }
 
     public function history(Order $order)

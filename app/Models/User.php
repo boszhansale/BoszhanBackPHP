@@ -280,6 +280,31 @@ class User extends Authenticatable
 
     }
 
+    public function getStoreDistance(): string
+    {
+        $totalDistance = 0;
+
+//        $coords = $this->userPositions()->whereDate('created_at', now())->get(['lat', 'lng']);
+        $coords = Store::query()
+            ->join('orders', 'orders.store_id', 'stores.id')
+            ->where('orders.driver_id', $this->id)
+            ->whereDate('orders.delivery_date',now()->addDay())
+            ->whereNotNull(['lat', 'lng'])
+            ->select(['stores.lat', 'stores.lng'])
+            ->get();
+
+        for ($i = 0; $i < count($coords) - 1; $i++) {
+            $lat1 = $coords[$i]["lat"];
+            $lng1 = $coords[$i]["lng"];
+            $lat2 = $coords[$i + 1]["lat"];
+            $lng2 = $coords[$i + 1]["lng"];
+            $totalDistance += $this->calculateDistance($lat1, $lng1, $lat2, $lng2);
+        }
+
+        return round($totalDistance) . " км";
+
+    }
+
     function calculateDistance($lat1, $lng1, $lat2, $lng2): float|int
     {
         $earthRadius = 6371; // радиус Земли в км

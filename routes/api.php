@@ -20,6 +20,7 @@ Route::get('status', [ListController::class, 'status']);
 Route::get('payment-type', [ListController::class, 'paymentType']);
 Route::get('payment-status', [ListController::class, 'paymentStatus']);
 Route::get('reason-refund', [ListController::class, 'reasonRefund']);
+Route::get('position', [ListController::class, 'position']);
 
 Route::get('mobile-app', [ListController::class, 'mobileApp']);
 Route::get('mobile-app/download', [ListController::class, 'mobileAppDownload']);

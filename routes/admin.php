@@ -38,6 +38,7 @@ Route::prefix('product')->name('product.')->group(function () {
     Route::get('show/{product}', [ProductController::class, 'show'])->name('show');
     Route::put('update/{product}', [ProductController::class, 'update'])->name('update');
     Route::get('delete/{product}', [ProductController::class, 'delete'])->name('delete');
+    Route::any('price-parse', [ProductController::class, 'priceParse'])->name('priceParse');
     Route::get('deleteImage/{productImage}', [ProductController::class, 'deleteImage'])->name('deleteImage');
 
     Route::post('counteragent-price/{product}', [ProductController::class, 'counteragentPriceStore'])->name(
@@ -62,6 +63,7 @@ Route::prefix('user')->name('user.')->group(function () {
     Route::put('update/{user}', [UserController::class, 'update'])->name('update');
     Route::get('delete/{user}', [UserController::class, 'delete'])->name('delete');
     Route::get('position/{user}', [UserController::class, 'position'])->name('position');
+    Route::get('map', [UserController::class, 'map'])->name('map');
     Route::get('order/{user}/{role}', [UserController::class, 'order'])->name('order');
     Route::post('statistic/by-order-excel', [UserController::class, 'statisticByOrderExcel'])->name('statisticByOrderExcel');
 });
@@ -140,7 +142,7 @@ Route::prefix('role')->name('role.')->group(function () {
 
 Route::prefix('order')->name('order.')->group(function () {
     Route::get('/', [OrderController::class, 'index'])->name('index');
-    Route::get('to-onec', [OrderController::class, 'toOnec'])->name('to-onec');
+    Route::get('to-onec/{id?}', [OrderController::class, 'toOnec'])->name('to-onec');
     Route::get('to-onec/edi', [OrderController::class, 'toOnecEdi'])->name('to-onec-edi');
     Route::get('create', [OrderController::class, 'create'])->name('create');
     Route::post('store', [OrderController::class, 'store'])->name('store');

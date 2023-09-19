@@ -10,6 +10,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Redis;
 
 class AuthController extends Controller
 {
@@ -33,7 +34,7 @@ class AuthController extends Controller
 
     public function login(LoginAuthRequest $request): JsonResponse
     {
-        if (! Auth::attempt($request->only('login', 'password'))) {
+        if (!Auth::attempt($request->only('login', 'password'))) {
             return response()->json([
                 'message' => 'неверный пароль',
             ], 400);
@@ -68,15 +69,79 @@ class AuthController extends Controller
 
     public function position(Request $request)
     {
-        Auth::user()->update([
-            'lat' => $request->get('lat'),
-            'lng' => $request->get('lng'),
-        ]);
 
-        Auth::user()->userPositions()->create([
-            'lat' => $request->get('lat'),
-            'lng' => $request->get('lng'),
-        ]);
+
+        try {
+            $key = 'positions:' . Auth::id();
+            if ($request->has('positions')) {
+                foreach ($request->get('positions') as $item) {
+                    Redis::rpush($key, json_encode([
+                        'user_id' => Auth::id(),
+                        'lat' => $item['lat'],
+                        'lng' => $item['lng'],
+                        'created_at' => $item['created_at']
+                    ]));
+                }
+            } else {
+                Redis::rpush($key, json_encode([
+                    'lat' => $request->get('lat'),
+                    'lng' => $request->get('lng'),
+                    'user_id' => Auth::id(),
+                    'created_at' => now()->format('Y-m-d H:m:s'),
+                ]));
+            }
+            return response()->json(Auth::user());
+        } catch (\Exception $exception) {
+            return response()->json(Auth::user());
+        }
+
+
+//
+//        if ($request->has('positions')) {
+//            foreach ($request->get('positions') as $key => $item) {
+//
+//                $exists = Auth::user()->userPositions()
+//                    ->whereDate('created_at', now())
+//                    ->where('lat', $item['lat'])
+//                    ->where('lng', $item['lng'])
+//                    ->exists();
+//
+//                if (!$exists) {
+//                    Auth::user()->userPositions()->create([
+//                        'lat' => $item['lat'],
+//                        'lng' => $item['lng'],
+//                        'created_at' => Carbon::parse($item['created_at'])
+//                    ]);
+//                }
+//
+//                if ($key === array_key_last($request->get('positions'))) {
+//                    Auth::user()->update([
+//                        'lat' => $item['lat'],
+//                        'lng' => $item['lng'],
+//                    ]);
+//                }
+//            }
+//        } else {
+//            Auth::user()->update([
+//                'lat' => $request->get('lat'),
+//                'lng' => $request->get('lng'),
+//            ]);
+//
+//
+//            $exists = Auth::user()->userPositions()
+//                ->whereDate('created_at', now())
+//                ->where('lat', $request->get('lat'))
+//                ->where('lng', $request->get('lng'))
+//                ->exists();
+//
+//            if (!$exists) {
+//                Auth::user()->userPositions()->create([
+//                    'lat' => $request->get('lat'),
+//                    'lng' => $request->get('lng'),
+//                ]);
+//            }
+//
+//        }
 
         return response()->json(Auth::user());
     }

@@ -120,6 +120,12 @@ class OrderController extends Controller
         if ($request->has('winning_phone')) {
             $order->winning_phone = $request->get('winning_phone');
         }
+        if ($request->has('lat')) {
+            $order->lat = $request->get('lat');
+        }
+        if ($request->has('lng')) {
+            $order->lng = $request->get('lng');
+        }
         $order->save();
         if ($request->has('comment')) {
             $order->comments()->create([
@@ -143,6 +149,12 @@ class OrderController extends Controller
             ->whereDate('orders.delivery_date', now());
 
         $data['full_name'] = Auth::user()->name;
+        $data['count_all'] = Auth::user()->driverOrders()
+            ->where('delivery_date', now())
+            ->count();
+        $data['count_finished'] = Auth::user()->driverOrders()
+            ->whereDate('delivered_date', now())
+            ->count();
 
         $data['cash'] = round($query->clone()
                 ->where('payment_type_id', 1)

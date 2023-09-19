@@ -45,15 +45,16 @@
                                 </i>
                             </a>
                             @if(Auth::user()->permissionExists('user_edit'))
-                            <a class="btn btn-info btn-sm" href="{{route('admin.user.edit',$user->id)}}">
-                                <i class="fas fa-pencil-alt">
-                                </i>
-                            </a>
+                                <a class="btn btn-info btn-sm" href="{{route('admin.user.edit',$user->id)}}">
+                                    <i class="fas fa-pencil-alt">
+                                    </i>
+                                </a>
                             @endif
                             @if(Auth::user()->permissionExists('user_delete'))
-                            <a  class="btn btn-danger btn-sm" href="{{route('admin.user.delete',$user->id)}}" onclick="return confirm('Удалить?')">
-                                <i class="fas fa-trash"></i>
-                            </a>
+                                <a class="btn btn-danger btn-sm" href="{{route('admin.user.delete',$user->id)}}"
+                                   onclick="return confirm('Удалить?')">
+                                    <i class="fas fa-trash"></i>
+                                </a>
                             @endif
                         </td>
                         <th>{{$user->login}}</th>
@@ -64,21 +65,22 @@
                         </th>
                         <th>
                             @if($user->status == 1)
-                                <button wire:click="statusChange({{$user->id}},2)" class="btn btn-primary">работает</button>
+                                <button wire:click="statusChange({{$user->id}},2)" class="btn btn-primary">работает
+                                </button>
                             @else
-                                <button wire:click="statusChange({{$user->id}},1)" class="btn btn-danger">не работает</button>
+                                <button wire:click="statusChange({{$user->id}},1)" class="btn btn-danger">не работает
+                                </button>
 
                             @endif
                         </th>
-
-
-
 
 
                     </tr>
                 @endforeach
                 </tbody>
             </table>
+            {{$users->links()}}
+
         </div>
     </div>
 </div>

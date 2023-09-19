@@ -7,8 +7,8 @@
                     <input wire:model="search" type="search" name="search" placeholder="поиск" class="form-control">
                 </div>
                 <div class="col-md-2">
-                    <input wire:model="start_date"  type="date" class="form-control">
-                    <input wire:model="end_date"  type="date" class="form-control">
+                    <input wire:model="start_date" type="date" class="form-control">
+                    <input wire:model="end_date" type="date" class="form-control">
                 </div>
             </div>
         </div>
@@ -43,13 +43,14 @@
                                 </i>
                             </a>
                             @if(Auth::user()->permissionExists('user_edit'))
-                            <a class="btn btn-info btn-sm" href="{{route('admin.user.edit',$user->id)}}">
-                                <i class="fas fa-pencil-alt">
-                                </i>
-                            </a>
+                                <a class="btn btn-info btn-sm" href="{{route('admin.user.edit',$user->id)}}">
+                                    <i class="fas fa-pencil-alt">
+                                    </i>
+                                </a>
                             @endif
                             @if(Auth::user()->permissionExists('user_delete'))
-                                <a  class="btn btn-danger btn-sm" href="{{route('admin.user.delete',$user->id)}}" onclick="return confirm('Удалить?')">
+                                <a class="btn btn-danger btn-sm" href="{{route('admin.user.delete',$user->id)}}"
+                                   onclick="return confirm('Удалить?')">
                                     <i class="fas fa-trash"></i>
                                 </a>
                             @endif
@@ -74,7 +75,8 @@
                                         /
                                           $user->driverOrders()->whereBetween('delivery_date',[$start_date,$end_date])->count()
                                         ) * 100 )
-                                    }}%</th>
+                                    }}%
+                            </th>
                         @else
                             <th>0%</th>
                         @endif
@@ -82,9 +84,11 @@
 
                         <th>
                             @if($user->status == 1)
-                                <button wire:click="statusChange({{$user->id}},2)" class="btn btn-primary">работает</button>
+                                <button wire:click="statusChange({{$user->id}},2)" class="btn btn-primary">работает
+                                </button>
                             @else
-                                <button wire:click="statusChange({{$user->id}},1)" class="btn btn-danger">не работает</button>
+                                <button wire:click="statusChange({{$user->id}},1)" class="btn btn-danger">не работает
+                                </button>
 
                             @endif
                         </th>
@@ -92,6 +96,7 @@
                 @endforeach
                 </tbody>
             </table>
+            {{$users->links()}}
         </div>
     </div>
 </div>

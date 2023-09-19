@@ -74,12 +74,7 @@
                                 @endif
                             </td>
                         </tr>
-                        <tr>
-                            <th>пройденный путь за сегодня</th>
-                            <td>
-                               {{$user->getDistance()}}
-                            </td>
-                        </tr>
+                      
                         <th>количество ТТ</th>
                         <td>{{$user->stores()->count()}}</td>
                     </table>

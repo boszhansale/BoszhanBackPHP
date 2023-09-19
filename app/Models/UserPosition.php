@@ -30,7 +30,7 @@ class UserPosition extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['user_id', 'lat', 'lng'];
+    protected $fillable = ['user_id', 'lat', 'lng', 'created_at'];
 
     protected $casts = [
         'lat' => 'float',

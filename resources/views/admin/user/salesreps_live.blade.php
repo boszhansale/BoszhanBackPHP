@@ -7,8 +7,8 @@
                     <input wire:model="search" type="search" name="search" placeholder="поиск" class="form-control">
                 </div>
                 <div class="col-md-2">
-                    <input wire:model="start_date"  type="date" class="form-control">
-                    <input wire:model="end_date"  type="date" class="form-control">
+                    <input wire:model="start_date" type="date" class="form-control">
+                    <input wire:model="end_date" type="date" class="form-control">
                 </div>
             </div>
         </div>
@@ -46,34 +46,37 @@
                                 </a>
                             @endif
                             @if(Auth::user()->permissionExists('user_delete'))
-                            <a  class="btn btn-danger btn-sm" href="{{route('admin.user.delete',$user->id)}}" onclick="return confirm('Удалить?')">
-                                <i class="fas fa-trash"></i>
-                            </a>
+                                <a class="btn btn-danger btn-sm" href="{{route('admin.user.delete',$user->id)}}"
+                                   onclick="return confirm('Удалить?')">
+                                    <i class="fas fa-trash"></i>
+                                </a>
                             @endif
                         </td>
                         <th>{{$user->login}}</th>
                         <th><a href="{{route('admin.user.show',$user->id)}}">{{$user->name}}</a></th>
                         <th>{{$user->id_1c}}</th>
                         <th>
-                           @if($user->driver)
+                            @if($user->driver)
                                 <a href="{{route('admin.user.show',$user->driver->id)}}">{{$user->driver->name}}</a>
-                           @endif
+                            @endif
                         </th>
 
                         <th>{{$user->salesrepOrders()->whereBetween('created_at',[$start_date,$end_date])->count()}}</th>
 
                         <th>{{$user->stores->count()}}</th>
                         <th>
-                          @if($user->planGroupUser)
+                            @if($user->planGroupUser)
                                 <small class="price">{{$user->planGroupUser->plan}}</small>
                                 <p class="price">{{$user->planGroupUser->completed}}</p>
-                          @endif
+                            @endif
                         </th>
                         <th>
                             @if($user->status == 1)
-                                <button wire:click="statusChange({{$user->id}},2)" class="btn btn-primary">работает</button>
+                                <button wire:click="statusChange({{$user->id}},2)" class="btn btn-primary">работает
+                                </button>
                             @else
-                                <button wire:click="statusChange({{$user->id}},1)" class="btn btn-danger">не работает</button>
+                                <button wire:click="statusChange({{$user->id}},1)" class="btn btn-danger">не работает
+                                </button>
 
                             @endif
                         </th>
@@ -82,6 +85,8 @@
                 @endforeach
                 </tbody>
             </table>
+            {{$users->links()}}
+
         </div>
     </div>
 </div>

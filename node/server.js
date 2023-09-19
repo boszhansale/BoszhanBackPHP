@@ -35,6 +35,7 @@ io.on('connection', (socket) => {
     console.log('socket user connected');
     socket.on('position', function (json) {
         let data = JSON.parse(json)
+        console.log(data)
         connection.query(`UPDATE users
                           SET lat = ${data.lat},
                               lng = ${data.lng}

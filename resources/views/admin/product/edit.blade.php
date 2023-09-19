@@ -31,7 +31,7 @@
                     <select name="category_id" class="form-control">
                         @foreach($categories as $category)
                             <option
-                                {{$product->category_id == $category->id ? 'selected':''}} value="{{$category->id}}">{{$category->brand->name}}
+                                {{$product->category_id == $category->id ? 'selected':''}} value="{{$category->id}}">{{$category->brand?->name}}
                                 - {{$category->name}}</option>
                         @endforeach
                     </select>

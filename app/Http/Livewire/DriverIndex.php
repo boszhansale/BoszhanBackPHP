@@ -25,17 +25,16 @@ class DriverIndex extends Component
             'users' => User::select('users.*')
                 ->when($this->search, function ($q) {
                     return $q->where(function ($qq) {
-                        return $qq->where('users.name', 'LIKE', '%'.$this->search.'%')
-                            ->orWhere('users.login', 'LIKE', '%'.$this->search.'%')
-                            ->orWhere('users.id', 'LIKE', '%'.$this->search.'%');
+                        return $qq->where('users.name', 'LIKE', '%' . $this->search . '%')
+                            ->orWhere('users.login', 'LIKE', '%' . $this->search . '%')
+                            ->orWhere('users.id', 'LIKE', '%' . $this->search . '%');
                     });
                 })
                 ->where('users.role_id', 2)
                 ->groupBy('users.id')
                 ->orderBy('status', 'asc')
                 ->orderBy('id', 'desc')
-
-                ->get(),
+                ->paginate(15),
         ]);
     }
 

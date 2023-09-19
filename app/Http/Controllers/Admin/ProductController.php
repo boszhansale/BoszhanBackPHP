@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\ProductStoreRequest;
 use App\Http\Requests\Admin\ProductUpdateRequest;
+use App\Imports\ProductPriceImport;
 use App\Models\Category;
 use App\Models\Counteragent;
 use App\Models\PriceType;
@@ -15,6 +16,7 @@ use App\Models\ProductImage;
 use App\Models\ProductPriceType;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Maatwebsite\Excel\Facades\Excel;
 
 class ProductController extends Controller
 {
@@ -223,5 +225,18 @@ class ProductController extends Controller
     {
         $productBarcode->delete();
         return redirect()->back();
+    }
+
+    public function priceParse(Request $request)
+    {
+        if ($request->method() == 'GET') {
+            $priceTypes = PriceType::all();
+            return view('admin.product.priceParse', compact('priceTypes'));
+        }
+        $type = PriceType::findOrFail($request->get('price_type_id'));
+
+        Excel::import(new ProductPriceImport($type), $request->file('price'));
+
+        return redirect()->back()->with('успешно');
     }
 }

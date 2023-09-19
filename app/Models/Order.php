@@ -110,6 +110,8 @@ class Order extends Model implements Auditable
         'rnk_generate',
         'delivery_date',
         'delivered_date',
+        'lat',
+        'lng',
         'purchase_price',
         'return_price',
         'salesrep_mobile_app_version',

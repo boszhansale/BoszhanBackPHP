@@ -5,6 +5,7 @@ namespace App\Http\Livewire;
 use App\Models\Order;
 use App\Models\Status;
 use App\Models\User;
+use Cache;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -29,6 +30,8 @@ class OrderIndex extends Component
 
     public function render()
     {
+
+
         $query = Order::query()
             ->join('stores', 'stores.id', 'orders.store_id')
             ->when($this->search, function ($q) {
@@ -68,25 +71,38 @@ class OrderIndex extends Component
             ->select('orders.*');
 
         return view('admin.order.index_live', [
-            'drivers' => User::query()
-                ->where('role_id', 2)
-                ->where('users.status', 1)
-                ->orderBy('users.name')
-                ->get('users.*'),
-            'salesreps' => User::query()
-                ->where('role_id', 1)
-                ->where('status', 1)
-                ->orderBy('users.name')
-                ->get('users.*'),
-            'statuses' => Status::all(),
+            'drivers' => Cache::remember('drivers', 60, function () {
+                return User::query()
+                    ->where('role_id', 2)
+                    ->where('users.status', 1)
+                    ->orderBy('users.name')
+                    ->get('users.*');
+            }),
+            'salesreps' => Cache::remember('salesreps', 60, function () {
+                return User::query()
+                    ->where('role_id', 1)
+                    ->where('status', 1)
+                    ->orderBy('users.name')
+                    ->get('users.*');
+            }),
+            'statuses' => Cache::rememberForever('statuses', function () {
+                return Status::all();
+            }),
 
             'orders' => $query->clone()
-                ->with(['store', 'salesrep', 'driver'])
+                ->with(['store', 'salesrep', 'driver', 'store.counteragent', 'paymentType', 'paymentStatus'])
                 ->withTrashed()
-                ->paginate(50),
-            'query' => $query,
-            'order_purchase_price' => $query->clone()->sum('orders.purchase_price'),
-            'order_return_price' => $query->clone()->sum('orders.return_price'),
+                ->paginate(100),
+//            'query' => $query,
+//
+//
+//            'order_purchase_price' => $query->clone()->sum('orders.purchase_price'),
+//            'order_return_price' => $query->clone()->sum('orders.return_price'),
+//            'order_return_count' => $query->clone()->where('orders.return_price', '>', 0)->count(),
+//
+//            'count' => $query->clone()->count(),
+//            'closed_count' => $query->clone()->whereNotNull('delivered_date')->count(),
+
         ]);
     }
 

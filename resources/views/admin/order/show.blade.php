@@ -39,6 +39,12 @@
                     в исходную
                 </a>
             @endif
+            @if(Auth::id() == 1)
+                <a class="btn btn-warning btn-sm" href="{{route('admin.order.to-onec',$order->id)}}">
+                    <i class="fas fa-info"></i>
+                    в 1C
+                </a>
+            @endif
         </div>
     </div>
 

@@ -35,6 +35,8 @@ class OrderUpdateRequest extends FormRequest
             'winning_status' => '',
             'delivery_date' => '',
             'delivered_date' => '',
+            'lat' => '',
+            'lng' => '',
 
             'baskets' => 'array|min:1',
             'baskets.*.id' => 'required',

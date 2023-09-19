@@ -52,7 +52,8 @@
                                 <i class="fas fa-pencil-alt">
                                 </i>
                             </a>
-                            <a class="btn btn-danger btn-sm" href="{{route('admin.product.delete',$product->id)}}">
+                            <a class="btn btn-danger btn-sm"
+                               href="{{route('admin.product.delete',$product->id)}}">
                                 <i class="fas fa-trash">
                                 </i>
                             </a>
@@ -72,9 +73,8 @@
                             <a>{{$product->name}}</a>
                         </th>
 
-                        @foreach(\App\Models\PriceType::all() as $priceType)
+                        @foreach($priceTypes as $priceType)
                             <th>{{$product->prices()->where('price_type_id',$priceType->id)->first()?->price}}</th>
-
                         @endforeach
                         <th>
                             @if($product->measure == 1)
@@ -92,10 +92,6 @@
                         <th>
                             {{$product->remainder}}
                         </th>
-
-
-                        {{--                <td>--}}
-
                     </tr>
                 @endforeach
                 </tbody>

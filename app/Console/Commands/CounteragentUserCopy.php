@@ -35,7 +35,6 @@ class CounteragentUserCopy extends Command
 
         $counteragentUsers = CounteragentUser::whereUserId($fromUserId)->get();
 
-        
         foreach ($counteragentUsers as $counteragentUser) {
             CounteragentUser::firstOrCreate([
                 'user_id' => $toUserId,
