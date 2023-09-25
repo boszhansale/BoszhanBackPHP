@@ -60,8 +60,9 @@ class OrderController extends Controller
         $order = OrderPriceAction::execute($order);
         //Проверка если контрагент в группе сотрудники, то отправляем на фтп 1с
         if ($order->store->counteragent) {
-            if ($order->store->counteragent->group_id == 3) {
+            if ($order->store->counteragent->group_id == 3 or $order->store->counteragent->to_1c == 1) {
                 Artisan::call('order:report ' . $order->id);
+                Artisan::call('order:report-return ' . $order->id);
             }
         }
 

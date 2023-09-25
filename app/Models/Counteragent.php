@@ -73,6 +73,7 @@ class Counteragent extends Model
         'price_type_id',
         'discount',
         'enabled',
+        'to_1c',
         'created_at'
     ];
 
