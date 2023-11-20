@@ -66,6 +66,10 @@
                         <input type="checkbox" class="form-check-input" name="enabled" value="1" id="enabled" checked>
                         <label class="form-check-label" for="enabled">активный</label>
                     </div>
+                    <div class="form-check">
+                        <input type="checkbox" class="form-check-input" name="to_1c" value="1" id="to_1c">
+                        <label class="form-check-label" for="to_1c">сразу в 1С</label>
+                    </div>
 
 
                 </div>

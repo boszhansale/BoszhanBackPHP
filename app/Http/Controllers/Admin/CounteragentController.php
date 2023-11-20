@@ -54,6 +54,7 @@ class CounteragentController extends Controller
         $counteragent->price_type_id = $request->get('price_type_id');
         $counteragent->discount = $request->get('discount');
         $counteragent->enabled = $request->has('enabled');
+        $counteragent->to_1c = $request->has('to_1c');
         $counteragent->delivery_time = $request->get('delivery_time');
         $counteragent->save();
         if ($request->has('salesreps')) {
@@ -94,6 +95,7 @@ class CounteragentController extends Controller
         $counteragent->price_type_id = $request->get('price_type_id');
         $counteragent->discount = $request->get('discount');
         $counteragent->enabled = $request->has('enabled');
+        $counteragent->to_1c = $request->has('to_1c');
         $counteragent->delivery_time = $request->get('delivery_time');
         $counteragent->save();
         Store::whereCounteragentId($counteragent->id)->update(['enabled' => $request->has('enabled')]);

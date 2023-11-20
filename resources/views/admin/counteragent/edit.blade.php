@@ -15,7 +15,8 @@
                     <select name="group_id" class="form-control">
                         <option value="">выберите</option>
                         @foreach(\App\Models\CounteragentGroup::all() as $group)
-                            <option value="{{$group->id}}" {{$group->id == $counteragent->group_id ? 'selected' : ''}}>{{$group->name}}</option>
+                            <option
+                                value="{{$group->id}}" {{$group->id == $counteragent->group_id ? 'selected' : ''}}>{{$group->name}}</option>
                         @endforeach
                     </select>
                 </div>
@@ -68,6 +69,12 @@
                     <input type="checkbox" class="form-check-input" name="enabled" value="1"
                            id="enabled" {{$counteragent->enabled ? 'checked':''}} >
                     <label class="form-check-label" for="enabled">активный</label>
+                </div>
+
+                <div class="form-check">
+                    <input type="checkbox" class="form-check-input" name="to_1c" value="1"
+                           id="to_1c" {{$counteragent->to_1c ? 'checked':''}} >
+                    <label class="form-check-label" for="to_1c">сразу 1С</label>
                 </div>
 
 

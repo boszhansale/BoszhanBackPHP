@@ -28,17 +28,17 @@ class StoreIndex extends Component
     {
         $q = Store::query()
             ->join('users', 'users.id', 'stores.salesrep_id')
-            ->join('supervisor_salesreps', 'supervisor_salesreps.salesrep_id', 'users.id')
             ->leftJoin('store_salesreps', 'stores.id', 'store_salesreps.store_id')
             ->where('users.status', 1)
             ->when(\Auth::id() != 217, function ($q) {
-                $q->where('supervisor_salesreps.supervisor_id', \Auth::id());
+                $q->join('supervisor_salesreps', 'supervisor_salesreps.salesrep_id', 'users.id')
+                    ->where('supervisor_salesreps.supervisor_id', \Auth::id());
             })
             ->when($this->search, function ($q) {
                 return $q->where(function ($qq) {
-                    return $qq->where('name', 'LIKE', "%$this->search%")
-                        ->orWhere('phone', 'LIKE', "%$this->search%")
-                        ->orWhere('address', 'LIKE', "%$this->search%");
+                    return $qq->where('stores.name', 'LIKE', "%$this->search%")
+                        ->orWhere('stores.phone', 'LIKE', "%$this->search%")
+                        ->orWhere('stores.address', 'LIKE', "%$this->search%");
                 });
             })
             ->when($this->salesrepId, function ($q) {
@@ -61,22 +61,24 @@ class StoreIndex extends Component
 
         return view('supervisor.store.index_live', [
             'salesreps' => User::query()
-                ->join('supervisor_salesreps', 'supervisor_salesreps.salesrep_id', 'users.id')
-                ->where('supervisor_salesreps.supervisor_id', \Auth::id())
+//                ->join('supervisor_salesreps', 'supervisor_salesreps.salesrep_id', 'users.id')
+//                ->where('supervisor_salesreps.supervisor_id', \Auth::id())
                 ->where('users.role_id', 1)
                 ->where('users.status', 1)
                 ->orderBy('users.name')
                 ->get('users.*'),
+
             'counteragents' => Counteragent::query()
                 ->join('stores', 'stores.counteragent_id', 'counteragents.id')
                 ->join('users', 'users.id', 'stores.salesrep_id')
-                ->join('supervisor_salesreps', 'supervisor_salesreps.salesrep_id', 'users.id')
+//                ->join('supervisor_salesreps', 'supervisor_salesreps.salesrep_id', 'users.id')
                 ->where('users.status', 1)
-                ->where('supervisor_salesreps.supervisor_id', \Auth::id())
+//                ->where('supervisor_salesreps.supervisor_id', \Auth::id())
                 ->orderBy('counteragents.name')
                 ->groupBy('counteragents.id')
                 ->select('counteragents.*')
                 ->get(),
+
             'stores' => $q->clone()->select('stores.*')->paginate(50),
             'store_count' => $q->clone()->count(),
 

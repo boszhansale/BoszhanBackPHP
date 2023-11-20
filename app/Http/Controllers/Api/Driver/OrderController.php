@@ -23,7 +23,13 @@ class OrderController extends Controller
                 return $q->selectRaw("ST_Distance_Sphere(point('$lng','$lat'),point(stores.lng,stores.lat)) AS distance, orders.*")
                     ->join('stores', 'stores.id', 'orders.store_id');
             })
-            ->whereDate('orders.delivery_date', now())
+            ->when(Auth::id() == 286, function ($q) {
+                $q->where(function ($qq) {
+                    $qq->whereDate('orders.delivery_date', now())->orWhereDate('orders.delivery_date', now()->subDay());;
+                });
+            }, function ($q) {
+                $q->whereDate('orders.delivery_date', now());
+            })
             ->where('orders.status_id', 2)
             ->with(['store', 'baskets', 'baskets.product'])
             ->get();
