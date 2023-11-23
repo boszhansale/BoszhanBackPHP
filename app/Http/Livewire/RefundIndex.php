@@ -30,6 +30,8 @@ class RefundIndex extends Component
             ->join('products', 'baskets.product_id', 'products.id')
             ->join('reason_refunds', 'baskets.reason_refund_id', 'reason_refunds.id')
             ->where('baskets.type', 1)
+            ->whereNull('stores.deleted_at')
+            ->whereNull('baskets.deleted_at')
             ->when($this->search, function ($q) {
                 return $q->where('products.name', 'LIKE', '%' . $this->search . '%');
             })

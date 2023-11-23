@@ -26,6 +26,8 @@ class RefundController extends Controller
             ->join('products', 'baskets.product_id', 'products.id')
             ->join('reason_refunds', 'baskets.reason_refund_id', 'reason_refunds.id')
             ->where('baskets.type', 1)
+            ->whereNull('stores.deleted_at')
+            ->whereNull('baskets.deleted_at')
             ->when($request->get('search'), function ($q) {
                 return $q->where('products.id', 'LIKE', '%' . \request('search') . '%');
             })
@@ -42,7 +44,6 @@ class RefundController extends Controller
                 return $q->whereDate('orders.created_at', '<=', \request('end_created_at'));
             })
             ->latest()
-            ->limit(1000)
             ->select(['orders.*', 'products.name', 'baskets.count', 'baskets.price', 'reason_refunds.title', 'products.measure'])
             ->with(['store.counteragent', 'salesrep'])
             ->get();
