@@ -12,6 +12,7 @@ use App\Http\Controllers\Admin\MobileAppController;
 use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Admin\PlanGroupController;
 use App\Http\Controllers\Admin\ProductController;
+use App\Http\Controllers\Admin\RefundController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\StoreController;
 use App\Http\Controllers\Admin\UserController;
@@ -66,6 +67,10 @@ Route::prefix('user')->name('user.')->group(function () {
     Route::get('map', [UserController::class, 'map'])->name('map');
     Route::get('order/{user}/{role}', [UserController::class, 'order'])->name('order');
     Route::post('statistic/by-order-excel', [UserController::class, 'statisticByOrderExcel'])->name('statisticByOrderExcel');
+});
+Route::prefix('refund')->name('refund.')->group(function () {
+    Route::get('/', [RefundController::class, 'index'])->name('index');
+    Route::get('excel', [RefundController::class, 'excel'])->name('excel');
 });
 Route::prefix('store')->name('store.')->group(function () {
     Route::get('/', [StoreController::class, 'index'])->name('index');

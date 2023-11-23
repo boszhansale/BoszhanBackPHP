@@ -91,6 +91,14 @@
         </a>
     </li>
     <li class="nav-item">
+        <a href="{{route('admin.refund.index')}}" class="nav-link">
+            <i class="nav-icon fas fa-tasks"></i>
+            <p>
+                Возвраты
+            </p>
+        </a>
+    </li>
+    <li class="nav-item">
         <a href="{{route('admin.order.edi')}}" class="nav-link">
             <i class="nav-icon fas fa-tasks"></i>
             <p>
