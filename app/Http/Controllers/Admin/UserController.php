@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Exports\Excel\RiderExport;
 use App\Exports\Excel\UserOrderExport;
 use App\Http\Controllers\Controller;
 use App\Models\Brand;
@@ -12,6 +13,7 @@ use App\Models\DriverSalesrep;
 use App\Models\Order;
 use App\Models\PlanGroup;
 use App\Models\PlanGroupUser;
+use App\Models\RiderDriver;
 use App\Models\Role;
 use App\Models\SupervisorSalesrep;
 use App\Models\User;
@@ -168,7 +170,6 @@ class UserController extends Controller
             $c->id_1c = $id_1c + 1;
             $c->save();
         }
-
         if ($request->has('drivers')) {
             foreach ($request->get('drivers') as $driver) {
                 DriverSalesrep::updateOrCreate(
@@ -193,6 +194,20 @@ class UserController extends Controller
                     [
                         'driver_id' => $user->id,
                         'salesrep_id' => $salesrep,
+                    ]
+                );
+            }
+        }
+        if ($request->has('rider_drivers')) {
+            foreach ($request->get('rider_drivers') as $id) {
+                RiderDriver::updateOrCreate(
+                    [
+                        'driver_id' => $id,
+                        'rider_id' => $user->id,
+                    ],
+                    [
+                        'driver_id' => $id,
+                        'rider_id' => $user->id,
                     ]
                 );
             }
@@ -259,12 +274,14 @@ class UserController extends Controller
             ->select('users.*')
             ->orderBy('users.name')
             ->get();
+
         $drivers = User::query()
             ->where('users.role_id', 2)
             ->where('users.status', 1)
             ->select('users.*')
             ->orderBy('users.name')
             ->get();
+
         $counteragents = Counteragent::orderBy('name')->get();
         $planGroups = PlanGroup::all();
 
@@ -315,6 +332,19 @@ class UserController extends Controller
             }
         } else {
             DriverSalesrep::where('driver_id', $user->id)->delete();
+        }
+        if ($request->has('rider_drivers')) {
+            RiderDriver::where('rider_id', $user->id)->delete();
+            foreach ($request->get('rider_drivers') as $id) {
+                RiderDriver::create(
+                    [
+                        'rider_id' => $user->id,
+                        'driver_id' => $id,
+                    ]
+                );
+            }
+        } else {
+            RiderDriver::where('rider_id', $user->id)->delete();
         }
 
 
@@ -433,6 +463,44 @@ class UserController extends Controller
     public function drivers()
     {
         return response()->view('admin.user.drivers');
+    }
+
+    public function riders()
+    {
+        return response()->view('admin.user.riders');
+    }
+
+    public function riderExcel(Request $request)
+    {
+        $orders = Order::query()
+            ->whereNotNull('rider_id')
+            ->when($request->get('start_date'), function ($q) {
+                $q->whereDate('orders.delivery_date', '>=', \request('start_date'));
+            })
+            ->when($request->get('end_date'), function ($q) {
+                $q->whereDate('orders.delivery_date', '<=', \request('end_date'));
+            })
+            ->when($request->get('rider_id'), function ($q) {
+                $q->where('orders.rider_id', \request('rider_id'));
+            })
+            ->join('baskets', 'baskets.order_id', 'orders.id')
+            ->join('products', 'products.id', 'baskets.product_id')
+            ->select([
+                'orders.id',
+                'products.name',
+                'products.measure',
+                'orders.delivery_date',
+                'orders.driver_id',
+                'orders.rider_id',
+                'orders.store_id',
+                'baskets.count',
+                'baskets.type',
+            ])
+            ->orderBy('orders.id', 'desc')
+            ->with(['rider', 'driver', 'store'])
+            ->get();
+
+        return Excel::download(new RiderExport($orders), 'riders.xlsx');
     }
 
     public function salesreps()

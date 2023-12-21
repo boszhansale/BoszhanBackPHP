@@ -13,9 +13,12 @@ class ProductController extends Controller
         $products = Product::when($request->has('category_id'), function ($query) {
             return $query->where('category_id', \request('category_id'));
         })
-        ->where('products.remainder', '>', 0)
-        ->with(['images', 'prices.priceType', 'counteragentPrices.counteragent'])
-        ->get();
+            ->when($request->has('id'), function ($query) {
+                return $query->where('id', \request('id'));
+            })
+            ->where('products.remainder', '>', 0)
+            ->with(['images', 'prices.priceType', 'counteragentPrices.counteragent'])
+            ->get();
 
         return response()->json($products);
     }

@@ -111,6 +111,7 @@ class Order extends Model implements Auditable
         'delivery_date',
         'delivered_date',
         'lat',
+        'rider_id',
         'lng',
         'purchase_price',
         'return_price',
@@ -163,6 +164,11 @@ class Order extends Model implements Auditable
     public function driver(): BelongsTo
     {
         return $this->belongsTo(User::class, 'driver_id');
+    }
+
+    public function rider(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'rider_id');
     }
 
     public function salesrep(): BelongsTo

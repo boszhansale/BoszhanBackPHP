@@ -22,34 +22,34 @@
 
                 <div class="form-group">
                     <label for="">Телефон номер</label>
-                    <input type="text" class="form-control" name="phone" >
+                    <input type="text" class="form-control" name="phone">
                 </div>
 
                 <div class="form-group">
                     <label for="">Пароль</label>
-                    <input type="text" class="form-control" name="password"  value="123456">
+                    <input type="text" class="form-control" name="password" value="123456">
                 </div>
 
                 <div class="form-group">
                     <label for="">id_1c</label>
-                    <input type="text" class="form-control" name="id_1c" value="{{$id_1c}}" >
+                    <input type="text" class="form-control" name="id_1c" value="{{$id_1c}}">
                 </div>
                 @if($roleId == 1)
-                <div class="form-group">
-                    <label for="">население</label>
-                    <input type="text" class="form-control" name="counterparty" value="население ">
-                </div>
+                    <div class="form-group">
+                        <label for="">население</label>
+                        <input type="text" class="form-control" name="counterparty" value="население ">
+                    </div>
                 @endif
                 @if($roleId == 1 OR $roleId == 2)
 
-                <div class="form-group">
-                    <label for="">Инвентарный номер планшета</label>
-                    <input type="text" class="form-control" name="inventory_number" >
-                </div>
-                <div class="form-group">
-                    <label for="">Номер сим карты</label>
-                    <input type="text" class="form-control" name="sim_number" >
-                </div>
+                    <div class="form-group">
+                        <label for="">Инвентарный номер планшета</label>
+                        <input type="text" class="form-control" name="inventory_number">
+                    </div>
+                    <div class="form-group">
+                        <label for="">Номер сим карты</label>
+                        <input type="text" class="form-control" name="sim_number">
+                    </div>
 
 
                     <div class="form-check">
@@ -57,16 +57,19 @@
                         <label class="form-check-label" for="case">Чехол планшета</label>
                     </div>
                     <div class="form-check">
-                        <input type="checkbox" class="form-check-input" name="screen_security" value="1" id="screen_security">
+                        <input type="checkbox" class="form-check-input" name="screen_security" value="1"
+                               id="screen_security">
                         <label class="form-check-label" for="screen_security">Пленка защиты</label>
                     </div>
                     <div class="form-check">
-                        <input type="checkbox" class="form-check-input" name="winning_access" value="1" id="winning_access">
+                        <input type="checkbox" class="form-check-input" name="winning_access" value="1"
+                               id="winning_access">
                         <label class="form-check-label" for="winning_access">winning_access</label>
                     </div>
 
                     <div class="form-check">
-                        <input type="checkbox" class="form-check-input" name="payout_access" value="1" id="payout_access">
+                        <input type="checkbox" class="form-check-input" name="payout_access" value="1"
+                               id="payout_access">
                         <label class="form-check-label" for="payout_access">payout_access</label>
                     </div>
 
@@ -86,21 +89,20 @@
 
                         <div class="form-group col-md-8">
                             <label for="">личный план</label>
-                            <input type="number" class="form-control" name="plan" required >
+                            <input type="number" class="form-control" name="plan" required>
                         </div>
                         @foreach($brands as $k => $brand)
 
                             <div class="form-group col-md-6">
                                 <label for="">план {{$brand->name}}</label>
-                                <input type="hidden" name="brand_plans[{{$k}}][brand_id]" value="{{$brand->id}}" required>
-                                <input type="number" class="form-control" name="brand_plans[{{$k}}][plan]" value="0" required>
+                                <input type="hidden" name="brand_plans[{{$k}}][brand_id]" value="{{$brand->id}}"
+                                       required>
+                                <input type="number" class="form-control" name="brand_plans[{{$k}}][plan]" value="0"
+                                       required>
                             </div>
                         @endforeach
                     @endif
                 </div>
-
-
-
 
 
             </div>
@@ -110,8 +112,10 @@
                     <div>
                         @foreach($salesreps as $salesrep)
                             <div class="form-check">
-                                <input type="checkbox" class="form-check-input"   name="salesreps[]" value="{{$salesrep->id}}" id="salesrep_{{$salesrep->id}}">
-                                <label class="form-check-label" for="salesrep_{{$salesrep->id}}">{{$salesrep->name}}</label>
+                                <input type="checkbox" class="form-check-input" name="salesreps[]"
+                                       value="{{$salesrep->id}}" id="salesrep_{{$salesrep->id}}">
+                                <label class="form-check-label"
+                                       for="salesrep_{{$salesrep->id}}">{{$salesrep->name}}</label>
                             </div>
                         @endforeach
                     </div>
@@ -123,8 +127,25 @@
                     <div>
                         @foreach($drivers as $driver)
                             <div class="form-check">
-                                <input type="checkbox" class="form-check-input"   name="drivers[]" value="{{$driver->id}}" id="driver_{{$driver->id}}">
+                                <input type="checkbox" class="form-check-input" name="drivers[]" value="{{$driver->id}}"
+                                       id="driver_{{$driver->id}}">
                                 <label class="form-check-label" for="driver_{{$driver->id}}">{{$driver->name}}</label>
+                            </div>
+                        @endforeach
+                    </div>
+                </div>
+            @endif
+
+            @if($roleId == 10)
+                <div class="col-md-3">
+                    <h6 class="">экспедиторы</h6>
+                    <div>
+                        @foreach($drivers as $driver)
+                            <div class="form-check">
+                                <input type="checkbox" class="form-check-input" name="rider_drivers[]"
+                                       value="{{$driver->id}}" id="rider_driver_{{$driver->id}}">
+                                <label class="form-check-label"
+                                       for="rider_driver_{{$driver->id}}">{{$driver->name}}</label>
                             </div>
                         @endforeach
                     </div>

@@ -56,6 +56,8 @@ Route::prefix('product')->name('product.')->group(function () {
 Route::prefix('user')->name('user.')->group(function () {
     Route::get('/', [UserController::class, 'index'])->name('index');
     Route::get('drivers', [UserController::class, 'drivers'])->name('drivers');
+    Route::get('riders', [UserController::class, 'riders'])->name('riders');
+    Route::get('riders-excel', [UserController::class, 'riderExcel'])->name('riderExcel');
     Route::get('salesreps', [UserController::class, 'salesreps'])->name('salesreps');
     Route::get('create/{roleId}', [UserController::class, 'create'])->name('create');
     Route::post('store', [UserController::class, 'store'])->name('store');

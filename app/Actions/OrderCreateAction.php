@@ -3,6 +3,7 @@
 namespace App\Actions;
 
 use App\Models\Order;
+use App\Models\RiderDriver;
 use App\Models\Store;
 use App\Models\User;
 use Carbon\Carbon;
@@ -18,9 +19,12 @@ class OrderCreateAction
             $driver = $salesrep->driver;
         }
 
+        $riderDriver = RiderDriver::where('driver_id', $driver->id)->latest()->first();
+
         $order = new Order();
         $order->salesrep_id = $salesrep->id;
         $order->driver_id = $driver->id;
+        $order->rider_id = $riderDriver?->rider_id;
         $order->delivery_date = $this->getDeliveryDate($data);
         $order->store_id = $data['store_id'];
         $order->mobile_id = $data['mobile_id'];

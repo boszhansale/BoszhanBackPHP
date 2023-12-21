@@ -38,7 +38,15 @@
         <a href="{{route('admin.user.drivers')}}" class="nav-link">
             <i class="nav-icon fas fa-user"></i>
             <p>
-                Водители
+                экспедиторы
+            </p>
+        </a>
+    </li>
+    <li class="nav-item">
+        <a href="{{route('admin.user.riders')}}" class="nav-link">
+            <i class="nav-icon fas fa-user"></i>
+            <p>
+                водители
             </p>
         </a>
     </li>

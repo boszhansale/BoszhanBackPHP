@@ -44,7 +44,7 @@ class OrderStoreRequest extends FormRequest
             'baskets.*.product_id' => 'required|exists:products,id',
             'baskets.*.reason_refund_id' => 'exists:reason_refunds,id',
             'baskets.*.comment' => '',
-            'baskets.*.count' => 'required',
+            'baskets.*.count' => 'required|min:0.01',
         ];
     }
 
