@@ -26,6 +26,7 @@ class ProductStoreRequest extends FormRequest
         return [
             'article' => 'unique:products',
             'category_id' => '',
+            'composition' => '',
             'id_1c' => '',
             'measure' => '',
             'name' => '',

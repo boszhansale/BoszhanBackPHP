@@ -99,6 +99,7 @@ class Product extends Model
         'discount',
         'hit',
         'new',
+        'composition',
         'action',
         'discount_5',
         'discount_10',

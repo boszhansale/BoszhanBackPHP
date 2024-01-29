@@ -7,6 +7,7 @@ use App\Actions\OrderCreateAction;
 use App\Actions\OrderPriceAction;
 use App\Actions\OrderUpdateAction;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Api\OrderAllRequest;
 use App\Http\Requests\Api\OrderStoreRequest;
 use App\Http\Requests\Api\OrderUpdateRequest;
 use App\Models\Order;
@@ -45,6 +46,7 @@ class OrderController extends Controller
                 },
                 'store'
             ])
+//            ->orderBy('delivery_date')
             ->latest()
             ->get();
 
@@ -52,6 +54,38 @@ class OrderController extends Controller
         return response()->json($orders);
     }
 
+    public function all(OrderAllRequest $request)
+    {
+
+        $orders = Order::query()
+            ->where('orders.salesrep_id', $request->get('salesrep_id'))
+            ->join('stores', 'stores.id', 'orders.store_id')
+            ->when($request->has('store_id'), function ($q) {
+                $q->where('orders.store_id', \request('store_id'));
+            })
+            ->when($request->has('counteragent_id'), function ($q) {
+                $q->where('stores.counteragent_id', \request('counteragent_id'));
+            })
+            ->when($request->has('start_date'), function ($q) {
+                return $q->whereDate('orders.delivery_date', '>=', \request('start_date'));
+            })
+            ->when($request->has('end_date'), function ($q) {
+                return $q->whereDate('orders.delivery_date', '<=', \request('end_date'));
+            })
+            ->select('orders.*')
+            ->with([
+                'baskets' => function ($q) {
+                    $q->with('product');
+                },
+                'store'
+            ])
+            ->orderBy('delivery_date', 'desc')
+            ->latest()
+            ->paginate(30);
+
+
+        return response()->json($orders);
+    }
 
     public function store(OrderStoreRequest $request, OrderCreateAction $action, BasketCreateAction $basketCreateAction)
     {

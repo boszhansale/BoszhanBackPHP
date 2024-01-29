@@ -105,6 +105,7 @@ class ProductController extends Controller
     public function update(ProductUpdateRequest $request, Product $product)
     {
         $product->category_id = $request->get('category_id');
+        $product->composition = $request->get('composition');
         $product->name = $request->get('name');
         $product->article = $request->get('article');
         $product->id_1c = $request->get('id_1c');

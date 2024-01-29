@@ -30,6 +30,9 @@ class OrderController extends Controller
             }, function ($q) {
                 $q->whereDate('orders.delivery_date', now());
             })
+            ->when($request->has('id'), function ($q) use ($request) {
+                $q->where('orders.id', $request->get('id'));
+            })
             ->where('orders.status_id', 2)
             ->with(['store', 'baskets', 'baskets.product'])
             ->get();

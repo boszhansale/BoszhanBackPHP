@@ -9,6 +9,10 @@
                     <input type="text" class="form-control" name="name" required>
                 </div>
                 <div class="form-group">
+                    <label for="name">Состав</label>
+                    <textarea name="composition" id="" cols="30" rows="10" class="form-control"></textarea>
+                </div>
+                <div class="form-group">
                     <label for="">ID 1C</label>
                     <input type="text" class="form-control" name="id_1c">
                 </div>
@@ -18,14 +22,15 @@
                 </div>
                 <div class="form-group ">
                     <label for="">Мерка</label>
-                    <select name="measure"  class="form-control">
-                        <option  value="1">штука(1)</option>
-                        <option  value="2">кг(2)</option>
+                    <select name="measure" class="form-control">
+                        <option value="1">штука(1)</option>
+                        <option value="2">кг(2)</option>
                     </select>
                 </div>
+
                 <div class="form-group ">
                     <label for="">Категория</label>
-                    <select name="category_id"  class="form-control">
+                    <select name="category_id" class="form-control">
                         @foreach($categories as $category)
                             <option value="{{$category->id}}">{{$category->brand->name}} - {{$category->name}}</option>
                         @endforeach
@@ -34,32 +39,29 @@
 
                 <div class="form-group">
                     <label for="">barcode</label>
-                    <input type="text" class="form-control" name="barcode" >
+                    <input type="text" class="form-control" name="barcode">
                 </div>
-
-
-
 
 
                 <div class="form-group">
                     <label for="">barcode 1</label>
-                    <input type="text" class="form-control" name="barcode_1" >
+                    <input type="text" class="form-control" name="barcode_1">
                 </div>
                 <div class="form-group">
                     <label for="">barcode 2</label>
-                    <input type="text" class="form-control" name="barcode_2" >
+                    <input type="text" class="form-control" name="barcode_2">
                 </div>
                 <div class="form-group">
                     <label for="">barcode 3</label>
-                    <input type="text" class="form-control" name="barcode_3" >
+                    <input type="text" class="form-control" name="barcode_3">
                 </div>
                 <div class="form-group">
                     <label for="">barcode 4</label>
-                    <input type="text" class="form-control" name="barcode_4" >
+                    <input type="text" class="form-control" name="barcode_4">
                 </div>
                 <div class="form-group">
                     <label for="">остаток</label>
-                    <input type="number" class="form-control" name="remainder" >
+                    <input type="number" class="form-control" name="remainder">
                 </div>
                 <div class="form-group">
                     <label for="">Скидка %</label>

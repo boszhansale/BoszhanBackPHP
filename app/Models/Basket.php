@@ -65,7 +65,13 @@ class Basket extends Model implements Auditable
     //type 0 = purchase
     //type 1 = return
 
-    protected $fillable = ['product_id', 'type', 'price', 'count', 'all_price', 'reason_refund_id', 'comment'];
+    protected $casts = [
+        'count' => 'float',
+        'price' => 'int',
+        'all_price' => 'float',
+    ];
+
+    protected $fillable = ['product_id', 'type', 'price', 'count', 'all_price', 'reason_refund_id', 'comment', 'order_id'];
 
     protected $hidden = ['created_at', 'updated_at', 'deleted_at'];
 

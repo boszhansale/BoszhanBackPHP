@@ -278,9 +278,10 @@ class Order extends Model implements Auditable
     protected function createdAt(): Attribute
     {
         return Attribute::make(
-            get: fn($value) => Carbon::parse($value)->format('d.m.Y H:i'),
+            get: fn($value) => Carbon::parse($value)->addHours(6)->format('d.m.Y H:i'),
         );
     }
+
 
     protected function deliveryDate(): Attribute
     {

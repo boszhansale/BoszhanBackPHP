@@ -11,6 +11,11 @@
                     <input type="text" class="form-control" name="name" value="{{$product->name}}">
                 </div>
                 <div class="form-group">
+                    <label for="name">Состав</label>
+                    <textarea name="composition" id="" cols="30" rows="10"
+                              class="form-control">{{$product->composition}}</textarea>
+                </div>
+                <div class="form-group">
                     <label for="">ID 1C</label>
                     <input type="text" class="form-control" name="id_1c" value="{{$product->id_1c}}">
                 </div>
@@ -62,8 +67,9 @@
 
                 <div class="form-group">
                     <label for="">Скидка %</label>
-                    <input type="number" class="form-control" name="discount" value="0">
+                    <input type="number" class="form-control" name="discount" value="{{$product->discount}}">
                 </div>
+
                 <div class="form-check">
                     <input type="checkbox" class="form-check-input" name="purchase"
                            {{$product->purchase ? "checked":''}}   id="purchase">
@@ -140,9 +146,11 @@
                     <div class="form-group">
                         <label for="">barcode {{$loop->iteration}}</label>
                         <div class="input-group">
-                            <input type="text" class="form-control" name="barcodes[{{$loop->index}}]"value="{{$barcode->barcode}}">
+                            <input type="text" class="form-control" name="barcodes[{{$loop->index}}]"
+                                   value="{{$barcode->barcode}}">
                             <div class="input-group-append">
-                                <a href="{{route('admin.product.barcode.delete',$barcode->id)}}" class="input-group-text btn-danger" >
+                                <a href="{{route('admin.product.barcode.delete',$barcode->id)}}"
+                                   class="input-group-text btn-danger">
                                     <i class="fas fa-trash"></i>
                                 </a>
                             </div>

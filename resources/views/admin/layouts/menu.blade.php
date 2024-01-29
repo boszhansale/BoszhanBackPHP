@@ -17,6 +17,14 @@
         </a>
     </li>
 @endif
+<li class="nav-item">
+    <a href="{{route('admin.label-product.index')}}" class="nav-link">
+        <i class="nav-icon fas fa-th"></i>
+        <p>
+            Продукты этикетки
+        </p>
+    </a>
+</li>
 @if(Auth::user()->permissionExists('user_index'))
     <li class="nav-item">
         <a href="{{route('admin.user.index')}}" class="nav-link">

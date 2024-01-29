@@ -72,6 +72,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
         Route::prefix('order')->group(function () {
             Route::get('/', [OrderController::class, 'index']);
+            Route::get('all', [OrderController::class, 'all'])->withoutMiddleware('auth:sanctum');
             Route::post('/', [OrderController::class, 'store']);
 
             Route::get('show/{order}', [OrderController::class, 'show']);

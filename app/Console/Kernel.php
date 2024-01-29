@@ -21,12 +21,17 @@ class Kernel extends ConsoleKernel
 //        $schedule->command('export:order')->dailyAt('18:00');
 //        $schedule->command('import:all')->dailyAt('23:00');
 
+
+        $schedule->command('other:run')->everyTenMinutes();
+
+
         $schedule->command('db:backup')->dailyAt('02:00');
 
         $schedule->command('edi:clear')->everySixHours();
 
 
-        $schedule->command('telescope:clear')->dailyAt('03:00');
+        $schedule->command('telescope:prune --hours=72')->dailyAt('03:30');
+
         $schedule->command('order:delivery')->dailyAt('05:00');
 
         $schedule->command('store:report')->dailyAt('16:59');

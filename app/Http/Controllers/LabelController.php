@@ -1,0 +1,36 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Http\Requests\LabelStoreRequest;
+use App\Models\Label;
+use App\Models\LabelProduct;
+
+class LabelController extends Controller
+{
+    public function create()
+    {
+        return view('label.create');
+    }
+
+    public function store(LabelStoreRequest $request)
+    {
+        $labelProduct = LabelProduct::find($request->label_product_id);
+
+        $label = new Label();
+        $label->label_product_id = $labelProduct->id;
+        $label->size = $request->get('size');
+        $label->weight = $request->get('weight');
+        $label->date = $request->get('date');
+        $label->lang = $request->get('lang');
+        $label->barcode = $labelProduct->barcode;
+        $label->save();
+
+        return redirect()->route('label.show', $label->id);
+    }
+
+    public function show(Label $label)
+    {
+        return view('label.show', compact('label'));
+    }
+}

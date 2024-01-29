@@ -20,12 +20,14 @@ class OrderCreateAction
         }
 
         $riderDriver = RiderDriver::where('driver_id', $driver->id)->latest()->first();
-
+        $deliveryDate = $this->getDeliveryDate($data);
         $order = new Order();
         $order->salesrep_id = $salesrep->id;
         $order->driver_id = $driver->id;
         $order->rider_id = $riderDriver?->rider_id;
-        $order->delivery_date = $this->getDeliveryDate($data);
+
+        $order->delivery_date = $deliveryDate->copy()->format('Y-m-d') == '2024-01-01' ? Carbon::now()->addDay() : $deliveryDate;
+
         $order->store_id = $data['store_id'];
         $order->mobile_id = $data['mobile_id'];
         $order->payment_type_id = $data['payment_type_id'] ?? null;
