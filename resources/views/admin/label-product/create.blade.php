@@ -29,7 +29,8 @@
                 </div>
                 <div class="form-group">
                     <label for="name">адрес</label>
-                    <textarea name="address_kz" id="" cols="10" rows="10" class="form-control"></textarea>
+                    <textarea name="address_kz" id="" cols="10" rows="10" class="form-control">Өндіруші:«Первомайские деликатесы» ЖШС, Қазақстан Республикасы, Алматы облысы, Іле ауданы, Қоянқұс ауылы, Абай көшесі, №200 </br>Изготовитель: ТОО«Первомайские Деликатесы», Республика Казахстан, Алматинская область, Илийский район, село Коянкус,улица Абай, №200. т:+7 775 256 22 55
+                    </textarea>
                 </div>
 
             </div>
@@ -77,7 +78,7 @@
                 </div>
                 <div class="form-group">
                     <label for="name">адрес</label>
-                    <textarea name="address_en" id="" cols="10" rows="10" class="form-control">Manufacturer: Pervomayskie Delikatesy LLP,Republic of Kazakhstan, Almaty region, Ili district,Koyankus village,Abay Street, No. 200 tel: +7(727)260-36-48</textarea>
+                    <textarea name="address_en" id="" cols="10" rows="10" class="form-control">Manufacturer: Pervomayskie Delikatesy LLP,</br>Republic of Kazakhstan, Almaty region, Ili district,Koyankus village,Abay Street, No. 200</br>tel: +7(727)260-36-48</textarea>
                 </div>
 
             </div>

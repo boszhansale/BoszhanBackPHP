@@ -99,4 +99,16 @@ class ListController extends Controller
 
         return response()->json($users);
     }
+
+    public function salesrep()
+    {
+        $users = User::query()
+            ->where('status', 1)
+            ->where('role_id', 1)
+            ->select(['id', 'name'])
+            ->get();
+
+
+        return response()->json($users);
+    }
 }
