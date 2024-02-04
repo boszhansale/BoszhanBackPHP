@@ -65,6 +65,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
         Route::prefix('store')->group(function () {
             Route::get('/', [StoreController::class, 'index']);
+            Route::get('all', [StoreController::class, 'all']);
             Route::get('last-orders', [StoreController::class, 'lastOrders']);
             Route::post('/', [StoreController::class, 'store']);
             Route::post('update/{store}', [StoreController::class, 'update']);

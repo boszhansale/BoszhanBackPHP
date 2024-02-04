@@ -7,7 +7,6 @@ use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\CounteragentController;
 use App\Http\Controllers\Admin\CounteragentGroupController;
 use App\Http\Controllers\Admin\GameController;
-use App\Http\Controllers\Admin\LabelProductController;
 use App\Http\Controllers\Admin\MainController;
 use App\Http\Controllers\Admin\MobileAppController;
 use App\Http\Controllers\Admin\OrderController;
@@ -53,14 +52,7 @@ Route::prefix('product')->name('product.')->group(function () {
     Route::post('barcode/store/{product}', [ProductController::class, 'barcodeCreate'])->name('barcode.store');
     Route::get('barcode/delete/{productBarcode}', [ProductController::class, 'barcodeDelete'])->name('barcode.delete');
 });
-Route::prefix('label-product')->name('label-product.')->group(function () {
-    Route::get('/', [LabelProductController::class, 'index'])->name('index');
-    Route::get('create', [LabelProductController::class, 'create'])->name('create');
-    Route::post('store', [LabelProductController::class, 'store'])->name('store');
-    Route::get('edit/{labelProduct}', [LabelProductController::class, 'edit'])->name('edit');
-    Route::put('update/{labelProduct}', [LabelProductController::class, 'update'])->name('update');
-    Route::get('delete/{labelProduct}', [LabelProductController::class, 'delete'])->name('delete');
-});
+
 Route::prefix('user')->name('user.')->group(function () {
     Route::get('/', [UserController::class, 'index'])->name('index');
     Route::get('drivers', [UserController::class, 'drivers'])->name('drivers');

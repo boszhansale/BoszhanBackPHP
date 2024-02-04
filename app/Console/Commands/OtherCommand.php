@@ -2,7 +2,6 @@
 
 namespace App\Console\Commands;
 
-use App\Models\Basket;
 use Illuminate\Console\Command;
 
 class OtherCommand extends Command
@@ -37,45 +36,45 @@ class OtherCommand extends Command
 
 //        $productId = 2216;
 //        $actionProductId = 2707;
-        $array = [
-            ['product_id' => 2216, 'action_id' => 2707],
-            ['product_id' => 2212, 'action_id' => 2708],
-            ['product_id' => 798, 'action_id' => 2709],
-        ];
-
-
-        foreach ($array as $item) {
-            $baskets = Basket::query()
-                ->where('product_id', $item['product_id'])
-                ->whereDate('created_at', now())
-                ->where('count', '>=', 5)
-                ->get();
-            foreach ($baskets as $basket) {
-                try {
-                    if ($basket->type == 1) continue;
-
-                    $actionProduct = Basket::query()
-                        ->where('order_id', $basket->order_id)
-                        ->where('product_id', $item['action_id'])
-                        ->first();
-                    if ($actionProduct) continue;
-                    $count = floor($basket->count / 5);
-                    dump("basket_count $basket->count - $count");
-
-                    Basket::create([
-                        'order_id' => $basket->order_id,
-                        'product_id' => $item['action_id'],
-                        'price' => 1,
-                        'type' => 0,
-                        'comment' => 'Акция 5+1',
-                        'count' => $count,
-                        'all_price' => $count * 1,
-                    ]);
-                } catch (\Exception $exception) {
-                    dump($exception->getMessage());
-                }
-            }
-        }
+//        $array = [
+//            ['product_id' => 2216, 'action_id' => 2707],
+//            ['product_id' => 2212, 'action_id' => 2708],
+//            ['product_id' => 798, 'action_id' => 2709],
+//        ];
+//
+//
+//        foreach ($array as $item) {
+//            $baskets = Basket::query()
+//                ->where('product_id', $item['product_id'])
+//                ->whereDate('created_at', now())
+//                ->where('count', '>=', 5)
+//                ->get();
+//            foreach ($baskets as $basket) {
+//                try {
+//                    if ($basket->type == 1) continue;
+//
+//                    $actionProduct = Basket::query()
+//                        ->where('order_id', $basket->order_id)
+//                        ->where('product_id', $item['action_id'])
+//                        ->first();
+//                    if ($actionProduct) continue;
+//                    $count = floor($basket->count / 5);
+//                    dump("basket_count $basket->count - $count");
+//
+//                    Basket::create([
+//                        'order_id' => $basket->order_id,
+//                        'product_id' => $item['action_id'],
+//                        'price' => 1,
+//                        'type' => 0,
+//                        'comment' => 'Акция 5+1',
+//                        'count' => $count,
+//                        'all_price' => $count * 1,
+//                    ]);
+//                } catch (\Exception $exception) {
+//                    dump($exception->getMessage());
+//                }
+//            }
+//        }
         return 0;
     }
 

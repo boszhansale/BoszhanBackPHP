@@ -11,10 +11,18 @@
             </div>
         @endif
         <div class="form-group">
+            <label for="name">категория</label>
+            <select name="lang" wire:model="category_id" class="form-control">
+                <option value="">Выберите категорию</option>
+                @foreach($categories as $cat)
+                    <option value="{{$cat->id}}">{{$cat->name}}</option>
+                @endforeach
+            </select>
+        </div>
+        <div class="form-group">
             <label for="name">язык</label>
             <select name="lang" wire:model="lang" class="form-control">
-                <option value="kz">kz</option>
-                <option value="ru">ru</option>
+                <option value="kz">kz-ru</option>
                 <option value="en">en</option>
             </select>
         </div>
@@ -24,9 +32,7 @@
                 <option value="">Выберите продукт</option>
                 @foreach($labelProducts as $product)
                     <option value="{{$product->id}}">
-                        @if($lang == 'ru')
-                            {{$product->name_ru}}
-                        @elseif($lang == 'en')
+                        @if($lang == 'en')
                             {{$product->name_en}}
                         @else
                             {{$product->name_kz}}
@@ -43,10 +49,6 @@
         {{--                <option value="58_90">58*90</option>--}}
         {{--                <option value="110_140">110*140</option>--}}
         {{--            </select>--}}
-        {{--        </div>--}}
-        {{--        <div class="form-group">--}}
-        {{--            <label for="name">вес</label>--}}
-        {{--            <input type="number" name="weight" required class="form-control">--}}
         {{--        </div>--}}
 
         <div class="form-group">

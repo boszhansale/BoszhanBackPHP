@@ -27,7 +27,6 @@ class LabelStoreRequest extends FormRequest
             'label_product_id' => 'required|exists:label_products,id',
             'composition' => 'string',
             'size' => 'string',
-            'weight' => 'numeric',
         ];
     }
 
