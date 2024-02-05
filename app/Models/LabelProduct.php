@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class LabelProduct extends Model
 {
@@ -29,6 +30,11 @@ class LabelProduct extends Model
         'address_en',
         'label_category_id',
     ];
+
+    public function category(): BelongsTo
+    {
+        return $this->belongsTo(LabelCategory::class, 'label_category_id');
+    }
 
 
 }
