@@ -33,6 +33,27 @@ class Label extends Model
         );
     }
 
+    public function getMeasure(): string
+    {
+        return $this->labelProduct->lang == 'en' ? 'gr' : 'гр';
+    }
+
+    public function getCreateAtNumber()
+    {
+        return (int)now()->format('d') . now()->format('m');
+    }
+
+    public function getWeighName(): string
+    {
+        if ($this->lang == 'en') {
+            return 'net weight';
+        } else if ($this->lang == 'ru') {
+            return 'масса нетто';
+        } else {
+            return 'таза салмағы';
+        }
+    }
+
     //get name
     public function getName()
     {

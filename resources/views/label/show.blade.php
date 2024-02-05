@@ -14,10 +14,18 @@
     </div>
 
     <div class="down">
+        <div class="kvd">
+            <div>
+                <span>{{$label->getCreateAtNumber()}}</span>
+                <span>{{$label->id}}</span>
+            </div>
+        </div>
 
         <h2>{{$label->getCert()}}</h2>
         <h5>{{$label->getDateCreate()}}: {{$label->date}}</h5>
-        {{--        <p>Net weight: {{$label->weight}}</p>--}}
+        @if($label->weight)
+            <p>{{$label->getWeighName()}}: {{$label->weight}} {{$label->getMeasure()}} +/-3%</p>
+        @endif
 
 
         <div class="dng">
@@ -91,6 +99,16 @@
     .emb img {
         width: 15px;
         height: 15px;
+    }
+
+    .kvd {
+        display: flex;
+        justify-content: end;
+    }
+
+    .kvd span {
+        border: 1px solid black;
+        font-size: 11px;
     }
 </style>
 </body>

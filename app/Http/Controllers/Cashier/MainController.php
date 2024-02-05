@@ -6,12 +6,14 @@ use App\Http\Controllers\Controller;
 use App\Models\Counteragent;
 use App\Models\CounteragentBalanceOperation;
 use Illuminate\Http\Request;
-use Illuminate\View\View;
 
 class MainController extends Controller
 {
-    public function index(): View
+    public function index()
     {
+        if (\Auth::id() == 326) {
+            return redirect()->route('cashier.label-product.index');
+        }
         return view('cashier.main');
     }
 

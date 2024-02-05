@@ -22,7 +22,7 @@ class Kernel extends ConsoleKernel
 //        $schedule->command('import:all')->dailyAt('23:00');
 
 
-        $schedule->command('other:run')->everyTenMinutes();
+//        $schedule->command('other:run')->everyTenMinutes();
 
 
         $schedule->command('db:backup')->dailyAt('02:00');

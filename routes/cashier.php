@@ -1,6 +1,7 @@
 <?php
 
 
+use App\Http\Controllers\Admin\LabelProductController;
 use App\Http\Controllers\Cashier\MainController;
 use App\Http\Controllers\Cashier\OrderController;
 
@@ -30,6 +31,15 @@ Route::prefix('order')->name('order.')->group(function () {
     Route::get('history/{order}', [OrderController::class, 'history'])->name('history');
 });
 
+
+Route::prefix('label-product')->name('label-product.')->group(function () {
+    Route::get('/', [LabelProductController::class, 'index'])->name('index');
+    Route::get('create', [LabelProductController::class, 'create'])->name('create');
+    Route::post('store', [LabelProductController::class, 'store'])->name('store');
+    Route::get('edit/{labelProduct}', [LabelProductController::class, 'edit'])->name('edit');
+    Route::put('update/{labelProduct}', [LabelProductController::class, 'update'])->name('update');
+    Route::get('delete/{labelProduct}', [LabelProductController::class, 'delete'])->name('delete');
+});
 
 
 

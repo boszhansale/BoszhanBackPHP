@@ -42,6 +42,34 @@ class StoreController extends Controller
         return response()->json($stores);
     }
 
+    public function all(Request $request)
+    {
+//        $lat = Auth::user()->lat;
+//        $lng = Auth::user()->lng;
+
+
+        $stores = Store::query()
+            ->leftJoin('store_salesreps', 'store_salesreps.store_id', 'stores.id')
+            ->where('stores.salesrep_id', $request->get('salesrep_id'))
+            ->when($request->has('counteragent_id'), function ($q) {
+                return $q->where('counteragent_id', \request('counteragent_id'));
+            })
+            ->groupBy('stores.id')
+            ->orderBy('stores.name')
+            ->select([
+                'stores.id',
+                'stores.name',
+                'stores.phone',
+                'stores.address',
+                'stores.lat',
+                'stores.lng',
+            ])
+            ->paginate(40);
+
+
+        return response()->json($stores);
+    }
+
     public function lastOrders(Request $request)
     {
         $stores = Auth::user()

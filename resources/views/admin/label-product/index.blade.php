@@ -1,8 +1,8 @@
-@extends('admin.layouts.index')
+@extends('cashier.layouts.index')
 
 @section('content-header-title','Продукты')
 @section('content-header-right')
-    <a href="{{route('admin.label-product.create')}}" class="btn btn-info btn-sm  ">создать</a>
+    <a href="{{route('cashier.label-product.create')}}" class="btn btn-info btn-sm  ">создать</a>
 @endsection
 @section('content')
     <div class="card">
@@ -25,12 +25,12 @@
                         <th>{{$product->name_kz}}</th>
                         <th>{{$product->barcode}}</th>
                         <td class="project-actions text-right">
-                            <a class="btn btn-info btn-sm" href="{{route('admin.label-product.edit',$product->id)}}">
+                            <a class="btn btn-info btn-sm" href="{{route('cashier.label-product.edit',$product->id)}}">
                                 <i class="fas fa-pencil-alt">
                                 </i>
                             </a>
                             <a class="btn btn-danger btn-sm"
-                               href="{{route('admin.label-product.delete',$product->id)}}">
+                               href="{{route('cashier.label-product.delete',$product->id)}}">
                                 <i class="fas fa-trash">
                                 </i>
                             </a>

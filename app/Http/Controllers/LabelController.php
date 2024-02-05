@@ -20,11 +20,12 @@ class LabelController extends Controller
         $label = new Label();
         $label->label_product_id = $labelProduct->id;
         $label->size = $request->get('size');
-        $label->weight = $request->get('weight');
+        $label->weight = $labelProduct->weight;
         $label->date = $request->get('date');
         $label->lang = $request->get('lang');
         $label->barcode = $labelProduct->barcode;
         $label->save();
+
 
         return redirect()->route('label.show', $label->id);
     }

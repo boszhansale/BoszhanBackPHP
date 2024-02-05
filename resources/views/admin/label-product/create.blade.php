@@ -1,16 +1,36 @@
-@extends('admin.layouts.index')
+@extends('cashier.layouts.index')
 @section('content')
-    <form class="product-edit" action="{{route('admin.label-product.store')}}" method="post" enctype="multipart/form-data">
+    <form class="product-edit" action="{{route('cashier.label-product.store')}}" method="post" enctype="multipart/form-data">
         @csrf
         <div class="row">
-            <div class="form-group">
-                <label for="">barcode</label>
-                <input type="text" class="form-control" name="barcode">
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="">штрихкод</label>
+                    <input type="text" class="form-control" name="barcode">
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="name">вес</label>
+                    <input type="number" name="weight" class="form-control">
+                </div>
+            </div>
+            <div class="col-md-4">
+
+                <div class="form-group">
+                    <label for="">категория</label>
+                    <select name="label_category_id" required class="form-control">
+                        <option value="">Выберите категорию</option>
+                        @foreach(\App\Models\LabelCategory::all() as $cat)
+                            <option value="{{$cat->id}}">{{$cat->name}}</option>
+                        @endforeach
+                    </select>
+                </div>
             </div>
         </div>
         <div class="row">
             <div class="col-md-4">
-                <h1>kz</h1>
+                <h1>kz-ru</h1>
                 <div class="form-group">
                     <label for="">Название</label>
                     <input type="text" class="form-control" name="name_kz" required>
@@ -25,7 +45,7 @@
                 </div>
                 <div class="form-group">
                     <label for="">текст даты</label>
-                    <input type="text" class="form-control" name="date_create_kz">
+                    <input type="text" class="form-control" name="date_create_kz" value="Дайындалған күні/Дата изготовления">
                 </div>
                 <div class="form-group">
                     <label for="name">адрес</label>
@@ -34,30 +54,30 @@
                 </div>
 
             </div>
-            <div class="col-md-4">
-                <h1>ru</h1>
-                <div class="form-group">
-                    <label for="">Название</label>
-                    <input type="text" class="form-control" name="name_ru" required>
-                </div>
-                <div class="form-group">
-                    <label for="name">Состав</label>
-                    <textarea name="composition_ru" id="" cols="30" rows="10" class="form-control"></textarea>
-                </div>
-                <div class="form-group">
-                    <label for="">сертификат</label>
-                    <input type="text" class="form-control" name="cert_ru">
-                </div>
-                <div class="form-group">
-                    <label for="">текст даты</label>
-                    <input type="text" class="form-control" name="date_create_ru">
-                </div>
-                <div class="form-group">
-                    <label for="name">адрес</label>
-                    <textarea name="address_ru" id="" cols="10" rows="10" class="form-control"></textarea>
-                </div>
+            {{--            <div class="col-md-4">--}}
+            {{--                <h1>ru</h1>--}}
+            {{--                <div class="form-group">--}}
+            {{--                    <label for="">Название</label>--}}
+            {{--                    <input type="text" class="form-control" name="name_ru" required>--}}
+            {{--                </div>--}}
+            {{--                <div class="form-group">--}}
+            {{--                    <label for="name">Состав</label>--}}
+            {{--                    <textarea name="composition_ru" id="" cols="30" rows="10" class="form-control"></textarea>--}}
+            {{--                </div>--}}
+            {{--                <div class="form-group">--}}
+            {{--                    <label for="">сертификат</label>--}}
+            {{--                    <input type="text" class="form-control" name="cert_ru">--}}
+            {{--                </div>--}}
+            {{--                <div class="form-group">--}}
+            {{--                    <label for="">текст даты</label>--}}
+            {{--                    <input type="text" class="form-control" name="date_create_ru" value="Дата изготовления и упаковывания">--}}
+            {{--                </div>--}}
+            {{--                <div class="form-group">--}}
+            {{--                    <label for="name">адрес</label>--}}
+            {{--                    <textarea name="address_ru" id="" cols="10" rows="10" class="form-control"></textarea>--}}
+            {{--                </div>--}}
 
-            </div>
+            {{--            </div>--}}
             <div class="col-md-4">
                 <h1>en</h1>
                 <div class="form-group">
