@@ -2,7 +2,8 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Этикетки</title>
 </head>
@@ -22,18 +23,23 @@
         </div>
 
         <h2>{{$label->getCert()}}</h2>
-        <h5>{{$label->getDateCreate()}}: {{$label->date}}</h5>
+        @if($label->date)
+            <h5>{{$label->getDateCreate()}}: {{$label->date}}</h5>
+        @endif
         @if($label->weight)
             <p>{{$label->getWeighName()}}: {{$label->weight}} {{$label->getMeasure()}} +/-3%</p>
         @endif
 
 
         <div class="dng">
-            {!!DNS1D::getBarcodeSVG($label->labelProduct->barcode, 'EAN13',1,40) !!}
+            @if($label->labelProduct->barcode)
+                {!!DNS1D::getBarcodeSVG($label->labelProduct->barcode, 'EAN13',1,40) !!}
+            @endif
 
             <div class="emb">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f7/EAC_b-on-w.svg/1200px-EAC_b-on-w.svg.png"
-                     alt="">
+                <img
+                    src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f7/EAC_b-on-w.svg/1200px-EAC_b-on-w.svg.png"
+                    alt="">
                 <img src="https://k2v.ru/wp-content/uploads/2020/04/stakan-i-vilka-oboznachenie.jpg " alt="">
                 <img src="https://cdn-icons-png.flaticon.com/512/91/91356.png" alt="">
             </div>
@@ -58,7 +64,7 @@
     }
 
     h4 {
-        font-size: 8px;
+        font-size: 7px;
         font-weight: normal;
     }
 
@@ -71,7 +77,7 @@
     }
 
     p {
-        font-size: 8px;
+        font-size: 6px;
     }
 
     .container {

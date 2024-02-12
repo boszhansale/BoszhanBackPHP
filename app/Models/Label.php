@@ -29,7 +29,7 @@ class Label extends Model
     protected function date(): Attribute
     {
         return Attribute::make(
-            get: fn($value) => Carbon::parse($value)->format('d/m/Y'),
+            get: fn($value) => $value ? Carbon::parse($value)->format('d/m/Y') : null,
         );
     }
 

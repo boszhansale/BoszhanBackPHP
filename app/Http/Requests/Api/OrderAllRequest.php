@@ -29,7 +29,7 @@ class OrderAllRequest extends FormRequest
             'store_id' => 'integer|exists:stores,id',
             'start_date' => 'date|date_format:Y-m-d',
             'end_date' => 'date|date_format:Y-m-d',
-            'salesrep_id' => 'required|integer|exists:users,id',
+            'salesrep_id' => 'integer|exists:users,id',
 
         ];
     }

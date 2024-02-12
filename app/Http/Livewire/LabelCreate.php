@@ -16,6 +16,10 @@ class LabelCreate extends Component
     public $labelProducts;
     public $categories;
     public $category_id;
+    public $label_product_id;
+    public $date;
+    public $params;
+    public $dateShow;
 
     public function render()
     {
@@ -25,6 +29,13 @@ class LabelCreate extends Component
             })
             ->orderBy('name_' . $this->lang)
             ->get();
+        $this->params = [
+            'category_id' => $this->category_id,
+            'label_product_id' => $this->label_product_id,
+            'date' => $this->date,
+            'date_show' => $this->dateShow,
+            'lang' => $this->lang,
+        ];
 
         return view('label.create_live');
     }
@@ -32,6 +43,8 @@ class LabelCreate extends Component
     public function mount()
     {
         $this->categories = LabelCategory::all();
+        $this->dateShow = true;
+        $this->date = now()->format('Y-m-d');
     }
 
 

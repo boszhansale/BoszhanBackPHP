@@ -6,7 +6,6 @@ use App\Models\Brand;
 use App\Models\Category;
 use App\Models\PriceType;
 use App\Models\Product;
-use Cache;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -23,14 +22,16 @@ class ProductIndex extends Component
     public $category_id = 'all';
 
     public $categories = [];
+    public $brands = [];
+    public $priceTypes = [];
 
     public function mount()
     {
-        $this->categories = Cache::remember('categories_enabled', now()->addDay(), function () {
-            return Category::orderBy('name')
-                ->where('enabled', 1)
-                ->get();
-        });
+        $this->categories = Category::orderBy('name')
+            ->where('enabled', 1)
+            ->get();
+        $this->brands = Brand::all();
+        $this->priceTypes = PriceType::all();
     }
 
     public function render()
@@ -58,12 +59,8 @@ class ProductIndex extends Component
             ->paginate(10);
 
         return view('livewire.product-index', [
-            'brands' => Cache::rememberForever('brands', function () {
-                return Brand::all();
-            }),
-            'priceTypes' => Cache::remember('priceTypes', now()->addDay(), function () {
-                return PriceType::all();
-            }),
+            'brands' => $this->brands,
+            'priceTypes' => $this->priceTypes,
             'categories' => $this->categories,
             'products' => $products,
         ]);

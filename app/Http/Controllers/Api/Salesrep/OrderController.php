@@ -58,7 +58,9 @@ class OrderController extends Controller
     {
 
         $orders = Order::query()
-            ->where('orders.salesrep_id', $request->get('salesrep_id'))
+            ->when($request->has('salesrep_id'), function ($q) {
+                $q->where('salesrep_id', \request('salesrep_id'));
+            })
             ->join('stores', 'stores.id', 'orders.store_id')
             ->when($request->has('store_id'), function ($q) {
                 $q->where('orders.store_id', \request('store_id'));

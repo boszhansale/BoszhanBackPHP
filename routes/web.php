@@ -25,5 +25,5 @@ Route::get('test', function () {
 });
 
 Route::get('label', [LabelController::class, 'create'])->name('label.create');
-Route::post('label', [LabelController::class, 'store'])->name('label.store');
+Route::get('label-create', [LabelController::class, 'store'])->name('label.store');
 Route::get('label/{label}', [LabelController::class, 'show'])->name('label.show');

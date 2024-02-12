@@ -28,6 +28,21 @@ class OtherCommand extends Command
 
     public function handle()
     {
+
+        $array = [
+            ['product_id' => 2216, 'action_id' => 2707],
+            ['product_id' => 2212, 'action_id' => 2708],
+            ['product_id' => 798, 'action_id' => 2709],
+        ];
+
+        foreach ($array as $item) {
+            $basketProduct = \App\Models\Basket::query()
+                ->where('product_id', $item['action_id'])
+                ->whereDate('created_at', '>=', now()->subDays(3))
+                ->delete();
+        }
+
+
 //        $productId = 2212;
 //        $actionProductId = 2708;
 

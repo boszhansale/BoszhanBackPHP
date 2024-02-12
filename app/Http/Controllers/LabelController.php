@@ -21,7 +21,7 @@ class LabelController extends Controller
         $label->label_product_id = $labelProduct->id;
         $label->size = $request->get('size');
         $label->weight = $labelProduct->weight;
-        $label->date = $request->get('date');
+        $label->date = $request->get('date_show') === '1' ? $request->get('date') : null;
         $label->lang = $request->get('lang');
         $label->barcode = $labelProduct->barcode;
         $label->save();

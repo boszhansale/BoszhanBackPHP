@@ -34,11 +34,11 @@ class StoreReport extends Command
     {
         $stores = Store::whereNotNull('salesrep_id')
             ->with('salesrep')
-            ->whereDate('created_at', now())
+            ->whereDate('created_at', '>=', now()->subDay())
             ->where('export_1c', 0)
             ->get();
 
-        $filename = 'excel/stores/'.now()->format('Y_m_d').'_stores_list.xlsx';
+        $filename = 'excel/stores/' . now()->format('Y_m_d') . '_stores_list.xlsx';
 
         Excel::store(new StoresExport($stores), $filename, 'public');
         $this->info('Отчет сгенерирован.');
@@ -47,12 +47,12 @@ class StoreReport extends Command
         $this->info('Отчет был отправлен!');
 
         Store::whereNotNull('salesrep_id')
-             ->with('salesrep')
-             ->where('export_1c', 0)
-             ->whereDate('created_at', now())
-             ->update([
-                 'export_1c' => 1,
-             ]);
+            ->with('salesrep')
+            ->where('export_1c', 0)
+            ->whereDate('created_at', now())
+            ->update([
+                'export_1c' => 1,
+            ]);
 
         return 0;
     }

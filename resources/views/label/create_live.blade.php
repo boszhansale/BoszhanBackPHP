@@ -1,5 +1,5 @@
 <div class="container">
-    <form action="{{ route('label.store') }}" method="post">
+    <form>
         @csrf
         @if($errors->any())
             <div class="alert alert-danger">
@@ -28,7 +28,7 @@
         </div>
         <div class="form-group">
             <label for="name">Продукция</label>
-            <select name="label_product_id" required class="form-control">
+            <select name="label_product_id" wire:model="label_product_id" required class="form-control">
                 <option value="">Выберите продукт</option>
                 @foreach($labelProducts as $product)
                     <option value="{{$product->id}}">
@@ -53,10 +53,15 @@
 
         <div class="form-group">
             <label for="name">Дата</label>
-            <input type="date" name="date" required class="form-control" value="{{now()->format('Y-m-d') }}">
+            <input type="date" name="date" wire:model="date" required class="form-control"
+                   value="{{now()->format('Y-m-d') }}">
         </div>
         <div class="form-group">
-            <button class="btn btn-success">Создать</button>
-        </div>
+            <input type="checkbox" name="date_show" wire:model="dateShow" id="date_show" class="" checked value="1">
+            <label for="date_show">показать дату</label>
+
+            <div class="form-group">
+                <a target="_blank" href="{{route('label.store',$params)}}" class="btn btn-success">Создать</a>
+            </div>
     </form>
 </div>
