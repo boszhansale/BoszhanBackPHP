@@ -45,10 +45,16 @@ class RouteServiceProvider extends ServiceProvider
                 ->prefix('cashier')
                 ->name('cashier.')
                 ->group(base_path('routes/cashier.php'));
+
             Route::middleware(['web', 'auth', 'supervisor'])
                 ->prefix('supervisor')
                 ->name('supervisor.')
                 ->group(base_path('routes/supervisor.php'));
+
+            Route::middleware(['web', 'auth'])
+                ->prefix('logist')
+                ->name('logist.')
+                ->group(base_path('routes/logist.php'));
         });
     }
 

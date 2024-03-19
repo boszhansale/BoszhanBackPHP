@@ -11,12 +11,14 @@ class AuthController extends Controller
 {
     public function login()
     {
+  
         if (Auth::check()) {
             return match (Auth::user()->role->name) {
                 'admin' => to_route('admin.main'),
                 'operator' => to_route('admin.main'),
                 'cashier' => to_route('cashier.main'),
                 'supervisor' => to_route('supervisor.main'),
+                'logist' => to_route('logist.user.drivers'),
                 default => view('login')->withErrors('нет доступа')
             };
         }
@@ -37,6 +39,7 @@ class AuthController extends Controller
             'operator' => to_route('admin.main'),
             'cashier' => to_route('cashier.main'),
             'supervisor' => to_route('supervisor.main'),
+            'logist' => to_route('logist.user.drivers'),
             default => to_route('login'),
         };
     }

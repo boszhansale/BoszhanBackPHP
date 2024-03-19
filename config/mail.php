@@ -114,7 +114,6 @@ return [
         ],
     ],
     'emails' => [
-        'agabek309@gmail.com',
         'obu@Foodkz.kz',
         'kovalenkoa@foodkz.kz',
         'khokhloval@foodkz.kz',

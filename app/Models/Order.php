@@ -121,9 +121,10 @@ class Order extends Model implements Auditable
     ];
 
     protected $hidden = ['updated_at', 'deleted_at', 'rnk_generate'];
-
+    public $timestamps = false;
     protected $casts = [
-        'error_message' => 'array'
+        'error_message' => 'array',
+        'created_at' => 'datetime:d.m.Y H:i',
     ];
 
     const STATUS_READY_FOR_DELIVERY = 1;
@@ -272,13 +273,6 @@ class Order extends Model implements Auditable
     {
         return Attribute::make(
             set: fn($value) => $value ?? null,
-        );
-    }
-
-    protected function createdAt(): Attribute
-    {
-        return Attribute::make(
-            get: fn($value) => Carbon::parse($value)->format('d.m.Y H:i'),
         );
     }
 

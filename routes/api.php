@@ -3,6 +3,7 @@
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\Driver\BasketController as DriverBasketController;
 use App\Http\Controllers\Api\Driver\OrderController as DriverOrderController;
+use App\Http\Controllers\Api\LabelController;
 use App\Http\Controllers\Api\ListController;
 use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\Api\Salesrep\CounteragentController;
@@ -117,4 +118,10 @@ Route::middleware('auth:sanctum')->group(function () {
             Route::get('{order}/pko', [DriverOrderController::class, 'pko']);
         });
     });
+});
+
+
+Route::prefix('label')->group(function () {
+    Route::get('categories', [LabelController::class, 'categories']);
+    Route::get('products', [LabelController::class, 'products']);
 });

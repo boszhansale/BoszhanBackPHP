@@ -46,8 +46,7 @@ class RefundController extends Controller
             ->latest()
             ->select(['orders.*', 'products.name', 'baskets.count', 'baskets.price', 'reason_refunds.title', 'products.measure'])
             ->with(['store.counteragent', 'salesrep'])
-            ->count();
-        dd($refunds);
+            ->get();
 
 
         return Excel::download(new RefundExport($refunds), 'refund.xlsx');
