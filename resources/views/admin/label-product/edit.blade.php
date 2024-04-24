@@ -5,19 +5,25 @@
         @csrf
         @method('PUT')
         <div class="row">
-            <div class="col-md-4">
+            <div class="col-md-6">
                 <div class="form-group">
                     <label for="">barcode</label>
                     <input type="text" class="form-control" name="barcode" value="{{$labelProduct->barcode}}">
                 </div>
             </div>
-            <div class="col-md-4">
+
+
+        </div>
+        <div class="row">
+            <div class="col-md-6">
                 <div class="form-group">
                     <label for="name">вес</label>
                     <input type="number" name="weight" class="form-control" value="{{$labelProduct->weight}}">
                 </div>
             </div>
-            <div class="col-md-4">
+        </div>
+        <div class="row">
+            <div class="col-md-6">
                 <div class="form-group">
                     <label for="">категория</label>
                     <select name="label_category_id" class="form-control">
@@ -25,6 +31,17 @@
                             <option
                                 {{$labelProduct->label_category_id == $cat->id ? 'selected':''}} value="{{$cat->id}}">{{$cat->name}}</option>
                         @endforeach
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="">единица измерения</label>
+                    <select name="measure" class="form-control">
+                        <option {{$labelProduct->measure == 2 ? 'selected':''}} value="2">весовой</option>
+                        <option {{$labelProduct->measure == 1 ? 'selected':''}} value="1">шт</option>
                     </select>
                 </div>
             </div>
@@ -47,7 +64,8 @@
                 </div>
                 <div class="form-group">
                     <label for="">текст даты</label>
-                    <input type="text" class="form-control" name="date_create_kz" value="{{$labelProduct->date_create_kz}}">
+                    <input type="text" class="form-control" name="date_create_kz"
+                           value="{{$labelProduct->date_create_kz}}">
                 </div>
                 <div class="form-group">
                     <label for="name">адрес</label>
@@ -99,7 +117,8 @@
                 </div>
                 <div class="form-group">
                     <label for="">текст даты</label>
-                    <input type="text" class="form-control" name="date_create_en" value="{{$labelProduct->date_create_en}}">
+                    <input type="text" class="form-control" name="date_create_en"
+                           value="{{$labelProduct->date_create_en}}">
                 </div>
                 <div class="form-group">
                     <label for="name">адрес</label>

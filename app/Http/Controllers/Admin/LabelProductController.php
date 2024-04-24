@@ -24,6 +24,7 @@ class LabelProductController extends Controller
     {
         $labelProduct = new LabelProduct();
 
+        $labelProduct->measure = $request->get('measure');
         $labelProduct->weight = $request->get('weight');
         $labelProduct->barcode = $request->get('barcode');
         $labelProduct->label_category_id = $request->get('label_category_id');
@@ -50,6 +51,7 @@ class LabelProductController extends Controller
 
     public function update(Request $request, LabelProduct $labelProduct)
     {
+        $labelProduct->measure = $request->get('measure');
         $labelProduct->barcode = $request->get('barcode');
         $labelProduct->weight = $request->get('weight');
         $labelProduct->label_category_id = $request->get('label_category_id');

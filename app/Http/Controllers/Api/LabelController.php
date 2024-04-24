@@ -51,6 +51,7 @@ class LabelController extends Controller
             'barcode' => $label->barcode,
             'weight' => $label->getWeighName() . ': ' . $label->weight . ' ' . $label->getMeasure() . ' +/-3%',
             'cert' => $label->getCert(),
+            'measure' => $label->labelProduct->measure,
             'address' => strip_tags($label->getAddress()),
             'date_create' => $label->date ? $label->getDateCreate() . ' ' . $label->date : '',
             'date_code' => $label->getCreateAtNumber(),

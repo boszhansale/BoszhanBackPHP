@@ -26,10 +26,12 @@
         @if($label->date)
             <h5>{{$label->getDateCreate()}}: {{$label->date}}</h5>
         @endif
-        @if($label->weight)
-            <p>{{$label->getWeighName()}}: {{$label->weight}} {{$label->getMeasure()}} +/-3%</p>
+        @if($label->labelProduct->measure == 2)
+            @if($label->weight)
+                <p>{{$label->getWeighName()}}: {{$label->weight}} {{$label->getMeasure()}} +/-3%</p>
+            @endif
+            <p>{{$label->getMass()}}: {{$label->weight}} {{$label->getMeasure()}} +/-3%</p>
         @endif
-        <p>{{$label->getMass()}}: {{$label->weight}} {{$label->getMeasure()}} +/-3%</p>
 
 
         <div class="dng">
