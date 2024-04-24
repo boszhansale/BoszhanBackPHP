@@ -29,6 +29,7 @@
         @if($label->weight)
             <p>{{$label->getWeighName()}}: {{$label->weight}} {{$label->getMeasure()}} +/-3%</p>
         @endif
+        <p>{{$label->getMass()}}: {{$label->weight}} {{$label->getMeasure()}} +/-3%</p>
 
 
         <div class="dng">

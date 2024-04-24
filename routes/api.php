@@ -124,4 +124,5 @@ Route::middleware('auth:sanctum')->group(function () {
 Route::prefix('label')->group(function () {
     Route::get('categories', [LabelController::class, 'categories']);
     Route::get('products', [LabelController::class, 'products']);
+    Route::post('/', [LabelController::class, 'store']);
 });

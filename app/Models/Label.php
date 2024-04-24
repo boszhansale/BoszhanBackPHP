@@ -54,6 +54,15 @@ class Label extends Model
         }
     }
 
+    public function getMass(): string
+    {
+        if ($this->lang == 'en') {
+            return 'net weight';
+        } else {
+            return 'масса нетто';
+        }
+    }
+
     //get name
     public function getName()
     {

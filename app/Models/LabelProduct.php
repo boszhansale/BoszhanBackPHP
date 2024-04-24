@@ -29,11 +29,17 @@ class LabelProduct extends Model
 //        'address_ru',
         'address_en',
         'label_category_id',
+        'measure'
     ];
 
     public function category(): BelongsTo
     {
         return $this->belongsTo(LabelCategory::class, 'label_category_id');
+    }
+
+    public function measureDescription(): string
+    {
+        return $this->measure == 1 ? 'шт' : 'кг';
     }
 
 

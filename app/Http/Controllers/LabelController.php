@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\LabelStoreRequest;
 use App\Models\Label;
 use App\Models\LabelProduct;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class LabelController extends Controller
 {
@@ -33,5 +34,11 @@ class LabelController extends Controller
     public function show(Label $label)
     {
         return view('label.show', compact('label'));
+    }
+
+    public function pdf(Label $label)
+    {
+        return PDF::loadView('label.show', compact('label'))
+            ->download("label.pdf");
     }
 }

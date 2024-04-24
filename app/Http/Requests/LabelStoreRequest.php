@@ -24,9 +24,11 @@ class LabelStoreRequest extends FormRequest
     public function rules()
     {
         return [
-            'label_product_id' => 'required|exists:label_products,id',
-            'composition' => 'string',
+//            'label_product_name' => 'required',
+//            'composition' => 'string',
             'size' => 'string',
+//            'weight' => 'required',
+//            'lang' => 'required'
         ];
     }
 

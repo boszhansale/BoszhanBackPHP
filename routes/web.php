@@ -27,3 +27,4 @@ Route::get('test', function () {
 Route::get('label', [LabelController::class, 'create'])->name('label.create');
 Route::get('label-create', [LabelController::class, 'store'])->name('label.store');
 Route::get('label/{label}', [LabelController::class, 'show'])->name('label.show');
+Route::get('label-pdf/{label}', [LabelController::class, 'pdf'])->name('label.pdf');
