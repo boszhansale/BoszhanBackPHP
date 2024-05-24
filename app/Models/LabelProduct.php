@@ -13,23 +13,21 @@ class LabelProduct extends Model
     protected $fillable = [
         'weight',
         'name_kz',
-//        'name_ru',
         'name_en',
         'composition_kz',
-//        'composition_ru',
         'composition_en',
         'barcode',
         'cert_kz',
-//        'cert_ru',
         'cert_en',
         'date_create_kz',
-//        'date_create_ru',
         'date_create_en',
         'address_kz',
-//        'address_ru',
         'address_en',
         'label_category_id',
         'measure'
+    ];
+    public $casts = [
+        'measure' => 'string'
     ];
 
     public function category(): BelongsTo

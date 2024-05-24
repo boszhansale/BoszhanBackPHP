@@ -11,6 +11,14 @@ use Illuminate\Http\Request;
 
 class LabelController extends Controller
 {
+    public function all()
+    {
+        return response()->json(LabelCategory::orderBy('name')
+            ->with('labelProducts')
+            ->get()
+        );
+    }
+
     public function categories()
     {
         return response()->json(LabelCategory::pluck('name')->toArray());
@@ -51,7 +59,7 @@ class LabelController extends Controller
             'barcode' => $label->barcode,
             'weight' => $label->getWeighName() . ': ' . $label->weight . ' ' . $label->getMeasure() . ' +/-3%',
             'cert' => $label->getCert(),
-            'measure' => $label->labelProduct->measure,
+            'measure' => (string)$label->labelProduct->measure,
             'address' => strip_tags($label->getAddress()),
             'date_create' => $label->date ? $label->getDateCreate() . ' ' . $label->date : '',
             'date_code' => $label->getCreateAtNumber(),

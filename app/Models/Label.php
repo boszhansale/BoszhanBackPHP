@@ -48,9 +48,9 @@ class Label extends Model
         if ($this->lang == 'en') {
             return 'net weight';
         } else if ($this->lang == 'ru') {
-            return 'масса нетто';
+            return 'таза салмағы/масса нетто';
         } else {
-            return 'таза салмағы';
+            return 'таза салмағы/масса нетто';
         }
     }
 

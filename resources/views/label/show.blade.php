@@ -18,7 +18,7 @@
         <div class="kvd">
             <div>
                 <span>{{$label->getCreateAtNumber()}}</span>
-                <span>{{$label->id}}</span>
+                {{--                <span>{{$label->id}}</span>--}}
             </div>
         </div>
 
@@ -30,7 +30,7 @@
             @if($label->weight)
                 <p>{{$label->getWeighName()}}: {{$label->weight}} {{$label->getMeasure()}} +/-3%</p>
             @endif
-            <p>{{$label->getMass()}}: {{$label->weight}} {{$label->getMeasure()}} +/-3%</p>
+            {{--            <p>{{$label->getMass()}}: {{$label->weight}} {{$label->getMeasure()}} +/-3%</p>--}}
         @endif
 
 
