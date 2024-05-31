@@ -33,6 +33,14 @@
                         @endforeach
                     </select>
                 </div>
+                <div class="form-group">
+                    <label for="align">align</label>
+                    <select class="form-control" name="align" id="align">
+                        <option @selected($labelProduct->align == 'left') value="left">с лево</option>
+                        <option @selected($labelProduct->align == 'center') value="center">центр</option>
+                        <option @selected($labelProduct->align == 'right') value="right">с право</option>
+                    </select>
+                </div>
             </div>
         </div>
         <div class="row">

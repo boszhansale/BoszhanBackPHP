@@ -30,6 +30,14 @@
                         @endforeach
                     </select>
                 </div>
+                <div class="form-group">
+                    <label for="align">align</label>
+                    <select class="form-control" name="align" id="align">
+                        <option value="left">с лево</option>
+                        <option value="center">центр</option>
+                        <option value="right">с право</option>
+                    </select>
+                </div>
             </div>
         </div>
         <div class="row">
@@ -117,6 +125,7 @@
                     <label for="name">адрес</label>
                     <textarea name="address_en" id="" cols="10" rows="10" class="form-control">Manufacturer: Pervomayskie Delikatesy LLP,</br>Republic of Kazakhstan, Almaty region, Ili district,Koyankus village,Abay Street, No. 200</br>tel: +7(727)260-36-48</textarea>
                 </div>
+
 
             </div>
         </div>

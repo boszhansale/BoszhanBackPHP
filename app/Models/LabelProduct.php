@@ -24,7 +24,8 @@ class LabelProduct extends Model
         'address_kz',
         'address_en',
         'label_category_id',
-        'measure'
+        'measure',
+        'align'
     ];
     public $casts = [
         'measure' => 'string'

@@ -39,6 +39,7 @@ class LabelProductController extends Controller
         $labelProduct->address_en = $request->get('address_en');
         $labelProduct->date_create_kz = $request->get('date_create_kz');
         $labelProduct->date_create_en = $request->get('date_create_en');
+        $labelProduct->align = $request->get('align');
         $labelProduct->save();
 
         return redirect()->route('cashier.label-product.index');
@@ -65,6 +66,7 @@ class LabelProductController extends Controller
         $labelProduct->address_en = $request->get('address_en');
         $labelProduct->date_create_kz = $request->get('date_create_kz');
         $labelProduct->date_create_en = $request->get('date_create_en');
+        $labelProduct->align = $request->get('align');
         $labelProduct->save();
 
         return redirect()->route('cashier.label-product.index');

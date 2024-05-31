@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\HasOneThrough;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -146,7 +147,7 @@ class User extends Authenticatable
         return $this->role()->where('roles.id', 8)->exists();
     }
 
-    public function counterparty()
+    public function counterparty(): HasOne
     {
         return $this->hasOne(Counterparty::class);
     }
@@ -288,7 +289,7 @@ class User extends Authenticatable
         $coords = Store::query()
             ->join('orders', 'orders.store_id', 'stores.id')
             ->where('orders.driver_id', $this->id)
-            ->whereDate('orders.delivery_date',now()->addDay())
+            ->whereDate('orders.delivery_date', now()->addDay())
             ->whereNotNull(['lat', 'lng'])
             ->select(['stores.lat', 'stores.lng'])
             ->get();
