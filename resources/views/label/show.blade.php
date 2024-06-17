@@ -71,11 +71,16 @@
 
             <h2>{{$label->getCert()}}</h2>
             @if($label->date)
-                <h5>{{$label->getDateCreate()}}: {{$label->date}}</h5>
+                @if($label->date_type == 1)
+                    <h5>{{$label->getDateCreate()}}: {{$label->date}}</h5>
+                @else
+                    <h5>Дайындалған және оралған күні {{$label->date}}</h5>
+                    <h5>Дата изготовления и упаковывания: {{$label->date}}</h5>
+                @endif
             @endif
             @if($label->labelProduct->measure == 2)
                 @if($label->weight)
-                    <p>{{$label->getWeighName()}}: {{$label->weight}} {{$label->getMeasure()}} +/-3%</p>
+                    <p>{{$label->getWeighName()}}: {{$label->weight}} {{$label->getMeasure()}}</p>
                 @endif
                 {{--            <p>{{$label->getMass()}}: {{$label->weight}} {{$label->getMeasure()}} +/-3%</p>--}}
             @endif
@@ -83,7 +88,7 @@
 
             <div class="dng">
                 @if($label->labelProduct->barcode)
-                    {!!DNS1D::getBarcodeSVG($label->labelProduct->barcode, 'EAN13',1,40) !!}
+                    {!!DNS1D::getBarcodeSVG($label->labelProduct->barcode, 'EAN13',1.4,44) !!}
                 @endif
 
                 <div class="emb">
@@ -145,6 +150,7 @@
     .dng {
         display: flex;
         justify-content: space-between;
+        margin-top: 3px;
     }
 
     .emb {
@@ -154,8 +160,8 @@
     }
 
     .emb img {
-        width: 15px;
-        height: 15px;
+        width: 19px;
+        height: 19px;
     }
 
     .kvd {

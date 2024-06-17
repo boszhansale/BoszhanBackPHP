@@ -38,6 +38,17 @@
                         <option value="right">с право</option>
                     </select>
                 </div>
+                <div class="form-group">
+                    <label for="date_type">тип дата текста</label>
+                    <select class="form-control" name="date_type" id="date_type">
+                        <option value="1">Дайындалған күні/Дата
+                            изготовления
+                        </option>
+                        <option value="2">Дайындалған және оралған күні
+                            Дата изготовления и упаковывания
+                        </option>
+                    </select>
+                </div>
             </div>
         </div>
         <div class="row">
@@ -121,6 +132,7 @@
                     <input type="text" class="form-control" name="date_create_en"
                            value="Date of manufacture and packaging">
                 </div>
+
                 <div class="form-group">
                     <label for="name">адрес</label>
                     <textarea name="address_en" id="" cols="10" rows="10" class="form-control">Manufacturer: Pervomayskie Delikatesy LLP,</br>Republic of Kazakhstan, Almaty region, Ili district,Koyankus village,Abay Street, No. 200</br>tel: +7(727)260-36-48</textarea>

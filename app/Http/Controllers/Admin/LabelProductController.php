@@ -10,9 +10,8 @@ class LabelProductController extends Controller
 {
     public function index()
     {
-        $labelProducts = LabelProduct::query()->latest()->get();
 
-        return view('admin.label-product.index', compact('labelProducts'));
+        return view('admin.label-product.index');
     }
 
     public function create()
@@ -40,6 +39,7 @@ class LabelProductController extends Controller
         $labelProduct->date_create_kz = $request->get('date_create_kz');
         $labelProduct->date_create_en = $request->get('date_create_en');
         $labelProduct->align = $request->get('align');
+        $labelProduct->date_type = $request->get('date_type');
         $labelProduct->save();
 
         return redirect()->route('cashier.label-product.index');
@@ -67,6 +67,7 @@ class LabelProductController extends Controller
         $labelProduct->date_create_kz = $request->get('date_create_kz');
         $labelProduct->date_create_en = $request->get('date_create_en');
         $labelProduct->align = $request->get('align');
+        $labelProduct->date_type = $request->get('date_type');
         $labelProduct->save();
 
         return redirect()->route('cashier.label-product.index');

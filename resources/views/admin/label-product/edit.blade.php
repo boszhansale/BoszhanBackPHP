@@ -41,6 +41,17 @@
                         <option @selected($labelProduct->align == 'right') value="right">с право</option>
                     </select>
                 </div>
+                <div class="form-group">
+                    <label for="date_type">тип дата текста</label>
+                    <select class="form-control" name="date_type" id="date_type">
+                        <option @selected($labelProduct->date_type == '1') value="1">Дайындалған күні/Дата
+                            изготовления
+                        </option>
+                        <option @selected($labelProduct->date_type == '2') value="2">Дайындалған және оралған күні
+                            Дата изготовления и упаковывания
+                        </option>
+                    </select>
+                </div>
             </div>
         </div>
         <div class="row">
