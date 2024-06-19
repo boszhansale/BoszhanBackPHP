@@ -4,6 +4,11 @@
           enctype="multipart/form-data">
         @csrf
         @method('PUT')
+        @if ($errors->any())
+            @foreach ($errors->all() as $error)
+                <div class="bg-red">{{$error}}</div>
+            @endforeach
+        @endif
         <div class="row">
             <div class="col-md-6">
                 <div class="form-group">
@@ -74,8 +79,9 @@
                 </div>
                 <div class="form-group">
                     <label for="name">Состав</label>
-                    <textarea name="composition_kz" id="" cols="30" rows="10"
+                    <textarea name="composition_kz" id="composition_kz" cols="30" rows="20" maxlength="1500"
                               class="form-control">{{$labelProduct->composition_kz}}</textarea>
+                    <p id="charCountKz"></p>
                 </div>
                 <div class="form-group">
                     <label for="">сертификат</label>
@@ -127,8 +133,9 @@
                 </div>
                 <div class="form-group">
                     <label for="name">Состав</label>
-                    <textarea name="composition_en" id="" cols="30" rows="10"
+                    <textarea name="composition_en" id="composition_en" cols="30" rows="20" maxlength="1500"
                               class="form-control">{{$labelProduct->composition_en}}</textarea>
+                    <p id="charCountEn"></p>
                 </div>
                 <div class="form-group">
                     <label for="">сертификат</label>
@@ -149,4 +156,30 @@
         </div>
         <button type="submit" class="mt-5 mb-10 btn btn-primary col-3 ">Сохранить</button>
 
+        <script>
+            document.addEventListener('DOMContentLoaded', (event) => {
+                const textarea = document.getElementById('composition_kz');
+                const charCount = document.getElementById('charCountKz');
+                const maxLength = textarea.getAttribute('maxlength');
+
+                const currentLength = textarea.value.length;
+                charCount.textContent = `${currentLength}/${maxLength}`;
+
+                if (currentLength >= maxLength) {
+                    charCount.style.color = 'red';
+                } else {
+                    charCount.style.color = 'black';
+                }
+                textarea.addEventListener('input', () => {
+                    const currentLength = textarea.value.length;
+                    charCount.textContent = `${currentLength}/${maxLength}`;
+
+                    if (currentLength >= maxLength) {
+                        charCount.style.color = 'red';
+                    } else {
+                        charCount.style.color = 'black';
+                    }
+                });
+            });
+        </script>
 @endsection

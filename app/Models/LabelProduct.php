@@ -29,7 +29,8 @@ class LabelProduct extends Model
         'date_type'
     ];
     public $casts = [
-        'measure' => 'string'
+        'measure' => 'string',
+        'date_type' => 'string'
     ];
 
     public function category(): BelongsTo

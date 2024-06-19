@@ -35,8 +35,7 @@
                 </thead>
                 <tbody>
                 @foreach($labelProducts as $product)
-                    <tr>
-
+                    <tr {!! mb_strlen($product->composition_kz) > 1500 ? 'class="bg-red"':'' !!}>
                         <th>{{$product->id}}</th>
                         <th><i>{{$product->category->name}}</i></th>
                         <th>{{$product->name_kz}}</th>

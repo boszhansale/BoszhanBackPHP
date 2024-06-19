@@ -21,6 +21,9 @@ class LabelProductController extends Controller
 
     public function store(Request $request)
     {
+        if (mb_strlen($request->composition_kz) > 1500) {
+            return back()->withErrors("длинный текст");
+        }
         $labelProduct = new LabelProduct();
 
         $labelProduct->measure = $request->get('measure');
@@ -52,6 +55,9 @@ class LabelProductController extends Controller
 
     public function update(Request $request, LabelProduct $labelProduct)
     {
+        if (mb_strlen($request->composition_kz) > 1500) {
+            return back()->withErrors("длинный текст описании");
+        }
         $labelProduct->measure = $request->get('measure');
         $labelProduct->barcode = $request->get('barcode');
         $labelProduct->weight = $request->get('weight');

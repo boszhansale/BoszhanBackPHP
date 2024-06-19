@@ -88,7 +88,7 @@
 
             <div class="dng">
                 @if($label->labelProduct->barcode)
-                    {!!DNS1D::getBarcodeSVG($label->labelProduct->barcode, 'EAN13',1.4,44) !!}
+                    {!!DNS1D::getBarcodeSVG($label->labelProduct->barcode, 'EAN13',1.3,44) !!}
                 @endif
 
                 <div class="emb">
