@@ -59,6 +59,9 @@
         <div class="up">
             <h1 style="text-align: {{$label->labelProduct->align}}">{{$label->getName()}}</h1>
             <h4 style="text-align: {{$label->labelProduct->align}}">{{$label->getComposition()}}</h4>
+            @if($label->labelProduct->composition_ru)
+                <h4>{{$label->labelProduct->composition_ru}}</h4>
+            @endif
         </div>
 
         <div class="down">

@@ -21,9 +21,9 @@ class LabelProductController extends Controller
 
     public function store(Request $request)
     {
-        if (mb_strlen($request->composition_kz) > 1500) {
-            return back()->withErrors("длинный текст");
-        }
+//        if (mb_strlen($request->composition_kz) > 1500) {
+//            return back()->withErrors("длинный текст");
+//        }
         $labelProduct = new LabelProduct();
 
         $labelProduct->measure = $request->get('measure');
@@ -33,7 +33,9 @@ class LabelProductController extends Controller
 
         $labelProduct->name_kz = $request->get('name_kz');
         $labelProduct->name_en = $request->get('name_en');
+        $labelProduct->kz_ru_margin = $request->get('kz_ru_margin');
         $labelProduct->composition_kz = $request->get('composition_kz');
+        $labelProduct->composition_ru = $request->get('composition_ru');
         $labelProduct->composition_en = $request->get('composition_en');
         $labelProduct->cert_kz = $request->get('cert_kz');
         $labelProduct->cert_en = $request->get('cert_en');
@@ -55,16 +57,18 @@ class LabelProductController extends Controller
 
     public function update(Request $request, LabelProduct $labelProduct)
     {
-        if (mb_strlen($request->composition_kz) > 1500) {
-            return back()->withErrors("длинный текст описании");
-        }
+//        if (mb_strlen($request->composition_kz) > 1500) {
+//            return back()->withErrors("длинный текст описании");
+//        }
         $labelProduct->measure = $request->get('measure');
         $labelProduct->barcode = $request->get('barcode');
         $labelProduct->weight = $request->get('weight');
         $labelProduct->label_category_id = $request->get('label_category_id');
         $labelProduct->name_kz = $request->get('name_kz');
         $labelProduct->name_en = $request->get('name_en');
+        $labelProduct->kz_ru_margin = $request->get('kz_ru_margin');
         $labelProduct->composition_kz = $request->get('composition_kz');
+        $labelProduct->composition_ru = $request->get('composition_ru');
         $labelProduct->composition_en = $request->get('composition_en');
         $labelProduct->cert_kz = $request->get('cert_kz');
         $labelProduct->cert_en = $request->get('cert_en');

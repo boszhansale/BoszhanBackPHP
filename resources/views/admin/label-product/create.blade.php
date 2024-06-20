@@ -68,57 +68,68 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-md-4">
+            <div class="col-md-6">
                 <h1>kz-ru</h1>
                 <div class="form-group">
                     <label for="">Название</label>
                     <input type="text" class="form-control" name="name_kz" required>
                 </div>
                 <div class="form-group">
-                    <label for="name">Состав</label>
+                    <label for="name">Состав KZ</label>
                     <textarea name="composition_kz" id="" cols="30" rows="10" class="form-control"></textarea>
                 </div>
                 <div class="form-group">
-                    <label for="">сертификат</label>
-                    <input type="text" class="form-control" name="cert_kz" value="ЖШС СТ 130740008859-03-2022">
+                    <label for="">отступы между языками kz_ru</label>
+                    <input type="number" name="kz_ru_margin" value="315"
+                           class="form-control">
                 </div>
                 <div class="form-group">
-                    <label for="">текст даты</label>
-                    <input type="text" class="form-control" name="date_create_kz"
-                           value="Дайындалған күні/Дата изготовления">
-                </div>
-                <div class="form-group">
-                    <label for="name">адрес</label>
-                    <textarea name="address_kz" id="" cols="10" rows="10" class="form-control">Өндіруші:«Первомайские деликатесы» ЖШС, Қазақстан Республикасы, Алматы облысы, Іле ауданы, Қоянқұс ауылы, Абай көшесі, №200 </br>Изготовитель: ТОО«Первомайские Деликатесы», Республика Казахстан, Алматинская область, Илийский район, село Коянкус,улица Абай, №200. т:+7 775 256 22 55
+                    <label for="name">Состав RU</label>
+                    <textarea name="composition_ru" id="composition_ru" cols="30" rows="20"
+                              class="form-control"></textarea>
+                    <p id="charCountRu"></p>
+                    <div class="form-group">
+                        <label for="">сертификат</label>
+                        <input type="text" class="form-control" name="cert_kz" value="ЖШС СТ 130740008859-03-2022">
+                    </div>
+                    <div class="form-group">
+                        <label for="">текст даты</label>
+                        <input type="text" class="form-control" name="date_create_kz"
+                               value="Дайындалған күні/Дата изготовления">
+                    </div>
+                    <div class="form-group">
+                        <label for="name">адрес</label>
+                        <textarea name="address_kz" id="" cols="10" rows="10" class="form-control">Өндіруші:«Первомайские деликатесы» ЖШС, Қазақстан Республикасы, Алматы облысы, Іле ауданы, Қоянқұс ауылы, Абай көшесі, №200 </br>Изготовитель: ТОО«Первомайские Деликатесы», Республика Казахстан, Алматинская область, Илийский район, село Коянкус,улица Абай, №200. т:+7 775 256 22 55
                     </textarea>
+                    </div>
+
                 </div>
+                {{--            <div class="col-md-4">--}}
+                {{--                <h1>ru</h1>--}}
+                {{--                <div class="form-group">--}}
+                {{--                    <label for="">Название</label>--}}
+                {{--                    <input type="text" class="form-control" name="name_ru" required>--}}
+                {{--                </div>--}}
+                {{--                <div class="form-group">--}}
+                {{--                    <label for="name">Состав</label>--}}
+                {{--                    <textarea name="composition_ru" id="" cols="30" rows="10" class="form-control"></textarea>--}}
+                {{--                </div>--}}
+                {{--                <div class="form-group">--}}
+                {{--                    <label for="">сертификат</label>--}}
+                {{--                    <input type="text" class="form-control" name="cert_ru">--}}
+                {{--                </div>--}}
+                {{--                <div class="form-group">--}}
+                {{--                    <label for="">текст даты</label>--}}
+                {{--                    <input type="text" class="form-control" name="date_create_ru" value="Дата изготовления и упаковывания">--}}
+                {{--                </div>--}}
+                {{--                <div class="form-group">--}}
+                {{--                    <label for="name">адрес</label>--}}
+                {{--                    <textarea name="address_ru" id="" cols="10" rows="10" class="form-control"></textarea>--}}
+                {{--                </div>--}}
 
+                {{--            </div>--}}
             </div>
-            {{--            <div class="col-md-4">--}}
-            {{--                <h1>ru</h1>--}}
-            {{--                <div class="form-group">--}}
-            {{--                    <label for="">Название</label>--}}
-            {{--                    <input type="text" class="form-control" name="name_ru" required>--}}
-            {{--                </div>--}}
-            {{--                <div class="form-group">--}}
-            {{--                    <label for="name">Состав</label>--}}
-            {{--                    <textarea name="composition_ru" id="" cols="30" rows="10" class="form-control"></textarea>--}}
-            {{--                </div>--}}
-            {{--                <div class="form-group">--}}
-            {{--                    <label for="">сертификат</label>--}}
-            {{--                    <input type="text" class="form-control" name="cert_ru">--}}
-            {{--                </div>--}}
-            {{--                <div class="form-group">--}}
-            {{--                    <label for="">текст даты</label>--}}
-            {{--                    <input type="text" class="form-control" name="date_create_ru" value="Дата изготовления и упаковывания">--}}
-            {{--                </div>--}}
-            {{--                <div class="form-group">--}}
-            {{--                    <label for="name">адрес</label>--}}
-            {{--                    <textarea name="address_ru" id="" cols="10" rows="10" class="form-control"></textarea>--}}
-            {{--                </div>--}}
-
-            {{--            </div>--}}
-            <div class="col-md-4">
+            <div class="col-md-6">
                 <h1>en</h1>
                 <div class="form-group">
                     <label for="">Название</label>

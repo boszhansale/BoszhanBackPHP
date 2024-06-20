@@ -71,17 +71,28 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-md-4">
+            <div class="col-md-6">
                 <h1>kz-ru</h1>
                 <div class="form-group">
                     <label for="">Название</label>
                     <input type="text" class="form-control" name="name_kz" value="{{$labelProduct->name_kz}}" required>
                 </div>
                 <div class="form-group">
-                    <label for="name">Состав</label>
-                    <textarea name="composition_kz" id="composition_kz" cols="30" rows="20" maxlength="1500"
+                    <label for="name">Состав KZ</label>
+                    <textarea name="composition_kz" id="composition_kz" cols="30" rows="20"
                               class="form-control">{{$labelProduct->composition_kz}}</textarea>
                     <p id="charCountKz"></p>
+                </div>
+                <div class="form-group">
+                    <label for="">отступы между языками kz_ru</label>
+                    <input type="number" name="kz_ru_margin" value="{{$labelProduct->kz_ru_margin}}"
+                           class="form-control">
+                </div>
+                <div class="form-group">
+                    <label for="name">Состав RU</label>
+                    <textarea name="composition_ru" id="composition_ru" cols="30" rows="20"
+                              class="form-control">{{$labelProduct->composition_ru}}</textarea>
+                    <p id="charCountRu"></p>
                 </div>
                 <div class="form-group">
                     <label for="">сертификат</label>
@@ -125,7 +136,7 @@
             {{--                </div>--}}
 
             {{--            </div>--}}
-            <div class="col-md-4">
+            <div class="col-md-6">
                 <h1>en</h1>
                 <div class="form-group">
                     <label for="">Название</label>
@@ -133,7 +144,7 @@
                 </div>
                 <div class="form-group">
                     <label for="name">Состав</label>
-                    <textarea name="composition_en" id="composition_en" cols="30" rows="20" maxlength="1500"
+                    <textarea name="composition_en" id="composition_en" cols="30" rows="20"
                               class="form-control">{{$labelProduct->composition_en}}</textarea>
                     <p id="charCountEn"></p>
                 </div>
@@ -160,7 +171,7 @@
             document.addEventListener('DOMContentLoaded', (event) => {
                 const textarea = document.getElementById('composition_kz');
                 const charCount = document.getElementById('charCountKz');
-                const maxLength = textarea.getAttribute('maxlength');
+                const maxLength = 1500;
 
                 const currentLength = textarea.value.length;
                 charCount.textContent = `${currentLength}/${maxLength}`;

@@ -14,7 +14,9 @@ class LabelProduct extends Model
         'weight',
         'name_kz',
         'name_en',
+        'kz_ru_margin',
         'composition_kz',
+        'composition_ru',
         'composition_en',
         'barcode',
         'cert_kz',
@@ -30,7 +32,8 @@ class LabelProduct extends Model
     ];
     public $casts = [
         'measure' => 'string',
-        'date_type' => 'string'
+        'date_type' => 'string',
+        'kz_ru_margin' => 'string'
     ];
 
     public function category(): BelongsTo
