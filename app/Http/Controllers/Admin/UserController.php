@@ -302,7 +302,7 @@ class UserController extends Controller
         $user->screen_security = $request->has('screen_security');
         $user->winning_access = $request->has('winning_access');
         $user->payout_access = $request->has('payout_access');
-        if ($request->has('password')) {
+        if ($request->get('password')) {
             $user->password = Hash::make($request->get('password'));
         }
         $user->save();

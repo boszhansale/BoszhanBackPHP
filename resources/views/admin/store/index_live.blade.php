@@ -122,10 +122,14 @@
                             @endif
                             @if(in_array(Auth::id(),[1,153]))
 
-                                <button class="btn btn-danger btn-sm" wire:click="delete({{$store->id}})"
-                                        onclick="return confirm('Удалить?')">
+                                {{--                                <button class="btn btn-danger btn-sm" wire:click="delete({{$store->id}})"--}}
+                                {{--                                        onclick="return confirm('Удалить?')">--}}
+                                {{--                                    <i class="fas fa-trash"></i>--}}
+                                {{--                                </button>--}}
+                                <a class="btn btn-danger btn-sm" href="{{route('admin.store.delete',$store->id)}}"
+                                   onclick="return confirm('Удалить?')">
                                     <i class="fas fa-trash"></i>
-                                </button>
+                                </a>
 
                             @else
                                 <a class="btn btn-danger btn-sm" href="{{route('admin.store.remove',$store->id)}}"
