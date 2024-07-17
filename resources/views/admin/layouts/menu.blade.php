@@ -61,14 +61,16 @@
             </p>
         </a>
     </li>
-    <li class="nav-item">
-        <a href="{{route('admin.counteragent-group.index')}}" class="nav-link">
-            <i class="nav-icon fas fa-shopping-bag"></i>
-            <p>
-                Контрагент группы
-            </p>
-        </a>
-    </li>
+    @if(Auth::id() == 1)
+        <li class="nav-item">
+            <a href="{{route('admin.counteragent-group.index')}}" class="nav-link">
+                <i class="nav-icon fas fa-shopping-bag"></i>
+                <p>
+                    Контрагент группы
+                </p>
+            </a>
+        </li>
+    @endif
 @endif
 @if(Auth::user()->permissionExists('store_index'))
     <li class="nav-item">

@@ -107,20 +107,24 @@
                                 <i class="fas fa-folder">
                                 </i>
                             </a>
-                            <a class="btn btn-info btn-sm" href="{{route('admin.store.edit',$store->id)}}">
-                                <i class="fas fa-pencil-alt">
-                                </i>
-                            </a>
-
-
-                            @if($store->removed_at != null  AND  in_array(Auth::id(),[1,153]))
-                                <a class="btn btn-warning btn-sm" href="{{route('admin.store.recover',$store->id)}}"
-                                   onclick="return confirm('уверен?')">
-                                    <i class="fas fa-eraser"></i>
+                            @if(Auth::user()->permissionExists('store_edit'))
+                                <a class="btn btn-info btn-sm" href="{{route('admin.store.edit',$store->id)}}">
+                                    <i class="fas fa-pencil-alt">
+                                    </i>
                                 </a>
-
                             @endif
-                            @if(in_array(Auth::id(),[1,153]))
+
+
+
+                            @if(Auth::user()->permissionExists('store_delete'))
+
+                                @if($store->removed_at != null)
+                                    <a class="btn btn-warning btn-sm" href="{{route('admin.store.recover',$store->id)}}"
+                                       onclick="return confirm('восстановить?')">
+                                        <i class="fas fa-eraser"></i>
+                                    </a>
+
+                                @endif
 
                                 {{--                                <button class="btn btn-danger btn-sm" wire:click="delete({{$store->id}})"--}}
                                 {{--                                        onclick="return confirm('Удалить?')">--}}
@@ -132,7 +136,7 @@
                                 </a>
 
                             @else
-                                <a class="btn btn-danger btn-sm" href="{{route('admin.store.remove',$store->id)}}"
+                                <a class="btn btn-warning btn-sm" href="{{route('admin.store.remove',$store->id)}}"
                                    onclick="return confirm('Удалить?')">
                                     <i class="fas fa-trash"></i>
                                 </a>

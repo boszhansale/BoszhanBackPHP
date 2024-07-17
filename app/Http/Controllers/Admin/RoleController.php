@@ -13,14 +13,16 @@ class RoleController extends Controller
     {
         $roles = Role::all();
 
-        return  view('admin.role.index', compact('roles'));
+        return view('admin.role.index', compact('roles'));
     }
 
     public function create()
     {
-        $permissions = Permission::all();
+        $permissions = Permission::query()
+            ->orderBy('name')
+            ->get();
 
-        return  view('admin.role.create', compact('permissions'));
+        return view('admin.role.create', compact('permissions'));
     }
 
     public function store(Request $request)
@@ -38,9 +40,11 @@ class RoleController extends Controller
 
     public function edit(Role $role)
     {
-        $permissions = Permission::all();
+        $permissions = Permission::query()
+            ->orderBy('name')
+            ->get();
 
-        return view('admin.category.edit', compact('permissions', 'role'));
+        return view('admin.role.edit', compact('permissions', 'role'));
     }
 
     public function update(Request $request, Role $role)

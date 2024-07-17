@@ -48,15 +48,19 @@
                 @foreach($products as $product)
                     <tr>
                         <td class="project-actions text-right">
-                            <a class="btn btn-info btn-sm" href="{{route('admin.product.edit',$product->id)}}">
-                                <i class="fas fa-pencil-alt">
-                                </i>
-                            </a>
-                            <a class="btn btn-danger btn-sm"
-                               href="{{route('admin.product.delete',$product->id)}}">
-                                <i class="fas fa-trash">
-                                </i>
-                            </a>
+                            @if(Auth::user()->permissionExists('product_edit'))
+                                <a class="btn btn-info btn-sm" href="{{route('admin.product.edit',$product->id)}}">
+                                    <i class="fas fa-pencil-alt">
+                                    </i>
+                                </a>
+                            @endif
+                            @if(Auth::user()->permissionExists('product_delete'))
+                                <a class="btn btn-danger btn-sm"
+                                   href="{{route('admin.product.delete',$product->id)}}">
+                                    <i class="fas fa-trash">
+                                    </i>
+                                </a>
+                            @endif
                         </td>
                         <th>{{$product->id}}</th>
                         <th>{{$product->article}}</th>

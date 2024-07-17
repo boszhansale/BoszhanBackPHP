@@ -11,14 +11,14 @@ class Admin
     /**
      * Handle an incoming request.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure(\Illuminate\Http\Request): (\Illuminate\Http\Response|\Illuminate\Http\RedirectResponse)  $next
+     * @param \Illuminate\Http\Request $request
+     * @param \Closure(\Illuminate\Http\Request): (\Illuminate\Http\Response|\Illuminate\Http\RedirectResponse) $next
      * @return \Illuminate\Http\Response|\Illuminate\Http\RedirectResponse
      */
     public function handle(Request $request, Closure $next)
     {
-        $accessRoles = ['admin','operator'];
-        if (in_array(Auth::user()->role->name ,$accessRoles)){
+        $accessRoles = ['admin', 'operator', 'accountant'];
+        if (in_array(Auth::user()->role->name, $accessRoles)) {
             return $next($request);
         }
         return to_route('login')->with('нет доступа');

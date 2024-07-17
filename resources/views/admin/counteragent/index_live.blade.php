@@ -47,16 +47,20 @@
                                 <i class="fas fa-folder">
                                 </i>
                             </a><br>
-                            <a class="btn btn-info btn-sm"
-                               href="{{route('admin.counteragent.edit',$counteragent->id)}}">
-                                <i class="fas fa-pencil-alt">
-                                </i>
-                            </a><br>
-                            <a class="btn btn-danger btn-sm"
-                               href="{{route('admin.counteragent.delete',$counteragent->id)}}"
-                               onclick="return confirm('Are you sure?')">
-                                <i class="fas fa-trash"></i>
-                            </a>
+                            @if(Auth::user()->permissionExists('counteragent_edit'))
+                                <a class="btn btn-info btn-sm"
+                                   href="{{route('admin.counteragent.edit',$counteragent->id)}}">
+                                    <i class="fas fa-pencil-alt">
+                                    </i>
+                                </a><br>
+                            @endif
+                            @if(Auth::user()->permissionExists('counteragent_delete'))
+                                <a class="btn btn-danger btn-sm"
+                                   href="{{route('admin.counteragent.delete',$counteragent->id)}}"
+                                   onclick="return confirm('Are you sure?')">
+                                    <i class="fas fa-trash"></i>
+                                </a>
+                            @endif
                         </td>
 
                         <th>

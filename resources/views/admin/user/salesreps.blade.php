@@ -2,7 +2,10 @@
 
 @section('content-header-title','Торговые')
 @section('content-header-right')
-    <a href="{{route('admin.user.create',1)}}" class="btn btn-info btn-sm  ">создать торговый</a>
+    @if(Auth::user()->permissionExists('user_create'))
+        <a href="{{route('admin.user.create',1)}}" class="btn btn-info btn-sm  ">создать торговый</a>
+
+    @endif
 
     <button type="button" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#exampleModal">
         скачать статистику

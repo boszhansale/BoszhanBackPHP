@@ -11,7 +11,7 @@ class AuthController extends Controller
 {
     public function login()
     {
-  
+
         if (Auth::check()) {
             return match (Auth::user()->role->name) {
                 'admin' => to_route('admin.main'),
@@ -40,6 +40,7 @@ class AuthController extends Controller
             'cashier' => to_route('cashier.main'),
             'supervisor' => to_route('supervisor.main'),
             'logist' => to_route('logist.user.drivers'),
+            'accountant' => to_route('admin.main'),
             default => to_route('login'),
         };
     }

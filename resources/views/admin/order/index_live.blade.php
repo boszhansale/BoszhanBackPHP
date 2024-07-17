@@ -159,11 +159,12 @@
                                         </i>
 
                                     </a>
-                                    <a class="btn btn-info btn-sm" href="{{route('admin.order.edit',$order->id)}}">
-                                        <i class="fas fa-pencil-alt">
-                                        </i>
-
-                                    </a>
+                                    @if(in_array(Auth::id(),[1,153]))
+                                        <a class="btn btn-info btn-sm" href="{{route('admin.order.edit',$order->id)}}">
+                                            <i class="fas fa-pencil-alt">
+                                            </i>
+                                        </a>
+                                    @endif
                                     <a class="btn btn-info btn-sm"
                                        href="{{route('admin.order.export-excel',$order->id)}}">
                                         <i class="fas fa-download">

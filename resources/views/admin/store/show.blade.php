@@ -9,13 +9,17 @@
             <a class="btn btn-primary btn-sm" href="{{route('admin.store.order',$store->id)}}">
                 заявки
             </a>
-            <a class="btn btn-info btn-sm" href="{{route('admin.store.edit',$store->id)}}">
-                изменить
-            </a>
-            <a class="btn btn-danger btn-sm" href="{{route('admin.store.delete',$store->id)}}"
-               onclick="return confirm('Удалить?')">
-                удалить
-            </a>
+            @if(Auth::user()->permissionExists('store_edit'))
+                <a class="btn btn-info btn-sm" href="{{route('admin.store.edit',$store->id)}}">
+                    изменить
+                </a>
+            @endif
+            @if(Auth::user()->permissionExists('store_delete'))
+                <a class="btn btn-danger btn-sm" href="{{route('admin.store.delete',$store->id)}}"
+                   onclick="return confirm('Удалить?')">
+                    удалить
+                </a>
+            @endif
         </div>
     </div>
     <br>

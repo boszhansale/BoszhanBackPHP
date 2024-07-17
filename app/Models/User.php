@@ -242,11 +242,16 @@ class User extends Authenticatable
 
     public function permissionExists($permission): bool
     {
-        return Permission::join('role_permissions', 'role_permissions.permission_id', 'permissions.id')
-            ->join('roles', 'roles.id', 'role_permissions.role_id')
-            ->where('roles.id', $this->role_id)
-            ->where('permissions.name', $permission)
-            ->exists();
+        if ($this->id == 1) return true;
+
+        $cacheKey = "user_{$this->id}_permission_{$permission}";
+        return cache()->remember($cacheKey, now()->addHours(24), function () use ($permission) {
+            return Permission::join('role_permissions', 'role_permissions.permission_id', 'permissions.id')
+                ->join('roles', 'roles.id', 'role_permissions.role_id')
+                ->where('roles.id', $this->role_id)
+                ->where('permissions.name', $permission)
+                ->exists();
+        });
     }
 
     public function userPositions(): HasMany

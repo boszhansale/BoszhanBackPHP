@@ -2,7 +2,9 @@
 
 @section('content-header-title',$brand->name)
 @section('content-header-right')
-    <a href="{{route('admin.category.create',$brand->id)}}" class="btn btn-info btn-sm">создать</a>
+    @if(Auth::user()->permissionExists('category_create'))
+        <a href="{{route('admin.category.create',$brand->id)}}" class="btn btn-info btn-sm">создать</a>
+    @endif
 @endsection
 @section('content')
 
@@ -23,15 +25,20 @@
                 </th>
 
                 <td class="project-actions text-right">
-                    <a class="btn btn-info btn-sm" href="{{route('admin.category.edit',$category->id)}}">
-                        <i class="fas fa-pencil-alt">
-                        </i>
-                        изменить
-                    </a>
-                    <a  class="btn btn-danger btn-sm" href="{{route('admin.category.delete',$category->id)}}" onclick="return confirm('Удалить?')">
-                        <i class="fas fa-trash"></i>
-                        удалить
-                    </a>
+                    @if(Auth::user()->permissionExists('category_edit'))
+                        <a class="btn btn-info btn-sm" href="{{route('admin.category.edit',$category->id)}}">
+                            <i class="fas fa-pencil-alt">
+                            </i>
+                            изменить
+                        </a>
+                    @endif
+                    @if(Auth::user()->permissionExists('category_delete'))
+                        <a class="btn btn-danger btn-sm" href="{{route('admin.category.delete',$category->id)}}"
+                           onclick="return confirm('Удалить?')">
+                            <i class="fas fa-trash"></i>
+                            удалить
+                        </a>
+                    @endif
                 </td>
             </tr>
         @endforeach

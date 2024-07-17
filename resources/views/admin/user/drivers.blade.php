@@ -2,7 +2,9 @@
 
 @section('content-header-title','экспедиторы')
 @section('content-header-right')
-    <a href="{{route('admin.user.create',2)}}" class="btn btn-info btn-sm">создать экспедитор</a>
+    @if(Auth::user()->permissionExists('user_create'))
+        <a href="{{route('admin.user.create',2)}}" class="btn btn-info btn-sm">создать экспедитор</a>
+    @endif
 @endsection
 @section('content')
 
