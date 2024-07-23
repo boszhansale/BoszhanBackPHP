@@ -65,7 +65,7 @@ class RefundController extends Controller
                 return $q->whereDate('orders.created_at', '<=', \request('end_created_at'));
             })
             ->latest()
-            ->select(['orders.*', 'products.id as product_id', 'products.name', 'baskets.count', 'baskets.price', 'reason_refunds.title', 'products.measure'])
+            ->select(['orders.*', 'products.id as product_id', 'products.name', 'baskets.count', 'baskets.price', 'baskets.all_price', 'reason_refunds.title', 'products.measure'])
             ->with(['store.counteragent', 'salesrep'])
             ->get();
 

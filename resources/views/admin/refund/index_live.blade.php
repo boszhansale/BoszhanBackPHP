@@ -42,7 +42,7 @@
                     <th>продукт</th>
                     <th>категория точки</th>
                     <th>продажа</th>
-                    <th>количество</th>
+                    <th>возвраты</th>
                     <th>ед. изм.</th>
                     <th>сумма продаж</th>
                     <th>сумма возврата</th>
@@ -66,8 +66,8 @@
                         <td>{{$query->clone()->where('products.id',$refund->product_id)->where('stores.id',$refund->store_id)->sum('baskets.count')}}</td>
                         <td>{{$refund->count}}</td>
                         <td>{{$refund->measure == 1 ? 'шт' : 'кг'}}</td>
-                        <td class="price">{{$query->clone()->where('products.id',$refund->product_id)->where('stores.id',$refund->store_id)->sum('baskets.price')}}</td>
-                        <td class="price">{{$refund->price}}</td>
+                        <td class="price">{{$query->clone()->where('products.id',$refund->product_id)->where('stores.id',$refund->store_id)->sum('baskets.all_price')}}</td>
+                        <td class="price">{{$refund->all_price}}</td>
                         <td>{{$refund->title}}</td>
                         <td>{{$refund->created_at}}</td>
 

@@ -27,8 +27,8 @@
             <td>{{$refund->measure == 1 ? 'шт' : 'кг'}}</td>
             <td>{{$query->clone()->where('products.id',$refund->product_id)->where('stores.id',$refund->store_id)->sum('baskets.count')}}</td>
             <td>{{$refund->count}}</td>
-            <td>{{$query->clone()->where('products.id',$refund->product_id)->where('stores.id',$refund->store_id)->sum('baskets.price')}}</td>
-            <td>{{$refund->price}}</td>
+            <td>{{$query->clone()->where('products.id',$refund->product_id)->where('stores.id',$refund->store_id)->sum('baskets.all_price')}}</td>
+            <td>{{$refund->all_price}}</td>
             <td>{{$refund->title}}</td>
             <td>{{$refund->created_at}}</td>
         </tr>
