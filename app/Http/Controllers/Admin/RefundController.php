@@ -20,6 +20,27 @@ class RefundController extends Controller
 
     public function excel(Request $request)
     {
+
+        $query = Order::query()
+            ->join('stores', 'stores.id', 'orders.store_id')
+            ->join('baskets', 'baskets.order_id', 'orders.id')
+            ->join('products', 'baskets.product_id', 'products.id')
+            ->where('baskets.type', 0)
+            ->whereNull('stores.deleted_at')
+            ->whereNull('baskets.deleted_at')
+            ->when($request->get('storeId'), function ($q) {
+                return $q->where('orders.store_id', \request('storeId'));
+            })
+            ->when($request->get('salesrepId'), function ($q) {
+                return $q->where('orders.salesrep_id', \request('salesrepId'));
+            })
+            ->when($request->get('start_created_at'), function ($q) {
+                return $q->whereDate('orders.created_at', '>=', \request('start_created_at'));
+            })
+            ->when($request->get('end_created_at'), function ($q) {
+                return $q->whereDate('orders.created_at', '<=', \request('end_created_at'));
+            });
+
         $refunds = Order::query()
             ->join('stores', 'stores.id', 'orders.store_id')
             ->join('baskets', 'baskets.order_id', 'orders.id')
@@ -44,12 +65,12 @@ class RefundController extends Controller
                 return $q->whereDate('orders.created_at', '<=', \request('end_created_at'));
             })
             ->latest()
-            ->select(['orders.*', 'products.name', 'baskets.count', 'baskets.price', 'reason_refunds.title', 'products.measure'])
+            ->select(['orders.*', 'products.id as product_id', 'products.name', 'baskets.count', 'baskets.price', 'reason_refunds.title', 'products.measure'])
             ->with(['store.counteragent', 'salesrep'])
             ->get();
 
 
-        return Excel::download(new RefundExport($refunds), 'refund.xlsx');
+        return Excel::download(new RefundExport($refunds, $query), 'refund_' . request('start_created_at') . '_' . request('end_created_at') . '.xlsx');
     }
 
 }

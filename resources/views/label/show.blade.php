@@ -81,12 +81,13 @@
                     <h5>Дата изготовления и упаковывания: {{$label->date}}</h5>
                 @endif
             @endif
-            @if($label->labelProduct->measure == 2)
-                @if($label->weight)
-                    <p>{{$label->getWeighName()}}: {{$label->weight}} {{$label->getMeasure()}}</p>
-                @endif
-                {{--            <p>{{$label->getMass()}}: {{$label->weight}} {{$label->getMeasure()}} +/-3%</p>--}}
+
+            {{--            @if($label->labelProduct->measure == 2)--}}
+            @if($label->weight)
+                <p class="weight">{{$label->getWeighName()}}: {{$label->weight}} {{$label->getMeasure()}}</p>
             @endif
+            {{--            <p>{{$label->getMass()}}: {{$label->weight}} {{$label->getMeasure()}} +/-3%</p>--}}
+            {{--            @endif--}}
 
 
             <div class="dng">
@@ -175,6 +176,10 @@
     .kvd span {
         border: 1px solid black;
         font-size: 11px;
+    }
+
+    .weight {
+        font-size: 8px;
     }
 </style>
 </body>

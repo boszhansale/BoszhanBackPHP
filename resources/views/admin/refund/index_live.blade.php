@@ -41,9 +41,11 @@
                     <th>Торговый</th>
                     <th>продукт</th>
                     <th>категория точки</th>
+                    <th>продажа</th>
                     <th>количество</th>
                     <th>ед. изм.</th>
-                    <th>сумма</th>
+                    <th>сумма продаж</th>
+                    <th>сумма возврата</th>
                     <th>причина возврата</th>
                     <th>Дата создание</th>
                 </tr>
@@ -61,8 +63,10 @@
                         </td>
                         <td>{{$refund->name}}</td>
                         <td>{{$refund->store->counteragent?->priceType?->name ?? 'BC'}}</td>
+                        <td>{{$query->clone()->where('products.id',$refund->product_id)->where('stores.id',$refund->store_id)->sum('baskets.count')}}</td>
                         <td>{{$refund->count}}</td>
                         <td>{{$refund->measure == 1 ? 'шт' : 'кг'}}</td>
+                        <td class="price">{{$query->clone()->where('products.id',$refund->product_id)->where('stores.id',$refund->store_id)->sum('baskets.price')}}</td>
                         <td class="price">{{$refund->price}}</td>
                         <td>{{$refund->title}}</td>
                         <td>{{$refund->created_at}}</td>
