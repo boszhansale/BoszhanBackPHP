@@ -11,7 +11,7 @@
 <div class="container">
     @if($label->labelProduct->align == 'right')
         <div class="up">
-            <h1 style="text-align: right">{{$label->getName()}}</h1>
+            <h1 style="text-align: right;font-size: 10px">{{$label->getName()}}</h1>
             <h4 style="text-align: right">{{$label->getComposition()}}</h4>
 
             <h1 style="text-align: left">{{$label->labelProduct->name_en}}</h1>
@@ -26,13 +26,13 @@
             {{--                </div>--}}
             {{--            </div>--}}
 
-            <h2>{{$label->getCert()}}</h2>
-            {{--            @if($label->date)--}}
-            {{--                    <h5>{{$label->getDateCreate()}}: {{$label->date}}</h5>--}}
-            {{--            @endif--}}
+            <h2 style="text-align: right">{{$label->getCert()}}</h2>
+                @if($label->date)
+                    <h5 style="text-align: right">Date of manufacture/تاريخ الأنتاج: {{$label->date}}</h5>
+                @endif
             @if($label->labelProduct->measure == 2)
                 @if($label->weight)
-                    <p>الوزن الصافي غم Net weight,g: {{$label->weight}} +/-3%</p>
+                    <p style="text-align: right">Net weight, kg/الوزن الصافي،كيلوغرام{{$label->weight}}</p>
                 @endif
                 {{--            <p>{{$label->getMass()}}: {{$label->weight}} {{$label->getMeasure()}} +/-3%</p>--}}
             @endif
