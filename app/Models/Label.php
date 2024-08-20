@@ -35,7 +35,7 @@ class Label extends Model
 
     public function getMeasure(): string
     {
-        return $this->labelProduct->lang == 'en' ? 'gr' : 'гр';
+        return $this->labelProduct->lang == 'en' ? 'gr' : 'г';
     }
 
     public function getCreateAtNumber()
