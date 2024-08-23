@@ -43,7 +43,7 @@ class LabelCreate extends Component
     public function mount()
     {
         $this->categories = LabelCategory::all();
-        $this->dateShow = true;
+        $this->dateShow = false;
         $this->date = now()->format('Y-m-d');
     }
 

@@ -57,7 +57,7 @@
                    value="{{now()->format('Y-m-d') }}">
         </div>
         <div class="form-group">
-            <input type="checkbox" name="date_show" wire:model="dateShow" id="date_show" class="" checked value="1">
+            <input type="checkbox" name="date_show" wire:model="dateShow" id="date_show" class="" 1value="1">
             <label for="date_show">показать дату</label>
 
             <div class="form-group">
