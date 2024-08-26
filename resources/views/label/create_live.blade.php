@@ -41,16 +41,6 @@
                 @endforeach
             </select>
         </div>
-
-        {{--        <div class="form-group">--}}
-        {{--            <label for="name">размер</label>--}}
-        {{--            <select name="" id="" class="form-control" required>--}}
-        {{--                <option value="">Выберите размер</option>--}}
-        {{--                <option value="58_90">58*90</option>--}}
-        {{--                <option value="110_140">110*140</option>--}}
-        {{--            </select>--}}
-        {{--        </div>--}}
-
         <div class="form-group">
             <label for="name">Дата</label>
             <input type="date" name="date" wire:model="date" required class="form-control"

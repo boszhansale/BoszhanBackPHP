@@ -27,17 +27,15 @@
             {{--            </div>--}}
 
             <h2 style="text-align: right">{{$label->getCert()}}</h2>
-                @if($label->date)
-                    <h5 style="text-align: right">Date of manufacture/تاريخ الأنتاج: {{$label->date}}</h5>
-                @endif
+            @if($label->date)
+                <h5 style="text-align: right">Date of manufacture/تاريخ الأنتاج: {{$label->date}}</h5>
+            @endif
             @if($label->labelProduct->measure == 2)
                 @if($label->weight)
                     <p style="text-align: right">Net weight, kg/الوزن الصافي،كيلوغرام{{$label->weight}}</p>
                 @endif
                 {{--            <p>{{$label->getMass()}}: {{$label->weight}} {{$label->getMeasure()}} +/-3%</p>--}}
             @endif
-
-
             <div class="dng">
                 @if($label->labelProduct->barcode)
                     {!!DNS1D::getBarcodeSVG($label->labelProduct->barcode, 'EAN13',1,40) !!}
@@ -51,8 +49,6 @@
                     <img src="https://cdn-icons-png.flaticon.com/512/91/91356.png" alt="">
                 </div>
             </div>
-
-
             <p>{!! $label->getAddress()!!}</p>
         </div>
     @else
