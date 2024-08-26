@@ -14,7 +14,6 @@ class BrandController extends Controller
             ->selectRaw('brands.*,COUNT(categories.id) as category_count')
             ->groupBy('brands.id')
             ->get();
-
         return view('admin.brand.index', compact('brands'));
     }
 
@@ -28,7 +27,6 @@ class BrandController extends Controller
         $brand = new Brand();
         $brand->name = $request->get('name');
         $brand->save();
-
         return redirect()->route('admin.brand.index');
     }
 
@@ -41,14 +39,12 @@ class BrandController extends Controller
     {
         $brand->name = $request->get('name');
         $brand->save();
-
         return redirect()->route('admin.brand.index');
     }
 
     public function delete(Brand $brand)
     {
         $brand->delete();
-
         return redirect()->back();
     }
 }
