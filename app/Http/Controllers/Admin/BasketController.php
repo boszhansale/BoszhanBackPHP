@@ -21,7 +21,6 @@ class BasketController extends Controller
     public function store(Request $request, Order $order)
     {
         $product = Product::findOrFail($request->get('product_id'));
-
         $basket = new Basket();
         $basket->order_id = $order->id;
         $basket->count = $request->get('count');
@@ -31,14 +30,12 @@ class BasketController extends Controller
         $basket->type = $request->get('type');
         $basket->save();
         OrderPriceAction::execute($order);
-
         return redirect()->route('admin.order.show', $order->id);
     }
 
     public function edit(Basket $basket)
     {
         $products = Product::all();
-
         return view('admin.basket.edit', compact('basket', 'products'));
     }
 
@@ -49,7 +46,6 @@ class BasketController extends Controller
         $basket->all_price = (int)$request->get('price') * (int)$request->get('count');
         $basket->save();
         OrderPriceAction::execute($basket->order);
-
         return redirect()->route('admin.order.show', $basket->order_id);
     }
 
@@ -58,7 +54,6 @@ class BasketController extends Controller
         $order = $basket->order;
         $basket->delete();
         OrderPriceAction::execute($order);
-
         return redirect()->back();
     }
 }
