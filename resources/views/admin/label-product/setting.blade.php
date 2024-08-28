@@ -70,6 +70,11 @@
                                value="{{$setting->date_create_en}}">
                     </div>
                     <div class="form-group">
+                        <label for="">текст даты (если тип только дата изготовления на арабском)</label>
+                        <input type="text" class="form-control" name="date_create_ab"
+                               value="{{$setting->date_create_ab}}">
+                    </div>
+                    <div class="form-group">
                         <label for="">текст даты (если тип дата изготовления и упаковывания)</label>
                         <input type="text" class="form-control" name="date_create_package_en"
                                value="{{$setting->date_create_package_en}}">
@@ -131,6 +136,10 @@
                 <div class="form-group">
                     <label for="">weight_text_en</label>
                     <input type="text" class="form-control" value="{{$setting->weight_text_en}}" name="weight_text_en">
+                </div>
+                <div class="form-group">
+                    <label for="">weight_text_ab</label>
+                    <input type="text" class="form-control" value="{{$setting->weight_text_ab}}" name="weight_text_ab">
                 </div>
             </div>
         </div>

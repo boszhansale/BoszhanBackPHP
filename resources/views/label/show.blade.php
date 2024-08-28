@@ -28,11 +28,11 @@
 
             <h2 style="text-align: right">{{$label->getCert()}}</h2>
             @if($label->date)
-                <h5 style="text-align: right">Date of manufacture/تاريخ الأنتاج: {{$label->date}}</h5>
+                <h5 style="text-align: right">{{$setting->date_create_ab}}: {{$label->date}}</h5>
             @endif
             @if($label->labelProduct->measure == 2)
                 @if($label->weight)
-                    <p style="text-align: right">Net weight, kg/الوزن الصافي،كيلوغرام{{$label->weight}}</p>
+                    <p style="text-align: right">{{$setting->weight_text_ab}} {{$label->weight}}</p>
                 @endif
                 {{--            <p>{{$label->getMass()}}: {{$label->weight}} {{$label->getMeasure()}} +/-3%</p>--}}
             @endif

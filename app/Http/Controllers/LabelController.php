@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\LabelStoreRequest;
 use App\Models\Label;
 use App\Models\LabelProduct;
+use App\Models\LabelSetting;
 use Barryvdh\DomPDF\Facade\Pdf;
 
 class LabelController extends Controller
@@ -33,7 +34,8 @@ class LabelController extends Controller
 
     public function show(Label $label)
     {
-        return view('label.show', compact('label'));
+        $setting = LabelSetting::first();
+        return view('label.show', compact('label', 'setting'));
     }
 
     public function pdf(Label $label)
