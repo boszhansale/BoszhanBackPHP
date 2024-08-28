@@ -42,11 +42,20 @@
                 @endif
 
                 <div class="emb">
-                    <img
-                        src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f7/EAC_b-on-w.svg/1200px-EAC_b-on-w.svg.png"
-                        alt="">
-                    <img src="https://k2v.ru/wp-content/uploads/2020/04/stakan-i-vilka-oboznachenie.jpg " alt="">
-                    <img src="https://cdn-icons-png.flaticon.com/512/91/91356.png" alt="">
+                    @if($label->labelProduct->image_url_1)
+                        <img
+                            src="{{$label->labelProduct->image_url_1}}"
+                            alt="">
+                    @endif
+                    @if($label->labelProduct->image_url_2)
+                        <img src="{{$label->labelProduct->image_url_2}}" alt="">
+                    @endif
+                    @if($label->labelProduct->image_url_3)
+                        <img src="{{$label->labelProduct->image_url_3}}" alt="">
+                    @endif
+                    @if($label->labelProduct->image_url_4)
+                        <img src="{{$label->labelProduct->image_url_4}}" alt="">
+                    @endif
                 </div>
             </div>
             <p>{!! $label->getAddress()!!}</p>
