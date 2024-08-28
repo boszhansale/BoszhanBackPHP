@@ -23,12 +23,20 @@ class LabelProduct extends Model
         'cert_en',
         'date_create_kz',
         'date_create_en',
+        'date_create_package_kz',
+        'date_create_package_ru',
+        'date_create_package_en',
         'address_kz',
         'address_en',
         'label_category_id',
         'measure',
         'align',
-        'date_type'
+        'weight_text_kz',
+        'weight_text_en',
+        'date_type',
+        'image_url_1',
+        'image_url_2',
+        'image_url_3',
     ];
     public $casts = [
         'measure' => 'string',

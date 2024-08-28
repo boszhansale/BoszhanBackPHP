@@ -73,8 +73,8 @@
                 @if($label->date_type == 1)
                     <h5>{{$label->getDateCreate()}}: {{$label->date}}</h5>
                 @else
-                    <h5>Дайындалған және оралған күні {{$label->date}}</h5>
-                    <h5>Дата изготовления и упаковывания: {{$label->date}}</h5>
+                    <h5>{{$label->labelProduct->date_create_package_kz}} {{$label->date}}</h5>
+                    <h5>{{$label->labelProduct->date_create_package_ru}}: {{$label->date}}</h5>
                 @endif
             @endif
 
@@ -93,10 +93,10 @@
 
                 <div class="emb">
                     <img
-                        src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f7/EAC_b-on-w.svg/1200px-EAC_b-on-w.svg.png"
+                        src="{{$label->labelProduct->image_url_1}}"
                         alt="">
-                    <img src="https://k2v.ru/wp-content/uploads/2020/04/stakan-i-vilka-oboznachenie.jpg " alt="">
-                    <img src="https://cdn-icons-png.flaticon.com/512/91/91356.png" alt="">
+                    <img src="{{$label->labelProduct->image_url_2}}" alt="">
+                    <img src="{{$label->labelProduct->image_url_3}}" alt="">
                 </div>
             </div>
 

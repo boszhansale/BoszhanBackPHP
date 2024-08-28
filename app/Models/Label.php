@@ -46,11 +46,11 @@ class Label extends Model
     public function getWeighName(): string
     {
         if ($this->lang == 'en') {
-            return 'net weight';
+            return $this->labelProduct->weight_text_en;
         } else if ($this->lang == 'ru') {
-            return 'таза салмағы/масса нетто';
+            return $this->labelProduct->weight_text_kz;
         } else {
-            return 'таза салмағы/масса нетто';
+            return $this->labelProduct->weight_text_kz;
         }
     }
 

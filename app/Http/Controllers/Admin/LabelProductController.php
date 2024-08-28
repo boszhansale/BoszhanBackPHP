@@ -45,6 +45,14 @@ class LabelProductController extends Controller
         $labelProduct->date_create_en = $request->get('date_create_en');
         $labelProduct->align = $request->get('align');
         $labelProduct->date_type = $request->get('date_type');
+        $labelProduct->date_create_package_kz = $request->get('date_create_package_kz');
+        $labelProduct->date_create_package_ru = $request->get('date_create_package_ru');
+        $labelProduct->date_create_package_en = $request->get('date_create_package_en');
+        $labelProduct->weight_text_kz = $request->get('weight_text_kz');
+        $labelProduct->weight_text_en = $request->get('weight_text_en');
+        $labelProduct->image_url_1 = $request->get('image_url_1');
+        $labelProduct->image_url_2 = $request->get('image_url_2');
+        $labelProduct->image_url_3 = $request->get('image_url_3');
         $labelProduct->save();
 
         return redirect()->route('cashier.label-product.index');
@@ -78,6 +86,14 @@ class LabelProductController extends Controller
         $labelProduct->date_create_en = $request->get('date_create_en');
         $labelProduct->align = $request->get('align');
         $labelProduct->date_type = $request->get('date_type');
+        $labelProduct->date_create_package_kz = $request->get('date_create_package_kz');
+        $labelProduct->date_create_package_ru = $request->get('date_create_package_ru');
+        $labelProduct->date_create_package_en = $request->get('date_create_package_en');
+        $labelProduct->weight_text_kz = $request->get('weight_text_kz');
+        $labelProduct->weight_text_en = $request->get('weight_text_en');
+        $labelProduct->image_url_1 = $request->get('image_url_1');
+        $labelProduct->image_url_2 = $request->get('image_url_2');
+        $labelProduct->image_url_3 = $request->get('image_url_3');
         $labelProduct->save();
 
         return redirect()->route('cashier.label-product.index');
