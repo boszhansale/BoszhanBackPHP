@@ -8,6 +8,15 @@
         </a>
     </li>
 
+    <li class="nav-item">
+        <a href="{{route('cashier.label-product.setting')}}" class="nav-link">
+            <i class="nav-icon fas fa-th"></i>
+            <p>
+                шаблоны этикетки
+            </p>
+        </a>
+    </li>
+
 @else
     <li class="nav-item">
         <a href="{{route('cashier.main')}}" class="nav-link">

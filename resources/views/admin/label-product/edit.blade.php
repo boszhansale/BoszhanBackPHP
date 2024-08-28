@@ -219,13 +219,22 @@
                                value="{{$labelProduct->image_url_2}}">
                     </div>
                     <div class="form-group">
-                        <label for="date_type">image_url 2</label>
+                        <label for="date_type">image_url 3</label>
                         <br>
                         @if($labelProduct->image_url_3)
                             <img src="{{$labelProduct->image_url_3}}" width="30" alt="">
                         @endif
                         <input type="url" class="form-control" name="image_url_3"
                                value="{{$labelProduct->image_url_3}}">
+                    </div>
+                    <div class="form-group">
+                        <label for="date_type">image_url 4</label>
+                        <br>
+                        @if($labelProduct->image_url_4)
+                            <img src="{{$labelProduct->image_url_4}}" width="30" alt="">
+                        @endif
+                        <input type="url" class="form-control" name="image_url_4"
+                               value="{{$labelProduct->image_url_4}}">
                     </div>
                 </div>
             </div>

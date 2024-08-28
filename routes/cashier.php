@@ -2,6 +2,7 @@
 
 
 use App\Http\Controllers\Admin\LabelProductController;
+use App\Http\Controllers\Admin\LabelSettingController;
 use App\Http\Controllers\Cashier\MainController;
 use App\Http\Controllers\Cashier\OrderController;
 
@@ -39,6 +40,8 @@ Route::prefix('label-product')->name('label-product.')->group(function () {
     Route::get('edit/{labelProduct}', [LabelProductController::class, 'edit'])->name('edit');
     Route::put('update/{labelProduct}', [LabelProductController::class, 'update'])->name('update');
     Route::get('delete/{labelProduct}', [LabelProductController::class, 'delete'])->name('delete');
+    Route::get('setting', [LabelSettingController::class, 'index'])->name('setting');
+    Route::post('setting', [LabelSettingController::class, 'update'])->name('setting.update');
 });
 
 

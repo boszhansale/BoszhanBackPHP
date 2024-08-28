@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\LabelProduct;
+use App\Models\LabelSetting;
 use Illuminate\Http\Request;
 
 class LabelProductController extends Controller
@@ -16,7 +17,8 @@ class LabelProductController extends Controller
 
     public function create()
     {
-        return view('admin.label-product.create');
+        $setting = LabelSetting::first();
+        return view('admin.label-product.create', compact('setting'));
     }
 
     public function store(Request $request)
@@ -53,6 +55,7 @@ class LabelProductController extends Controller
         $labelProduct->image_url_1 = $request->get('image_url_1');
         $labelProduct->image_url_2 = $request->get('image_url_2');
         $labelProduct->image_url_3 = $request->get('image_url_3');
+        $labelProduct->image_url_4 = $request->get('image_url_4');
         $labelProduct->save();
 
         return redirect()->route('cashier.label-product.index');
@@ -94,6 +97,7 @@ class LabelProductController extends Controller
         $labelProduct->image_url_1 = $request->get('image_url_1');
         $labelProduct->image_url_2 = $request->get('image_url_2');
         $labelProduct->image_url_3 = $request->get('image_url_3');
+        $labelProduct->image_url_4 = $request->get('image_url_4');
         $labelProduct->save();
 
         return redirect()->route('cashier.label-product.index');

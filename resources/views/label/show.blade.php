@@ -92,11 +92,20 @@
                 @endif
 
                 <div class="emb">
-                    <img
-                        src="{{$label->labelProduct->image_url_1}}"
-                        alt="">
-                    <img src="{{$label->labelProduct->image_url_2}}" alt="">
-                    <img src="{{$label->labelProduct->image_url_3}}" alt="">
+                    @if($label->labelProduct->image_url_1)
+                        <img
+                            src="{{$label->labelProduct->image_url_1}}"
+                            alt="">
+                    @endif
+                    @if($label->labelProduct->image_url_2)
+                        <img src="{{$label->labelProduct->image_url_2}}" alt="">
+                    @endif
+                    @if($label->labelProduct->image_url_3)
+                        <img src="{{$label->labelProduct->image_url_3}}" alt="">
+                    @endif
+                    @if($label->labelProduct->image_url_4)
+                        <img src="{{$label->labelProduct->image_url_4}}" alt="">
+                    @endif
                 </div>
             </div>
 

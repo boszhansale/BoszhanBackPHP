@@ -43,17 +43,6 @@
                         <option value="right">с право</option>
                     </select>
                 </div>
-                <div class="form-group">
-                    <label for="date_type">тип дата текста</label>
-                    <select class="form-control" name="date_type" id="date_type">
-                        <option value="1">Дайындалған күні/Дата
-                            изготовления
-                        </option>
-                        <option value="2">Дайындалған және оралған күні
-                            Дата изготовления и упаковывания
-                        </option>
-                    </select>
-                </div>
             </div>
         </div>
         <div class="row">
@@ -89,12 +78,6 @@
                               class="form-control"></textarea>
                     <p id="charCountRu"></p>
 
-                    <div class="form-group">
-                        <label for="">текст даты</label>
-                        <input type="text" class="form-control" name="date_create_kz"
-                               value="Дайындалған күні/Дата изготовления">
-                    </div>
-
 
                 </div>
             </div>
@@ -116,13 +99,13 @@
             <div class="col-md-6">
                 <div class="form-group">
                     <label for="">сертификат</label>
-                    <input type="text" class="form-control" name="cert_kz" value="ЖШС СТ 130740008859-03-2022">
+                    <input type="text" class="form-control" name="cert_kz" value="{{$setting->cert_kz}}">
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="form-group">
                     <label for="">сертификат</label>
-                    <input type="text" class="form-control" name="cert_en">
+                    <input type="text" class="form-control" name="cert_en" value="{{$setting->cert_en}}">
                 </div>
             </div>
         </div>
@@ -130,14 +113,15 @@
             <div class="col-md-6">
                 <div class="form-group">
                     <label for="name">адрес</label>
-                    <textarea name="address_kz" id="" cols="10" rows="10" class="form-control">Өндіруші:«Первомайские деликатесы» ЖШС, Қазақстан Республикасы, Алматы облысы, Іле ауданы, Қоянқұс ауылы, Абай көшесі, №200 </br>Изготовитель: ТОО«Первомайские Деликатесы», Республика Казахстан, Алматинская область, Илийский район, село Коянкус,улица Абай, №200. т:+7 775 256 22 55
-                    </textarea>
+                    <textarea name="address_kz" id="" cols="10" rows="10"
+                              class="form-control">{{$setting->address_kz}}</textarea>
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="form-group">
                     <label for="name">адрес</label>
-                    <textarea name="address_en" id="" cols="10" rows="10" class="form-control">Manufacturer: Pervomayskie Delikatesy LLP,</br>Republic of Kazakhstan, Almaty region, Ili district,Koyankus village,Abay Street, No. 200</br>tel: +7(727)260-36-48</textarea>
+                    <textarea name="address_en" id="" cols="10" rows="10" class="form-control">{{$setting->address_en}}
+                    </textarea>
                 </div>
             </div>
         </div>
@@ -160,35 +144,48 @@
                     <div class="form-group">
                         <label for="">текст даты (если тип только дата изготовления)</label>
                         <input type="text" class="form-control" name="date_create_kz"
-                               value="Дайындалған күні/Дата изготовления">
+                               value="{{$setting->date_create_kz}}">
                     </div>
                     <div class="form-group">
                         <label for="">текст даты (если тип дата изготовления и упаковывания) 1</label>
                         <input type="text" class="form-control" name="date_create_package_kz"
-                               value="Дайындалған және оралған күні">
+                               value="{{$setting->date_create_package_kz}}">
                     </div>
                     <div class="form-group">
                         <label for="">текст даты (если тип дата изготовления и упаковывания) 2</label>
                         <input type="text" class="form-control" name="date_create_package_ru"
-                               value="Дата изготовления и упаковывания">
+                               value="{{$setting->date_create_package_ru}}">
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
                         <label for="">текст даты (если тип только дата изготовления)</label>
                         <input type="text" class="form-control" name="date_create_en"
-                               value="Date of manufacture and packaging">
+                               value="{{$setting->date_create_en}}">
                     </div>
                     <div class="form-group">
                         <label for="">текст даты (если тип дата изготовления и упаковывания)</label>
                         <input type="text" class="form-control" name="date_create_package_en"
-                               value="Date of manufacture and packaging">
+                               value="{{$setting->date_create_package_en}}">
                     </div>
                 </div>
             </div>
 
         </div>
-
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="">weight_text_kz</label>
+                    <input type="text" class="form-control" value="{{$setting->weight_text_kz}}" name="weight_text_kz">
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="">weight_text_en</label>
+                    <input type="text" class="form-control" value="{{$setting->weight_text_en}}" name="weight_text_en">
+                </div>
+            </div>
+        </div>
         <div class="row">
             <div class="col-md-12">
                 <div class="card card-body">
@@ -199,19 +196,25 @@
                                 <label for="date_type">image_url 1</label>
                                 <br>
                                 <input type="url" class="form-control" name="image_url_1"
-                                       value="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f7/EAC_b-on-w.svg/1200px-EAC_b-on-w.svg.png">
+                                       value="{{$setting->image_url_1}}">
                             </div>
                             <div class="form-group">
                                 <label for="date_type">image_url 2</label>
                                 <br>
                                 <input type="url" class="form-control" name="image_url_2"
-                                       value="https://k2v.ru/wp-content/uploads/2020/04/stakan-i-vilka-oboznachenie.jpg">
+                                       value="{{$setting->image_url_2}}">
                             </div>
                             <div class="form-group">
-                                <label for="date_type">image_url 2</label>
+                                <label for="date_type">image_url 3</label>
                                 <br>
                                 <input type="url" class="form-control" name="image_url_3"
-                                       value="https://cdn-icons-png.flaticon.com/512/91/91356.png">
+                                       value="{{$setting->image_url_3}}">
+                            </div>
+                            <div class="form-group">
+                                <label for="date_type">image_url 4</label>
+                                <br>
+                                <input type="url" class="form-control" name="image_url_4"
+                                       value="{{$setting->image_url_4}}">
                             </div>
                         </div>
                     </div>

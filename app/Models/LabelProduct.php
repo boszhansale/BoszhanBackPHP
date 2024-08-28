@@ -37,6 +37,7 @@ class LabelProduct extends Model
         'image_url_1',
         'image_url_2',
         'image_url_3',
+        'image_url_4',
     ];
     public $casts = [
         'measure' => 'string',
