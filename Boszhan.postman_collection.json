@@ -1,0 +1,2441 @@
+{
+	"info": {
+		"_postman_id": "cf93a801-43f0-48c0-bd8d-965d6606c9da",
+		"name": "Boszhan",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "24895539",
+		"_collection_link": "https://postman122333.postman.co/workspace/Pana-Workspace~a406e00f-3dab-4537-95e1-bed0dd2b2f77/collection/2182018-cf93a801-43f0-48c0-bd8d-965d6606c9da?action=share&source=collection_link&creator=24895539"
+	},
+	"item": [
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "login",
+									"value": "alisa",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "123456",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{host}}/api/login",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "register",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "login",
+									"value": "agabek",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "phone",
+									"value": "87004448696",
+									"type": "text"
+								},
+								{
+									"key": "name",
+									"value": "agabek",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{host}}/api/register",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "logout",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"url": {
+							"raw": "{{host}}/api/logout",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"logout"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "profile",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "6|lbN5JFh3r7pTI3tDV7Vbx3jN41GS7ex47TgxgDxl",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"url": {
+							"raw": "{{host}}/api/profile",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"profile"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "device token",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "6|lbN5JFh3r7pTI3tDV7Vbx3jN41GS7ex47TgxgDxl",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "device_token",
+									"value": "213",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{host}}/api/device-token",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"device-token"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "торговый представитель(salesrep)",
+			"item": [
+				{
+					"name": "Order",
+					"item": [
+						{
+							"name": "index(Мои заявки)",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "3064|zgh38vz3MBfemE05UK7h5XrNcNrAbNLPOeiJqhOv",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": []
+								},
+								"url": {
+									"raw": "{{host}}/api/salesrep/order",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"salesrep",
+										"order"
+									],
+									"query": [
+										{
+											"key": "store_id",
+											"value": "31117",
+											"disabled": true
+										},
+										{
+											"key": "counteragent_id",
+											"value": "1",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "index(Мои заявки) all",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "3064|zgh38vz3MBfemE05UK7h5XrNcNrAbNLPOeiJqhOv",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": []
+								},
+								"url": {
+									"raw": "{{host}}/api/salesrep/order/all?start_date=2024-01-29&end_date=2024-01-29",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"salesrep",
+										"order",
+										"all"
+									],
+									"query": [
+										{
+											"key": "store_id",
+											"value": "31117",
+											"disabled": true
+										},
+										{
+											"key": "counteragent_id",
+											"value": "1",
+											"disabled": true
+										},
+										{
+											"key": "salesrep_id",
+											"value": "145",
+											"disabled": true
+										},
+										{
+											"key": "start_date",
+											"value": "2024-01-29"
+										},
+										{
+											"key": "end_date",
+											"value": "2024-01-29"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "show",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "5|MlbryGiSK1wtKSdT33ZJfCuxfn5UddjZosp9R5Oy",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": []
+								},
+								"url": {
+									"raw": "{{host}}/api/salesrep/order/show/42",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"salesrep",
+										"order",
+										"show",
+										"42"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "create",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "404|UoYDfAk6Odvg3Ka4UNQIMLBxVCvVYtmW8YsBpk2p",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "store_id",
+											"value": "5529",
+											"type": "text"
+										},
+										{
+											"key": "mobile_id",
+											"value": "AGABEK3",
+											"type": "text"
+										},
+										{
+											"key": "payment_type_id",
+											"value": "1",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "payment_full",
+											"value": "",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "payment_partial",
+											"value": "",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "winning_name",
+											"value": "",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "winning_phone",
+											"value": "",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "winning_status",
+											"value": "",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "delivery_date",
+											"value": "26.04.2022",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "baskets[0][product_id]",
+											"value": "509",
+											"type": "text"
+										},
+										{
+											"key": "baskets[0][count]",
+											"value": "6.950",
+											"type": "text"
+										},
+										{
+											"key": "baskets[0][type]",
+											"value": "0",
+											"type": "text"
+										},
+										{
+											"key": "baskets[0][reason_refund_id]",
+											"value": "",
+											"type": "text"
+										},
+										{
+											"key": "baskets[0][comment]",
+											"value": "",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{host}}/api/salesrep/order",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"salesrep",
+										"order"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "update",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "5|MlbryGiSK1wtKSdT33ZJfCuxfn5UddjZosp9R5Oy",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "payment_type_id",
+											"value": "1",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "payment_full",
+											"value": "",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "payment_partial",
+											"value": "",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "winning_name",
+											"value": "",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "winning_phone",
+											"value": "",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "winning_status",
+											"value": "",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "delivery_date",
+											"value": "26.04.2022",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "baskets[0][product_id]",
+											"value": "1",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "baskets[0][count]",
+											"value": "8",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "baskets[0][type]",
+											"value": "0",
+											"type": "text",
+											"disabled": true
+										}
+									]
+								},
+								"url": {
+									"raw": "{{host}}/api/salesrep/order/update/32",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"salesrep",
+										"order",
+										"update",
+										"32"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "delete",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "5|MlbryGiSK1wtKSdT33ZJfCuxfn5UddjZosp9R5Oy",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "payment_type_id",
+											"value": "1",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "payment_full",
+											"value": "",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "payment_partial",
+											"value": "",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "winning_name",
+											"value": "",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "winning_phone",
+											"value": "",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "winning_status",
+											"value": "",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "delivery_date",
+											"value": "26.04.2022",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "baskets[0][product_id]",
+											"value": "1",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "baskets[0][count]",
+											"value": "8",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "baskets[0][type]",
+											"value": "0",
+											"type": "text",
+											"disabled": true
+										}
+									]
+								},
+								"url": {
+									"raw": "{{host}}/api/salesrep/order/32",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"salesrep",
+										"order",
+										"32"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "info",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "1732|s4q0auVUbfYbWNBxhUD5J0yW9FEhoyOCt9InkmPB",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": []
+								},
+								"url": {
+									"raw": "{{host}}/api/salesrep/order/info",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"salesrep",
+										"order",
+										"info"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Торговый Точки(Store)",
+					"item": [
+						{
+							"name": "index",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": []
+								},
+								"url": {
+									"raw": "{{host}}/api/salesrep/store",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"salesrep",
+										"store"
+									],
+									"query": [
+										{
+											"key": "counteragent",
+											"value": "1",
+											"disabled": true
+										},
+										{
+											"key": "counteragent_id",
+											"value": "174",
+											"description": "Айди юр лица ",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "all",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": []
+								},
+								"url": {
+									"raw": "{{host}}/api/salesrep/store/all?salesrep_id=145",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"salesrep",
+										"store",
+										"all"
+									],
+									"query": [
+										{
+											"key": "salesrep_id",
+											"value": "145",
+											"description": "Айди юр лица "
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "last orders",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "1549|GbgpL2UMkVHmuBG26kFQ7fyo2C7qZbOb58GdzXzv",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": []
+								},
+								"url": {
+									"raw": "{{host}}/api/salesrep/store/last-orders",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"salesrep",
+										"store",
+										"last-orders"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "create",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "81|vFIe4WqZcmz4WsYoxz7F8T7NFodDAADB7XhGPkit",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "counteragent_id",
+											"value": "",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "name",
+											"value": "test",
+											"type": "text"
+										},
+										{
+											"key": "phone",
+											"value": "87004448596",
+											"type": "text"
+										},
+										{
+											"key": "bin",
+											"value": "123",
+											"type": "text"
+										},
+										{
+											"key": "id_1c",
+											"value": "",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "district_id",
+											"value": "",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "address",
+											"value": "terst",
+											"type": "text"
+										},
+										{
+											"key": "lat",
+											"value": "",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "lng",
+											"value": "",
+											"type": "text",
+											"disabled": true
+										}
+									]
+								},
+								"url": {
+									"raw": "{{host}}/api/salesrep/store",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"salesrep",
+										"store"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "update",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "5|MlbryGiSK1wtKSdT33ZJfCuxfn5UddjZosp9R5Oy",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "counteragent_id",
+											"value": "1",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "name",
+											"value": "test",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "phone",
+											"value": "87004448591",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "bin",
+											"value": "123",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "id_1c",
+											"value": "",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "district_id",
+											"value": "",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "address",
+											"value": "terst",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "lat",
+											"value": "",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "lng",
+											"value": "",
+											"type": "text",
+											"disabled": true
+										}
+									]
+								},
+								"url": {
+									"raw": "{{host}}/api/salesrep/store/update/1",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"salesrep",
+										"store",
+										"update",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "delete",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "5|MlbryGiSK1wtKSdT33ZJfCuxfn5UddjZosp9R5Oy",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": []
+								},
+								"url": {
+									"raw": "{{host}}/api/salesrep/store/1",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"salesrep",
+										"store",
+										"1"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Game",
+					"item": [
+						{
+							"name": "index",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "5|MlbryGiSK1wtKSdT33ZJfCuxfn5UddjZosp9R5Oy",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": []
+								},
+								"url": {
+									"raw": "{{host}}/api/salesrep/game/?store_id=4000",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"salesrep",
+										"game",
+										""
+									],
+									"query": [
+										{
+											"key": "store_id",
+											"value": "4000"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "add",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "5|MlbryGiSK1wtKSdT33ZJfCuxfn5UddjZosp9R5Oy",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "token",
+											"value": "12341243415243",
+											"description": "уникальный строка",
+											"type": "text"
+										},
+										{
+											"key": "store_id",
+											"value": "33202",
+											"type": "text"
+										},
+										{
+											"key": "order_id",
+											"value": "24545",
+											"type": "text"
+										},
+										{
+											"key": "total_win",
+											"value": "500",
+											"type": "text"
+										},
+										{
+											"key": "loops[0][mobile_id]",
+											"value": "a4sd54as5",
+											"description": "уникальный строка",
+											"type": "text"
+										},
+										{
+											"key": "loops[0][win]",
+											"value": "500",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{host}}/api/salesrep/game/",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"salesrep",
+										"game",
+										""
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "counteragents",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "1995|A4QEPtxMwnRTFGpdaSeceI6GLqZAJUcTtlRVM7ml",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"url": {
+							"raw": "{{host}}/api/salesrep/counteragent",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"salesrep",
+								"counteragent"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "plan",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "1732|s4q0auVUbfYbWNBxhUD5J0yW9FEhoyOCt9InkmPB",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"url": {
+							"raw": "{{host}}/api/salesrep/plan",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"salesrep",
+								"plan"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Products",
+			"item": [
+				{
+					"name": "index",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "6|lbN5JFh3r7pTI3tDV7Vbx3jN41GS7ex47TgxgDxl",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"url": {
+							"raw": "http://boszhan.kz/api/product?id=798",
+							"protocol": "http",
+							"host": [
+								"boszhan",
+								"kz"
+							],
+							"path": [
+								"api",
+								"product"
+							],
+							"query": [
+								{
+									"key": "store_id",
+									"value": "1",
+									"disabled": true
+								},
+								{
+									"key": "category_id",
+									"value": "12",
+									"disabled": true
+								},
+								{
+									"key": "id",
+									"value": "798"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Driver",
+			"item": [
+				{
+					"name": "Order",
+					"item": [
+						{
+							"name": "index",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "2966|zP1CC7VegyexXbZn65hDIgfOAwEk1HRwN8CkUVe9",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": []
+								},
+								"url": {
+									"raw": "{{host}}/api/driver/order?id=148930",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"driver",
+										"order"
+									],
+									"query": [
+										{
+											"key": "id",
+											"value": "148930"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "delivered",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "468|YPLLXzdEiXtQ36XJkinM98LXBztJ6lYAgOyaRBLc",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": []
+								},
+								"url": {
+									"raw": "{{host}}/api/driver/order/delivered",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"driver",
+										"order",
+										"delivered"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "info",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "802|lizmZ7DyUFeBENlkU32toEsCtWwMPFlw8dscb3af",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": []
+								},
+								"url": {
+									"raw": "{{host}}/api/driver/order/info",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"driver",
+										"order",
+										"info"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "update",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "232|VCSeSFZ7xRP1ZW36XmvPqhCjjwxABwFO5ow8CgkW",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "status_id",
+											"value": "3",
+											"type": "text"
+										},
+										{
+											"key": "payment_type_id",
+											"value": "",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "payment_status_id",
+											"value": "",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "payment_full",
+											"value": "",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "payment_partial",
+											"value": "",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "winning_name",
+											"value": "",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "winning_phone",
+											"value": "",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "winning_status",
+											"value": "",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "comment",
+											"value": "",
+											"description": "comment",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "lat",
+											"value": "",
+											"type": "text"
+										},
+										{
+											"key": "lng",
+											"value": "",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{host}}/api/driver/order/update/51",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"driver",
+										"order",
+										"update",
+										"51"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "print",
+					"item": [
+						{
+							"name": "РНК",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{host}}/api/driver/print/3516/rnk",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"driver",
+										"print",
+										"3516",
+										"rnk"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "before RNK",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{host}}/api/driver/print/3516/before/rnk",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"driver",
+										"print",
+										"3516",
+										"before",
+										"rnk"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "vozvrat",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{host}}/api/driver/print/3516/vozvrat",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"driver",
+										"print",
+										"3516",
+										"vozvrat"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "pko",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{host}}/api/driver/print/3516/pko",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"driver",
+										"print",
+										"3516",
+										"pko"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Basket",
+					"item": [
+						{
+							"name": "index",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "289|65M0RW8RHdE1eZJnJgldR7Pd7j7JP9F5zySm4SvG",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": []
+								},
+								"url": {
+									"raw": "{{host}}/api/driver/basket/13900",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"driver",
+										"basket",
+										"13900"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "update",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "232|VCSeSFZ7xRP1ZW36XmvPqhCjjwxABwFO5ow8CgkW",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "count",
+											"value": "1",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{host}}/api/driver/basket/update/31712",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"driver",
+										"basket",
+										"update",
+										"31712"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "исходный состояние",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "232|VCSeSFZ7xRP1ZW36XmvPqhCjjwxABwFO5ow8CgkW",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": []
+								},
+								"url": {
+									"raw": "{{host}}/api/driver/basket/initial-state/35103",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"driver",
+										"basket",
+										"initial-state",
+										"35103"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "delete",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "232|VCSeSFZ7xRP1ZW36XmvPqhCjjwxABwFO5ow8CgkW",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": []
+								},
+								"url": {
+									"raw": "{{host}}/api/driver/basket/31712",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"driver",
+										"basket",
+										"31712"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "label",
+			"item": [
+				{
+					"name": "category",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/label/category",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"label",
+								"category"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "category Copy",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/label/products?category=Lanzhou",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"label",
+								"products"
+							],
+							"query": [
+								{
+									"key": "category",
+									"value": "Lanzhou"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "store",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "label_product_name",
+									"value": "Мұздатылған «Колбаски гриль-улитка для жарки Конина Boszhan» Замороженные",
+									"type": "text"
+								},
+								{
+									"key": "weight",
+									"value": "3333",
+									"type": "text"
+								},
+								{
+									"key": "lang",
+									"value": "kz",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{host}}/api/label",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"label"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "brands",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": []
+				},
+				"url": {
+					"raw": "{{host}}/api/brand",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"api",
+						"brand"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "order statuses",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": []
+				},
+				"url": {
+					"raw": "{{host}}/api/status",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"api",
+						"status"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "payment status",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": []
+				},
+				"url": {
+					"raw": "{{host}}/api/payment-status",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"api",
+						"payment-status"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "payment type",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": []
+				},
+				"url": {
+					"raw": "{{host}}/api/payment-type",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"api",
+						"payment-type"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "проверка пос. вервию Апк",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "5|MlbryGiSK1wtKSdT33ZJfCuxfn5UddjZosp9R5Oy",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": []
+				},
+				"url": {
+					"raw": "{{host}}/api/mobile-app?type=1",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"api",
+						"mobile-app"
+					],
+					"query": [
+						{
+							"key": "type",
+							"value": "1",
+							"description": "1 торговый, 2 водительский"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Скачать пос. вервию Апк",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "5|MlbryGiSK1wtKSdT33ZJfCuxfn5UddjZosp9R5Oy",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": []
+				},
+				"url": {
+					"raw": "{{host}}/api/mobile-app/download?type=1",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"api",
+						"mobile-app",
+						"download"
+					],
+					"query": [
+						{
+							"key": "type",
+							"value": "1",
+							"description": "1 торговый, 2 водительский"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Слежка",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "5|MlbryGiSK1wtKSdT33ZJfCuxfn5UddjZosp9R5Oy",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "lat",
+							"value": "25.7786222",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "lng",
+							"value": "-80.1956483",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "positions[0][lat]",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "positions[0][lng]",
+							"value": "",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{host}}/api/position",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"api",
+						"position"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "причниы возврата",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": []
+				},
+				"url": {
+					"raw": "{{host}}/api/reason-refund",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"api",
+						"reason-refund"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "map position",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": []
+				},
+				"url": {
+					"raw": "{{host}}/api/position",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"api",
+						"position"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "salesreps",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": []
+				},
+				"url": {
+					"raw": "{{host}}/api/salesrep",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"api",
+						"salesrep"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "host",
+			"value": "https://boszhan.kz",
+			"type": "string"
+		},
+		{
+			"key": "token",
+			"value": "3061|kzJwt4Z7zR4vwKndVOPgwvatZ0iIdlJ6GOBvuzY8",
+			"type": "string"
+		}
+	]
+}
