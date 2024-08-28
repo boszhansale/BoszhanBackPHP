@@ -142,6 +142,10 @@
                     <input type="text" class="form-control" value="{{$setting->weight_text_ab}}" name="weight_text_ab">
                 </div>
             </div>
+            <div class="col-md-12">
+                <label for="">размер штрих кода</label>
+                <input type="text" class="form-control" value="{{$setting->barcode_size}}" name="barcode_size">
+            </div>
         </div>
         <button type="submit" class="mt-5 mb-10 btn btn-primary col-3 ">Сохранить</button>
 

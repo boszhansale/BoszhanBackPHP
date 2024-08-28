@@ -34,6 +34,7 @@ class LabelSettingController extends Controller
         $setting->image_url_2 = $request->get('image_url_2');
         $setting->image_url_3 = $request->get('image_url_3');
         $setting->image_url_4 = $request->get('image_url_4');
+        $setting->barcode_size = $request->get('barcode_size');
         $setting->save();
 
         return back();

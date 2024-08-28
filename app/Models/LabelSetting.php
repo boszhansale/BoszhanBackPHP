@@ -29,6 +29,7 @@ class LabelSetting extends Model
         'image_url_2',
         'image_url_3',
         'image_url_4',
+        'barcode_size',
     ];
 
 
